@@ -1,0 +1,1 @@
+# node-pickles2-module-editor
