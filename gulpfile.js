@@ -19,7 +19,6 @@ var _tasks = [
 	'.css.scss',
 	'test/contents.js',
 	'pickles2-module-editor.js',
-	'pickles2-preview-contents.js',
 	'client-libs'
 ];
 
@@ -28,9 +27,6 @@ var _tasks = [
 gulp.task("client-libs", function() {
 	gulp.src(["node_modules/broccoli-html-editor/client/dist/**/*"])
 		.pipe(gulp.dest( './dist/libs/broccoli-html-editor/client/dist/' ))
-	;
-	gulp.src(["node_modules/broccoli-field-table/dist/**/*"])
-		.pipe(gulp.dest( './dist/libs/broccoli-field-table/dist/' ))
 	;
 	gulp.src(["node_modules/bootstrap/dist/fonts/**/*"])
 		.pipe(gulp.dest( './dist/libs/bootstrap/dist/fonts/' ))
@@ -87,20 +83,6 @@ gulp.task("pickles2-module-editor.js", function() {
 		.pipe(concat('pickles2-module-editor.min.js'))
 		.pipe(uglify())
 		// .pipe(sourcemaps.write())
-		.pipe(gulp.dest( './dist/' ))
-	;
-});
-
-gulp.task("pickles2-preview-contents.js", function() {
-	gulp.src(["src/pickles2-preview-contents.js"])
-		.pipe(plumber())
-		.pipe(browserify({}))
-
-		.pipe(concat('pickles2-preview-contents.js'))
-		.pipe(gulp.dest( './dist/' ))
-
-		.pipe(concat('pickles2-preview-contents.min.js'))
-		.pipe(uglify())
 		.pipe(gulp.dest( './dist/' ))
 	;
 });

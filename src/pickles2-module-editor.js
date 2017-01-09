@@ -30,7 +30,6 @@
 		this.options = {};
 
 		var serverConfig;
-		var editor;
 
 		/**
 		* initialize
