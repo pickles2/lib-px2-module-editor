@@ -1,8 +1,6 @@
 $(window).load(function(){
 	var conf = require('../../../../config/default.json');
 	// console.log(conf);
-	var params = parseUriParam(window.location.href);
-	// console.log(params);
 	var $canvas = $('#canvas');
 
 	/**
@@ -19,7 +17,7 @@ $(window).load(function(){
 	windowResized(function(){
 		pickles2ModuleEditor.init(
 			{
-				'page_path': params.page_path ,
+				'page_path': '/' ,
 				'elmCanvas': $canvas.get(0),
 				'preview':{
 					'origin': conf.px2server.origin
@@ -67,23 +65,3 @@ $(window).load(function(){
 
 
 });
-
-/**
- * GETパラメータをパースする
- */
-var parseUriParam = function(url){
-	var paramsArray = [];
-	parameters = url.split("?");
-	if( parameters.length > 1 ) {
-		var params = parameters[1].split("&");
-		for ( var i = 0; i < params.length; i++ ) {
-			var paramItem = params[i].split("=");
-			for( var i2 in paramItem ){
-				paramItem[i2] = decodeURIComponent( paramItem[i2] );
-			}
-			paramsArray.push( paramItem[0] );
-			paramsArray[paramItem[0]] = paramItem[1];
-		}
-	}
-	return paramsArray;
-}

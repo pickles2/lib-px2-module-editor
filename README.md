@@ -92,7 +92,6 @@ appPx2.listen(8081);
 var pickles2ModuleEditor = new Pickles2ModuleEditor();
 pickles2ModuleEditor.init(
 	{
-		'page_path': '/path/to/page.html' , // <- 編集対象ページのパス
 		'elmCanvas': document.getElementById('canvas'), // <- 編集画面を描画するための器となる要素
 		'preview':{ // プレビュー用サーバーの情報を設定します。
 			'origin': 'http://127.0.0.1:8081'
@@ -113,9 +112,6 @@ pickles2ModuleEditor.init(
 		},
 		'complete': function(){
 			alert('完了しました。');
-		},
-		'onClickContentsLink': function( uri, data ){
-			alert('編集: ' + uri);
 		},
 		'onMessage': function( message ){
 			// ユーザーへ知らせるメッセージを表示する
