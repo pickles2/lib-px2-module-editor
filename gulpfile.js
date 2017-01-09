@@ -28,6 +28,9 @@ gulp.task("client-libs", function() {
 	gulp.src(["node_modules/broccoli-html-editor/client/dist/**/*"])
 		.pipe(gulp.dest( './dist/libs/broccoli-html-editor/client/dist/' ))
 	;
+	gulp.src(["node_modules/pickles2-contents-editor/dist/**/*"])
+		.pipe(gulp.dest( './dist/libs/pickles2-contents-editor/dist/' ))
+	;
 	gulp.src(["node_modules/bootstrap/dist/fonts/**/*"])
 		.pipe(gulp.dest( './dist/libs/bootstrap/dist/fonts/' ))
 	;
