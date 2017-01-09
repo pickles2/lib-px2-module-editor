@@ -1,11 +1,10 @@
 /**
  * toolbar.js
  */
-module.exports = function(px2ce){
+module.exports = function(px2me){
 	var $ = require('jquery');
 	var utils79 = require('utils79');
-	var $canvas = $(px2ce.getElmCanvas());
-	var page_path = px2ce.page_path;
+	var $canvas = $(px2me.getElmCanvas());
 
 	var ejs = require('ejs');
 

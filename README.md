@@ -11,14 +11,15 @@ Pickles 2 のコンテンツ編集インターフェイスを提供します。
 var express = require('express'),
 	app = express();
 var server = require('http').Server(app);
-var Px2CE = require('pickles2-module-editor');
+var Px2ME = require('pickles2-module-editor');
 
 app.use( '/your/api/path', function(req, res, next){
 
-	var px2ce = new Px2CE();
-	px2ce.init(
+	var px2me = new Px2ME();
+	px2me.init(
 		{
 			'appMode': 'web', // 'web' or 'desktop'. default to 'web'
+			'broccoli': broccoli, // supply `broccoli` object.
 			'entryScript': require('path').resolve('/path/to/.px_execute.php'),
 			'log': function(msg){
 				// エラー発生時にコールされます。
@@ -27,7 +28,7 @@ app.use( '/your/api/path', function(req, res, next){
 			}
 		},
 		function(){
-			px2ce.gpi(JSON.parse(req.body.data), function(value){
+			px2me.gpi(JSON.parse(req.body.data), function(value){
 				res
 					.status(200)
 					.set('Content-Type', 'text/json')

@@ -27,7 +27,7 @@ $(window).load(function(){
 					// broccoliは、バックグラウンドで様々なデータ通信を行います。
 					// GPIは、これらのデータ通信を行うための汎用的なAPIです。
 					$.ajax({
-						"url": "/apis/px2ce",
+						"url": "/apis/px2me",
 						"type": 'post',
 						'data': {'data':JSON.stringify(input)},
 						"success": function(data){

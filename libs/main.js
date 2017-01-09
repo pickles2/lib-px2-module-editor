@@ -22,6 +22,7 @@ module.exports = function(){
 		options.log = options.log || function(msg){
 			console.error(msg);
 		};
+		options.broccoli = options.broccoli||{};// `broccoli` object
 		this.entryScript = options.entryScript;
 		this.px2proj = require('px2agent').createProject(options.entryScript);
 		this.options = options;

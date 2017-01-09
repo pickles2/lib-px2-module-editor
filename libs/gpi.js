@@ -1,7 +1,7 @@
 /**
  * gpi.js (General Purpose Interface)
  */
-module.exports = function(px2ce, data, callback){
+module.exports = function(px2me, data, callback){
 	delete(require.cache[require('path').resolve(__filename)]);
 
 	var _this = this;
@@ -11,13 +11,13 @@ module.exports = function(px2ce, data, callback){
 		case "getConfig":
 			// pickles2-contents-editor の設定を取得する
 			var conf = {};
-			conf.appMode = px2ce.getAppMode();
+			conf.appMode = px2me.getAppMode();
 			callback(conf);
 			break;
 
 		case "getProjectConf":
 			// プロジェクトの設定を取得する
-			px2ce.getProjectConf(function(conf){
+			px2me.getProjectConf(function(conf){
 				callback(conf);
 			});
 			break;

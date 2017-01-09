@@ -26,7 +26,7 @@ console.log('Pickles 2 preview server port number is '+conf.px2server.originPars
 
 app.use( require('body-parser')() );
 app.use( '/common/', express.static( path.resolve(__dirname, '../../../dist/') ) );
-app.use( '/apis/px2ce', require('./apis/px2ce.js')() );
+app.use( '/apis/px2me', require('./apis/px2me.js')() );
 
 app.use( express.static( __dirname+'/../client/' ) );
 
