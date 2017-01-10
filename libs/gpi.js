@@ -15,6 +15,18 @@ module.exports = function(px2me, data, callback){
 			callback(conf);
 			break;
 
+		case "getPackageList":
+			// broccoli モジュールのパッケージ一覧を取得する
+
+			px2me.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				broccoli.getPackageList(function(packageList){
+					// console.log('getPackageList', packageList);
+					callback(packageList);
+				});
+			});
+			break;
+
 		case "getProjectConf":
 			// プロジェクトの設定を取得する
 			px2me.getProjectConf(function(conf){

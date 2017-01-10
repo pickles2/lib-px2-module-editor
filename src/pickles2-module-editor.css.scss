@@ -3,4 +3,28 @@
 	// border: 1px solid #000;
 	overflow: auto;
 	position: relative;
+
+	// packageList
+	&__packageList{
+		margin: 1em 0;
+		padding: 0;
+	}
+	&__packageList>li{
+		list-style-type: none !important;
+		margin: 2px 0;
+		padding: 0;
+	}
+	&__packageList>li>a,
+	&__packageList>li>label{
+		display: block;
+		margin: 0;
+		padding: 10px 20px;
+		border: 1px solid #eee;
+		border-radius: 3px;
+		background-color: #fbfbfb;
+	}
+	&__packageList>li>a:hover,
+	&__packageList>li>label:hover{
+		background-color: #f0f0f0;
+	}
 }

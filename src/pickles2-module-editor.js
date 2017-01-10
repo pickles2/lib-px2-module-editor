@@ -29,12 +29,12 @@
 		this.__dirname = __dirname;
 		this.options = {};
 
-		var serverConfig;
-
 		/**
 		* initialize
 		*/
 		this.init = function(options, callback){
+			console.info('initialize pickles2-module-editor...');
+
 			callback = callback || function(){};
 			var _this = this;
 			// console.log(options);
@@ -47,16 +47,23 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 
-			_this.gpiBridge(
-				{
-					'api':'getConfig'
-				} ,
-				function(config){
-					// console.log(config);
-					serverConfig = config;
-					callback();
-				}
-			);
+			_this.getPackageList( function(packageList){
+				console.log(packageList);
+
+				var tpl = '';
+					tpl += '<ul class="pickles2-module-editor__packageList">';
+					tpl += '<% for( var packageId in packageList ){ %>';
+					tpl += '<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a></li>';
+					tpl += '<% } %>';
+					tpl += '</ul>';
+				var html = _this.bindEjs(
+					tpl,
+					{'packageList': packageList}
+				);
+				$canvas.html('').append(html);
+
+				callback();
+			} );
 
 		} // init()
 
@@ -76,6 +83,56 @@
 			this.options.onMessage(message);
 			callback();
 			return this;
+		}
+
+		/**
+		 * Pickles 2 のコンフィグ情報を取得する
+		 */
+		this.getConfig = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getConfig'
+				},
+				function(conf){
+					callback(conf);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * ejs テンプレートにデータをバインドする
+		 */
+		this.bindEjs = function( tpl, data, options ){
+			var ejs = require('ejs');
+			var rtn = '';
+			try {
+				var template = ejs.compile(tpl.toString(), options);
+				rtn = template(data);
+			} catch (e) {
+				var errorMessage = 'TemplateEngine "EJS" Rendering ERROR.';
+				console.log( errorMessage );
+				rtn = errorMessage;
+			}
+
+			return rtn;
+		}
+
+		/**
+		 * broccoli モジュールのパッケージ一覧を取得する
+		 */
+		this.getPackageList = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPackageList'
+				},
+				function(packageList){
+					callback(packageList);
+				}
+			);
+			return;
 		}
 
 		/**

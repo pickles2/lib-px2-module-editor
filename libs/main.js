@@ -58,11 +58,7 @@ module.exports = function(){
 			_this.realpathDataDir = pjInfo.realpathDataDir;
 			_this.pathResourceDir = pjInfo.pathResourceDir;
 
-			_this.createBroccoli(function(broccoli){
-				// console.log(broccoli);
-				_this.broccoli = broccoli;
-				callback();
-			});
+			callback();
 		});
 
 		return;
