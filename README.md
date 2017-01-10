@@ -19,12 +19,19 @@ app.use( '/your/api/path', function(req, res, next){
 	px2me.init(
 		{
 			'appMode': 'web', // 'web' or 'desktop'. default to 'web'
-			'broccoli': broccoli, // supply `broccoli` object.
 			'entryScript': require('path').resolve('/path/to/.px_execute.php'),
 			'log': function(msg){
 				// エラー発生時にコールされます。
 				// msg を受け取り、適切なファイルへ出力するように実装してください。
 				fs.writeFileSync('/path/to/error.log', {}, msg);
+			},
+			'commands'{
+				'php': {
+					// PHPコマンドのパスを表すオブジェクト
+					// または、 文字列で '/path/to/php' とすることも可 (この場合、 php.ini のパスは指定されない)
+					'bin': '/path/to/php',
+					'ini': '/path/to/php.ini'
+				}
 			}
 		},
 		function(){

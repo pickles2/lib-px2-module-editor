@@ -8,11 +8,13 @@ module.exports = function(){
 	var utils79 = require('utils79');
 	var Promise = require('es6-promise').Promise;
 	var _this = this;
+	var nodePhpBinOptions;
 
 	this.entryScript;
 	this.px2proj;
 	this.page_path;
 	this.options;
+	this.broccoli;
 
 	this.init = function(options, callback){
 		callback = callback||function(){};
@@ -22,12 +24,48 @@ module.exports = function(){
 		options.log = options.log || function(msg){
 			console.error(msg);
 		};
-		options.broccoli = options.broccoli||{};// `broccoli` object
 		this.entryScript = options.entryScript;
-		this.px2proj = require('px2agent').createProject(options.entryScript);
+
+		nodePhpBinOptions = (function(cmds){
+			try {
+				var nodePhpBinOptions = cmds.php;
+				if(!nodePhpBinOptions){
+					return undefined;
+				}
+				if( typeof(nodePhpBinOptions) == typeof('') ){
+					nodePhpBinOptions = {
+						'bin': nodePhpBinOptions,
+						'ini': null
+					};
+				}
+				return nodePhpBinOptions;
+			} catch (e) {
+			}
+			return undefined;
+		})(options.commands);
+
+		this.px2proj = require('px2agent').createProject(options.entryScript, nodePhpBinOptions);
 		this.options = options;
 
-		callback();
+		// console.log(this.options);
+		this.getProjectInfo(function(pjInfo){
+			// console.log(pjInfo);
+			_this.pjInfo = pjInfo;
+			_this.px2conf = pjInfo.conf;
+			_this.pageInfo = pjInfo.pageInfo;
+			_this.documentRoot = pjInfo.documentRoot;
+			_this.contRoot = pjInfo.contRoot;
+			_this.realpathDataDir = pjInfo.realpathDataDir;
+			_this.pathResourceDir = pjInfo.pathResourceDir;
+
+			_this.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				_this.broccoli = broccoli;
+				callback();
+			});
+		});
+
+		return;
 	}
 
 	/**
@@ -95,6 +133,33 @@ module.exports = function(){
 				});
 			});
 		});
+	}
+
+	/**
+	 * create broccoli-html-editor object
+	 */
+	this.createBroccoli = function(callback){
+		callback = callback||function(){};
+		var Px2CE = require('pickles2-contents-editor');
+		var px2ce = new Px2CE();
+
+		px2ce.init(
+			{
+				'page_path': '/px2me-dummy.html', // <- 編集対象ページのパス
+				'appMode': 'web', // 'web' or 'desktop'. default to 'web'
+				'entryScript': this.entryScript,
+				'customFields': {} ,
+				'log': function(msg){},
+				'commands': (this.options.commands||undefined)
+			},
+			function(){
+				px2ce.createBroccoli( function(broccoli){
+					callback(broccoli);
+				});
+			}
+		);
+
+		return;
 	}
 
 	/**
