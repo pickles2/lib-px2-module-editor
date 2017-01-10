@@ -1,0 +1,5 @@
+<ul class="pickles2-module-editor__packageList">
+<% for( var packageId in packageList ){ %>
+<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a></li>
+<% } %>
+</ul>

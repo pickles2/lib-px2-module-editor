@@ -24,10 +24,14 @@
 
 	window.Pickles2ModuleEditor = function(){
 		var $ = require('jquery');
+		var Promise = require('es6-promise').Promise;
 		var $canvas;
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
+
+		var px2meConf,
+			templates;
 
 		/**
 		* initialize
@@ -47,23 +51,37 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 
-			_this.getPackageList( function(packageList){
-				console.log(packageList);
+			new Promise(function(rlv){rlv();})
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getConfig( function(conf){
+						px2meConf = conf;
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getTemplates( function(tpls){
+						// console.log(tpls);
+						templates = tpls;
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getPackageList( function(packageList){
+						// console.log(packageList);
 
-				var tpl = '';
-					tpl += '<ul class="pickles2-module-editor__packageList">';
-					tpl += '<% for( var packageId in packageList ){ %>';
-					tpl += '<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a></li>';
-					tpl += '<% } %>';
-					tpl += '</ul>';
-				var html = _this.bindEjs(
-					tpl,
-					{'packageList': packageList}
-				);
-				$canvas.html('').append(html);
-
-				callback();
-			} );
+						var html = _this.bindEjs(
+							templates['list'],
+							{'packageList': packageList}
+						);
+						$canvas.html('').append(html);
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					callback();
+					rlv();
+				}); })
+			;
 
 		} // init()
 
@@ -86,7 +104,7 @@
 		}
 
 		/**
-		 * Pickles 2 のコンフィグ情報を取得する
+		 * Pickles 2 Module Editor のコンフィグ情報を取得する
 		 */
 		this.getConfig = function(callback){
 			callback = callback || function(){};
@@ -96,6 +114,22 @@
 				},
 				function(conf){
 					callback(conf);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * テンプレートを取得する
+		 */
+		this.getTemplates = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getTemplates'
+				},
+				function(templates){
+					callback(templates);
 				}
 			);
 			return;

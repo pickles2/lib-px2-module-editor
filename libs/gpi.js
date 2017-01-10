@@ -15,6 +15,15 @@ module.exports = function(px2me, data, callback){
 			callback(conf);
 			break;
 
+		case "getTemplates":
+			// EJSテンプレートを取得する
+			var templates = {};
+
+			templates['list'] = require('fs').readFileSync(__dirname+'/templates/list.html.ejs').toString();
+
+			callback(templates);
+			break;
+
 		case "getPackageList":
 			// broccoli モジュールのパッケージ一覧を取得する
 
