@@ -4,29 +4,57 @@
 	overflow: auto;
 	position: relative;
 
+	// module title
+	&__title{
+		display: block;
+		margin: 0;
+		padding: 0;
+		font-size: 140%;
+
+		&__label{
+			font-weight: bold;
+		}
+		&__id{
+			font-weight: normal;
+			font-size: 80%;
+			padding-left: 1em;
+
+			&:before{
+				content: '(';
+			}
+			&:after{
+				content: ')';
+			}
+		}
+	}
+
+	// button group
+	&__buttons{
+		display: block;
+		padding: 10px 0;
+		margin: 0;
+		>li{
+			display: inline-block;
+			padding: 0;
+			margin: 0;
+			list-style-type: none;
+		}
+	}
+
 	// packageList
 	&__packageList{
 		margin: 1em 0;
 		padding: 0;
 	}
 	&__packageList>li{
+		display: block;
 		list-style-type: none !important;
 		margin: 2px 0;
-		padding: 0;
-	}
-	&__packageList>li>a,
-	&__packageList>li>label{
-		display: block;
-		margin: 0;
-		padding: 10px 20px;
+		padding: 5px 5px 5px 15px;
+		background-color: #000;
 		border: 1px solid #eee;
 		border-radius: 3px;
 		color: #fff;
-		background-color: #000;
-	}
-	&__packageList>li>a:hover,
-	&__packageList>li>label:hover{
-		background-color: #f0f0f0;
 	}
 
 	// categoryList
@@ -35,23 +63,14 @@
 		padding: 0;
 	}
 	&__categoryList>li{
+		display: block;
 		list-style-type: none !important;
 		margin: 2px 0;
-		padding: 0;
-	}
-	&__categoryList>li>a,
-	&__categoryList>li>label{
-		display: block;
-		margin: 0;
-		padding: 10px 20px;
+		padding: 5px 5px 5px 15px;
+		background-color: #ddd;
 		border: 1px solid #eee;
 		border-radius: 3px;
 		color: #333;
-		background-color: #ddd;
-	}
-	&__categoryList>li>a:hover,
-	&__categoryList>li>label:hover{
-		background-color: #f0f0f0;
 	}
 
 	// moduleList
@@ -60,21 +79,13 @@
 		padding: 0;
 	}
 	&__moduleList>li{
+		display: block;
 		list-style-type: none !important;
 		margin: 2px 0;
-		padding: 0;
-	}
-	&__moduleList>li>a,
-	&__moduleList>li>label{
-		display: block;
-		margin: 0;
-		padding: 10px 20px;
+		padding: 5px 5px 5px 15px;
+		background-color: #fbfbfb;
 		border: 1px solid #eee;
 		border-radius: 3px;
-		background-color: #fbfbfb;
-	}
-	&__moduleList>li>a:hover,
-	&__moduleList>li>label:hover{
-		background-color: #f0f0f0;
+		color: #333;
 	}
 }

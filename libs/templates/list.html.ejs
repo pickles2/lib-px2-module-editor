@@ -1,13 +1,36 @@
-<% console.log(packageList) %>
+
+
 <ul class="pickles2-module-editor__packageList">
 <% for( var packageId in packageList ){ %>
-	<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a>
+	<li data-pickles2-module-editor--module-id="<%= packageList[packageId].packageId %>">
+		<div class="pickles2-module-editor__title">
+			<span class="pickles2-module-editor__title__label"><%= packageList[packageId].packageName %></span>
+			<span class="pickles2-module-editor__title__id"><%= packageList[packageId].packageId %></span>
+		</div>
+		<ul class="pickles2-module-editor__buttons">
+			<li><button type="button" class="btn btn-default">ADD NEW CATEGORY</button></li>
+			<li><button type="button" class="btn btn-primary">EDIT PACKAGE</button></li>
+		</ul>
+
 		<ul class="pickles2-module-editor__categoryList"><% for( var categoryId in packageList[packageId].categories ){ %>
-			<li><a href="javascript:;"><%= packageList[packageId].categories[categoryId].categoryName %> (<%= packageList[packageId].categories[categoryId].categoryId %>)<br />
-				<%= packageList[packageId].categories[categoryId].realpath %></a>
+			<li data-pickles2-module-editor--module-id="<%= packageList[packageId].packageId %>:<%= packageList[packageId].categories[categoryId].categoryId %>">
+				<div class="pickles2-module-editor__title">
+					<span class="pickles2-module-editor__title__label"><%= packageList[packageId].categories[categoryId].categoryName %></span>
+					<span class="pickles2-module-editor__title__id"><%= packageList[packageId].categories[categoryId].categoryId %></span>
+				</div>
+				<ul class="pickles2-module-editor__buttons">
+					<li><button type="button" class="btn btn-default">ADD NEW MODULE</button></li>
+					<li><button type="button" class="btn btn-primary">EDIT CATEGORY</button></li>
+				</ul>
 				<ul class="pickles2-module-editor__moduleList"><% for( var moduleId in packageList[packageId].categories[categoryId].modules ){ %>
-					<li><a href="javascript:;"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleName %> (<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>)<br />
-						<%= packageList[packageId].categories[categoryId].modules[moduleId].realpath %></a>
+					<li data-pickles2-module-editor--module-id="<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>">
+						<div class="pickles2-module-editor__title">
+							<span class="pickles2-module-editor__title__label"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleName %></span>
+							<span class="pickles2-module-editor__title__id"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %></span>
+						</div>
+						<ul class="pickles2-module-editor__buttons">
+							<li><button type="button" class="btn btn-primary">EDIT MODULE</button></li>
+						</ul>
 					</li>
 				<% } %></ul>
 			</li>
