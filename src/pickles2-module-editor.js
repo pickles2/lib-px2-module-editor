@@ -55,7 +55,13 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 
+
 			new Promise(function(rlv){rlv();})
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.progress( function(){
+						rlv();
+					} );
+				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
 						px2meConf = conf;
@@ -80,6 +86,11 @@
 						$canvas.html('').append(html);
 						rlv();
 					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.closeProgress(function(){
+						rlv();
+					});
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
 					callback();
@@ -171,6 +182,48 @@
 				}
 			);
 			return;
+		}
+
+		/**
+		 * プログレスを表示する
+		 */
+		this.progress = function( callback ){
+			callback = callback||function(){};
+			$('body').find('.pickles2-module-editor--progress').remove();//一旦削除
+			$('body')
+				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
+					.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner">')
+						.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner2">')
+							.append( $('<div class="px2-loading">') )
+						)
+					)
+				)
+			;
+			var dom = $('body').find('.px2-loading').get(0);
+			callback(dom);
+			return this;
+		}
+
+		/**
+		 * プログレスを閉じる
+		 */
+		this.closeProgress = function( callback ){
+			callback = callback||function(){};
+			var $progress = $('body').find('.pickles2-module-editor--progress');
+			if( !$progress.size() ){
+				callback();
+				return this;
+			}
+			$progress
+				.fadeOut(
+					'fast',
+					function(){
+						$(this).remove();
+						callback();
+					}
+				)
+			;
+			return this;
 		}
 
 		/**
