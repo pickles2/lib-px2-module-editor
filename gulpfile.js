@@ -31,6 +31,9 @@ gulp.task("client-libs", function() {
 	gulp.src(["node_modules/pickles2-contents-editor/dist/**/*"])
 		.pipe(gulp.dest( './dist/libs/pickles2-contents-editor/dist/' ))
 	;
+	gulp.src(["node_modules/px2style/dist/**/*"])
+		.pipe(gulp.dest( './dist/libs/px2style/dist/' ))
+	;
 	gulp.src(["node_modules/bootstrap/dist/fonts/**/*"])
 		.pipe(gulp.dest( './dist/libs/bootstrap/dist/fonts/' ))
 	;
