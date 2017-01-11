@@ -46,7 +46,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						break;
 					case 'editModule':
 						px2me.loadPage('editModule', {'moduleId': target}, function(){
-							alert(act);
+							// alert(act);
 						});
 						break;
 					case 'addNewModule':

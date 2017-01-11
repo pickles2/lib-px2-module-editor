@@ -223,6 +223,24 @@
 		}
 
 		/**
+		 * broccoli モジュールのコードの変更をすべて保存する
+		 */
+		this.saveModuleCode = function(moduleId, data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'saveModuleCode',
+					'moduleId': moduleId,
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * プログレスを表示する
 		 */
 		this.progress = function( callback ){

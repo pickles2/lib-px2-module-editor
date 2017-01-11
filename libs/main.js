@@ -93,6 +93,20 @@ module.exports = function(){
 	}
 
 	/**
+	 * 編集可能なパスか調べる
+	 */
+	this.isEditablePath = function(path){
+		// TODO: vendor, node_modules の中にないか確認する。
+		if( path.match('/vendor/') ){
+			return false;
+		}
+		if( path.match('/node_modules/') ){
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * プロジェクト情報をまとめて取得する
 	 */
 	this.getProjectInfo = function(callback){
