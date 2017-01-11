@@ -8,7 +8,7 @@ $(window).load(function(){
 	*/
 	var windowResized = function(callback){
 		callback = callback || function(){};
-		$canvas.height( $(window).height() - 200 );
+		$canvas.height( $(window).height() - 50 );
 		callback();
 		return;
 	}
@@ -17,11 +17,7 @@ $(window).load(function(){
 	windowResized(function(){
 		pickles2ModuleEditor.init(
 			{
-				'page_path': '/' ,
 				'elmCanvas': $canvas.get(0),
-				'preview':{
-					'origin': conf.px2server.origin
-				},
 				'gpiBridge': function(input, callback){
 					// GPI(General Purpose Interface) Bridge
 					// broccoliは、バックグラウンドで様々なデータ通信を行います。
