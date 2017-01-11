@@ -21,10 +21,60 @@
 		padding: 10px 20px;
 		border: 1px solid #eee;
 		border-radius: 3px;
-		background-color: #fbfbfb;
+		color: #fff;
+		background-color: #000;
 	}
 	&__packageList>li>a:hover,
 	&__packageList>li>label:hover{
+		background-color: #f0f0f0;
+	}
+
+	// categoryList
+	&__categoryList{
+		margin: 1em 0;
+		padding: 0;
+	}
+	&__categoryList>li{
+		list-style-type: none !important;
+		margin: 2px 0;
+		padding: 0;
+	}
+	&__categoryList>li>a,
+	&__categoryList>li>label{
+		display: block;
+		margin: 0;
+		padding: 10px 20px;
+		border: 1px solid #eee;
+		border-radius: 3px;
+		color: #333;
+		background-color: #ddd;
+	}
+	&__categoryList>li>a:hover,
+	&__categoryList>li>label:hover{
+		background-color: #f0f0f0;
+	}
+
+	// moduleList
+	&__moduleList{
+		margin: 1em 0;
+		padding: 0;
+	}
+	&__moduleList>li{
+		list-style-type: none !important;
+		margin: 2px 0;
+		padding: 0;
+	}
+	&__moduleList>li>a,
+	&__moduleList>li>label{
+		display: block;
+		margin: 0;
+		padding: 10px 20px;
+		border: 1px solid #eee;
+		border-radius: 3px;
+		background-color: #fbfbfb;
+	}
+	&__moduleList>li>a:hover,
+	&__moduleList>li>label:hover{
 		background-color: #f0f0f0;
 	}
 }

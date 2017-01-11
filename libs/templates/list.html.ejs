@@ -1,5 +1,17 @@
+<% console.log(packageList) %>
 <ul class="pickles2-module-editor__packageList">
 <% for( var packageId in packageList ){ %>
-<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a></li>
+	<li><a href="javascript:;"><%= packageList[packageId].packageName %> (<%= packageList[packageId].packageId %>)<br /><%= packageList[packageId].realpath %></a>
+		<ul class="pickles2-module-editor__categoryList"><% for( var categoryId in packageList[packageId].categories ){ %>
+			<li><a href="javascript:;"><%= packageList[packageId].categories[categoryId].categoryName %> (<%= packageList[packageId].categories[categoryId].categoryId %>)<br />
+				<%= packageList[packageId].categories[categoryId].realpath %></a>
+				<ul class="pickles2-module-editor__moduleList"><% for( var moduleId in packageList[packageId].categories[categoryId].modules ){ %>
+					<li><a href="javascript:;"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleName %> (<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>)<br />
+						<%= packageList[packageId].categories[categoryId].modules[moduleId].realpath %></a>
+					</li>
+				<% } %></ul>
+			</li>
+		<% } %></ul>
+	</li>
 <% } %>
 </ul>
