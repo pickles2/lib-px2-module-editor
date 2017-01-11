@@ -15,7 +15,45 @@
     padding: 10px 20px;
     border: 1px solid #eee;
     border-radius: 3px;
-    background-color: #fbfbfb; }
+    color: #fff;
+    background-color: #000; }
   .pickles2-module-editor__packageList > li > a:hover,
   .pickles2-module-editor__packageList > li > label:hover {
+    background-color: #f0f0f0; }
+  .pickles2-module-editor__categoryList {
+    margin: 1em 0;
+    padding: 0; }
+  .pickles2-module-editor__categoryList > li {
+    list-style-type: none !important;
+    margin: 2px 0;
+    padding: 0; }
+  .pickles2-module-editor__categoryList > li > a,
+  .pickles2-module-editor__categoryList > li > label {
+    display: block;
+    margin: 0;
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    color: #333;
+    background-color: #ddd; }
+  .pickles2-module-editor__categoryList > li > a:hover,
+  .pickles2-module-editor__categoryList > li > label:hover {
+    background-color: #f0f0f0; }
+  .pickles2-module-editor__moduleList {
+    margin: 1em 0;
+    padding: 0; }
+  .pickles2-module-editor__moduleList > li {
+    list-style-type: none !important;
+    margin: 2px 0;
+    padding: 0; }
+  .pickles2-module-editor__moduleList > li > a,
+  .pickles2-module-editor__moduleList > li > label {
+    display: block;
+    margin: 0;
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #fbfbfb; }
+  .pickles2-module-editor__moduleList > li > a:hover,
+  .pickles2-module-editor__moduleList > li > label:hover {
     background-color: #f0f0f0; }
