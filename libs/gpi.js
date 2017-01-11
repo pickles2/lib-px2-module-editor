@@ -20,6 +20,7 @@ module.exports = function(px2me, data, callback){
 			var templates = {};
 
 			templates['list'] = require('fs').readFileSync(__dirname+'/templates/list.html.ejs').toString();
+			templates['editModule'] = require('fs').readFileSync(__dirname+'/templates/editModule.html.ejs').toString();
 
 			callback(templates);
 			break;
@@ -33,6 +34,18 @@ module.exports = function(px2me, data, callback){
 					// console.log('getPackageList', packageList);
 					callback(packageList);
 				});
+			});
+			break;
+
+		case "getModuleCode":
+			// broccoli モジュールのコードをすべて取得する
+
+			var rtn = {};
+			px2me.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				console.log(data);
+				rtn.realpath = broccoli.getModuleRealpath(data.moduleId);
+				callback(rtn);
 			});
 			break;
 

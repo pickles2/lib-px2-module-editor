@@ -30,13 +30,18 @@
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
 		var $canvas,
-			$canvasContent;
+			$canvasContent,
+			$canvasModal;
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
 
 		var px2meConf,
 			templates;
+		var pages = {
+			'list': require('./pages/list/index.js'),
+			'editModule': require('./pages/editModule/index.js')
+		};
 
 		/**
 		* initialize
@@ -56,7 +61,11 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 			$canvasContent = $('<div class="pickles2-module-editor__content">');
-			$canvas.html('').append($canvasContent);
+			$canvasModal = $('<div class="pickles2-module-editor__modal">');
+			$canvas.html('')
+				.append($canvasContent)
+				.append($canvasModal.hide())
+			;
 
 
 			new Promise(function(rlv){rlv();})
@@ -72,26 +81,25 @@
 					} );
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.getTemplates( function(tpls){
-						// console.log(tpls);
-						templates = tpls;
-						rlv();
-					} );
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.getPackageList( function(packageList){
-						// console.log(packageList);
-
-						var html = _this.bindEjs(
-							templates['list'],
-							{'packageList': packageList}
-						);
-						$canvasContent.html('').append(html);
-						rlv();
-					} );
+					// テンプレートをロードする
+					_this.gpiBridge(
+						{
+							'api':'getTemplates'
+						},
+						function(tpls){
+							templates = tpls;
+							rlv();
+						}
+					);
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.closeProgress(function(){
+						rlv();
+					});
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					// 一覧ページを表示する。
+					_this.loadPage('list', {}, function(){
 						rlv();
 					});
 				}); })
@@ -102,6 +110,25 @@
 			;
 
 		} // init()
+
+		/**
+		 * ページを表示する
+		 */
+		this.loadPage = function(pageName, options, callback){
+			if( pageName == 'list' ){
+				pages[pageName](_this, $canvasContent, options, function(){
+					callback();
+				});
+			}else{
+				var $cont = $('<div>');
+				_this.modal($cont, function(){
+					pages[pageName](_this, $cont, options, function(){
+						callback();
+					});
+				});
+			}
+			return;
+		}
 
 		/**
 		* canvas要素を取得する
@@ -140,17 +167,8 @@
 		/**
 		 * テンプレートを取得する
 		 */
-		this.getTemplates = function(callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getTemplates'
-				},
-				function(templates){
-					callback(templates);
-				}
-			);
-			return;
+		this.getTemplates = function(tplName){
+			return templates[tplName];
 		}
 
 		/**
@@ -188,6 +206,23 @@
 		}
 
 		/**
+		 * broccoli モジュールのコードをすべて取得する
+		 */
+		this.getModuleCode = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getModuleCode',
+					'moduleId': moduleId
+				},
+				function(moduleCode){
+					callback(moduleCode);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * プログレスを表示する
 		 */
 		this.progress = function( callback ){
@@ -195,8 +230,8 @@
 			$canvas.find('.pickles2-module-editor--progress').remove();//一旦削除
 			$canvas
 				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
-					.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner">')
-						.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner2">')
+					.append( $('<div class="pickles2-module-editor--progress-inner">')
+						.append( $('<div class="pickles2-module-editor--progress-inner2">')
 							.append( $('<div class="px2-loading">') )
 						)
 					)
@@ -204,7 +239,7 @@
 			;
 			var dom = $canvas.find('.px2-loading').get(0);
 			callback(dom);
-			return this;
+			return;
 		}
 
 		/**
@@ -215,7 +250,7 @@
 			var $progress = $canvas.find('.pickles2-module-editor--progress');
 			if( !$progress.size() ){
 				callback();
-				return this;
+				return;
 			}
 			$progress
 				.fadeOut(
@@ -226,7 +261,34 @@
 					}
 				)
 			;
-			return this;
+			return;
+		}
+
+		/**
+		 * モーダルダイアログを開く
+		 */
+		this.modal = function( $elm, callback ){
+			callback = callback||function(){};
+			this.closeModal(function(){
+				$canvasModal
+					.append( $('<div class="pickles2-module-editor__modal__inner">')
+						.append( $elm )
+					)
+					.show()
+				;
+				callback();
+			});
+			return;
+		}
+
+		/**
+		 * モーダルダイアログを閉じる
+		 */
+		this.closeModal = function( callback ){
+			callback = callback||function(){};
+			$canvasModal.html('').hide();
+			callback();
+			return;
 		}
 
 		/**
