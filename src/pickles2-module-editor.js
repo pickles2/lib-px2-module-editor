@@ -29,7 +29,8 @@
 	window.Pickles2ModuleEditor = function(){
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
-		var $canvas;
+		var $canvas,
+			$canvasContent;
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
@@ -54,6 +55,8 @@
 
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
+			$canvasContent = $('<div class="pickles2-module-editor__content">');
+			$canvas.html('').append($canvasContent);
 
 
 			new Promise(function(rlv){rlv();})
@@ -83,7 +86,7 @@
 							templates['list'],
 							{'packageList': packageList}
 						);
-						$canvas.html('').append(html);
+						$canvasContent.html('').append(html);
 						rlv();
 					} );
 				}); })
@@ -189,8 +192,8 @@
 		 */
 		this.progress = function( callback ){
 			callback = callback||function(){};
-			$('body').find('.pickles2-module-editor--progress').remove();//一旦削除
-			$('body')
+			$canvas.find('.pickles2-module-editor--progress').remove();//一旦削除
+			$canvas
 				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
 					.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner">')
 						.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress-inner2">')
@@ -199,7 +202,7 @@
 					)
 				)
 			;
-			var dom = $('body').find('.px2-loading').get(0);
+			var dom = $canvas.find('.px2-loading').get(0);
 			callback(dom);
 			return this;
 		}
@@ -209,7 +212,7 @@
 		 */
 		this.closeProgress = function( callback ){
 			callback = callback||function(){};
-			var $progress = $('body').find('.pickles2-module-editor--progress');
+			var $progress = $canvas.find('.pickles2-module-editor--progress');
 			if( !$progress.size() ){
 				callback();
 				return this;
