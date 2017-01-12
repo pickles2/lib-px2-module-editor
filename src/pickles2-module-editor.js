@@ -91,7 +91,7 @@
 							'api':'getTemplates'
 						},
 						function(tpls){
-							console.log(tpls);
+							// console.log(tpls);
 							templates = tpls;
 							rlv();
 						}
@@ -248,15 +248,15 @@
 		/**
 		 * broccoli モジュールカテゴリのコードをすべて取得する
 		 */
-		this.getCategoryCode = function(moduleId, callback){
+		this.getCategoryCode = function(categoryId, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
-					'api':'getPackageCode',
-					'moduleId': moduleId
+					'api':'getCategoryCode',
+					'categoryId': categoryId
 				},
-				function(moduleCode){
-					callback(moduleCode);
+				function(categoryCode){
+					callback(categoryCode);
 				}
 			);
 			return;
@@ -265,12 +265,12 @@
 		/**
 		 * broccoli モジュールカテゴリのコードの変更をすべて保存する
 		 */
-		this.saveCategoryCode = function(moduleId, data, callback){
+		this.saveCategoryCode = function(categoryId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'saveCategoryCode',
-					'moduleId': moduleId,
+					'categoryId': categoryId,
 					'data': data
 				},
 				function(result){
@@ -283,15 +283,15 @@
 		/**
 		 * broccoli パッケージのコードをすべて取得する
 		 */
-		this.getPackageCode = function(moduleId, callback){
+		this.getPackageCode = function(packageId, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'getPackageCode',
-					'moduleId': moduleId
+					'packageId': packageId
 				},
-				function(moduleCode){
-					callback(moduleCode);
+				function(packageCode){
+					callback(packageCode);
 				}
 			);
 			return;
@@ -300,12 +300,12 @@
 		/**
 		 * broccoli モジュールパッケージのコードの変更をすべて保存する
 		 */
-		this.savePackageCode = function(moduleId, data, callback){
+		this.savePackageCode = function(packageId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'savePackageCode',
-					'moduleId': moduleId,
+					'packageId': packageId,
 					'data': data
 				},
 				function(result){
@@ -318,12 +318,12 @@
 		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
-		this.addNewCategory = function(moduleId, data, callback){
+		this.addNewCategory = function(categoryId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'addNewCategory',
-					'moduleId': moduleId,
+					'categoryId': categoryId,
 					'data': data
 				},
 				function(result){

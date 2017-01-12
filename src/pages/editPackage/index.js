@@ -17,7 +17,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.getPackageCode( options.moduleId, function(getPackageCode){
+			px2me.getPackageCode( options.packageId, function(getPackageCode){
 				// console.log(getPackageCode);
 
 				if( !getPackageCode.editable ){
@@ -29,7 +29,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var html = px2me.bindEjs(
 					px2me.getTemplates('editPackage'),
 					{
-						'moduleId': options.moduleId,
+						'packageId': options.packageId,
 						'getPackageCode': getPackageCode
 					}
 				);
@@ -57,7 +57,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				// data.js = $canvasContent.find('[name=js]').val();
 				// data.jsExt = $canvasContent.find('[name=jsExt]').val();
 
-				px2me.savePackageCode(options.moduleId, data, function(result){
+				px2me.savePackageCode(options.packageId, data, function(result){
 					px2me.closeModal(function(){
 						px2me.loadPage('list', {}, function(){});
 					});

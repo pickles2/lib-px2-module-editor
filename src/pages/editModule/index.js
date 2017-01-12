@@ -17,10 +17,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.getModuleCode( options.moduleId, function(getModuleCode){
-				// console.log(getModuleCode);
+			px2me.getModuleCode( options.moduleId, function(moduleCode){
+				// console.log(moduleCode);
 
-				if( !getModuleCode.editable ){
+				if( !moduleCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');
 					rjt();
 					return;
@@ -30,18 +30,18 @@ module.exports = function(px2me, $canvasContent, options, callback){
 					px2me.getTemplates('editModule'),
 					{
 						'moduleId': options.moduleId,
-						'getModuleCode': getModuleCode
+						'moduleCode': moduleCode
 					}
 				);
 				$canvasContent.html('').append(html);
 
-				$canvasContent.find('[name=infoJson]').val( getModuleCode.infoJson );
-				$canvasContent.find('[name=template]').val( getModuleCode.template );
-				$canvasContent.find('[name=templateExt]').val( getModuleCode.templateExt );
-				$canvasContent.find('[name=css]').val( getModuleCode.css );
-				$canvasContent.find('[name=cssExt]').val( getModuleCode.cssExt );
-				$canvasContent.find('[name=js]').val( getModuleCode.js );
-				$canvasContent.find('[name=jsExt]').val( getModuleCode.jsExt );
+				$canvasContent.find('[name=infoJson]').val( moduleCode.infoJson );
+				$canvasContent.find('[name=template]').val( moduleCode.template );
+				$canvasContent.find('[name=templateExt]').val( moduleCode.templateExt );
+				$canvasContent.find('[name=css]').val( moduleCode.css );
+				$canvasContent.find('[name=cssExt]').val( moduleCode.cssExt );
+				$canvasContent.find('[name=js]').val( moduleCode.js );
+				$canvasContent.find('[name=jsExt]').val( moduleCode.jsExt );
 				rlv();
 			} );
 		}); })

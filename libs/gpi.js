@@ -48,36 +48,37 @@ module.exports = function(px2me, data, callback){
 			var rtn = {};
 			px2me.createBroccoli(function(broccoli){
 				// console.log(broccoli);
-				rtn.realpath = broccoli.getModuleRealpath(data.moduleId);
-				rtn.editable = px2me.isEditablePath( rtn.realpath ); // 編集可能なパスかどうか評価
+				var realpath = broccoli.getModuleRealpath(data.moduleId);
+				// rtn.realpath = realpath;
+				rtn.editable = px2me.isEditablePath( realpath ); // 編集可能なパスかどうか評価
 
 				rtn.template = '';
 				rtn.templateExt = 'html';
-				if( utils79.is_file(rtn.realpath+'/template.html') ){
-					rtn.template = require('fs').readFileSync(rtn.realpath+'/template.html').toString();
+				if( utils79.is_file(realpath+'/template.html') ){
+					rtn.template = require('fs').readFileSync(realpath+'/template.html').toString();
 					rtn.templateExt = 'html';
-				}else if( utils79.is_file(rtn.realpath+'/template.html.twig') ){
-					rtn.template = require('fs').readFileSync(rtn.realpath+'/template.html.twig').toString();
+				}else if( utils79.is_file(realpath+'/template.html.twig') ){
+					rtn.template = require('fs').readFileSync(realpath+'/template.html.twig').toString();
 					rtn.templateExt = 'html.twig';
 				}
-				if( utils79.is_file(rtn.realpath+'/info.json') ){
-					rtn.infoJson = require('fs').readFileSync(rtn.realpath+'/info.json').toString();
+				if( utils79.is_file(realpath+'/info.json') ){
+					rtn.infoJson = require('fs').readFileSync(realpath+'/info.json').toString();
 				}
 
 				rtn.css = '';
 				rtn.cssExt = 'css.scss';
-				if( utils79.is_file(rtn.realpath+'/module.css') ){
-					rtn.css = require('fs').readFileSync(rtn.realpath+'/module.css').toString();
+				if( utils79.is_file(realpath+'/module.css') ){
+					rtn.css = require('fs').readFileSync(realpath+'/module.css').toString();
 					rtn.cssExt = 'css';
-				}else if( utils79.is_file(rtn.realpath+'/module.css.scss') ){
-					rtn.css = require('fs').readFileSync(rtn.realpath+'/module.css.scss').toString();
+				}else if( utils79.is_file(realpath+'/module.css.scss') ){
+					rtn.css = require('fs').readFileSync(realpath+'/module.css.scss').toString();
 					rtn.cssExt = 'css.scss';
 				}
 
 				rtn.js = '';
 				rtn.jsExt = 'js';
-				if( utils79.is_file(rtn.realpath+'/module.js') ){
-					rtn.js = require('fs').readFileSync(rtn.realpath+'/module.js').toString();
+				if( utils79.is_file(realpath+'/module.js') ){
+					rtn.js = require('fs').readFileSync(realpath+'/module.js').toString();
 					rtn.jsExt = 'js';
 				}
 
@@ -119,8 +120,71 @@ module.exports = function(px2me, data, callback){
 			break;
 
 		case "getCategoryCode":
+			// broccoli モジュールのコードをすべて保存する
+
+			px2me.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
+				if(parsedModId === false){
+					callback(false);
+					return;
+				}
+				if( !parsedModId.category ){
+					callback(false);
+					return;
+				}
+				var realpath = broccoli.paths_module_template[parsedModId.package]+'/'+parsedModId.category+'/';
+				if( !utils79.is_dir(realpath) ){
+					callback(false);
+					return;
+				}
+
+				var rtn = {};
+				// rtn.realpath = realpath;
+				rtn.editable = px2me.isEditablePath( rtn.realpath ); // 編集可能なパスかどうか評価
+
+				if( utils79.is_file(rtn.realpath+'/info.json') ){
+					rtn.infoJson = require('fs').readFileSync(rtn.realpath+'/info.json').toString();
+				}
+
+				callback(rtn);
+				return;
+			});
+			break;
+
 		case "saveCategoryCode":
-			callback(true);
+
+			var rtn = {};
+			px2me.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
+				if(parsedModId === false){
+					callback(false);
+					return;
+				}
+				if( !parsedModId.category ){
+					callback(false);
+					return;
+				}
+				var realpath = broccoli.paths_module_template[parsedModId.package]+'/'+parsedModId.category+'/';
+				if( !utils79.is_dir(realpath) ){
+					callback(false);
+					return;
+				}
+				if( !px2me.isEditablePath( realpath ) ){
+					// 編集可能なパスかどうか評価
+					// 駄目なら上書いてはいけない。
+					callback(false);
+					return;
+				}
+				rtn.realpath = realpath;
+				rtn.editable = px2me.isEditablePath( rtn.realpath ); // 編集可能なパスかどうか評価
+
+				try { require('fs').writeFileSync(realpath+'/info.json', data.data.infoJson); } catch (e) {}
+
+				callback(true);
+				return;
+			});
 			break;
 
 		case "getPackageCode":

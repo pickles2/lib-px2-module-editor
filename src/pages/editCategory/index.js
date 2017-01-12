@@ -17,10 +17,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.getCategoryCode( options.moduleId, function(getCategoryCode){
-				// console.log(getCategoryCode);
+			px2me.getCategoryCode( options.categoryId, function(categoryCode){
+				// console.log(categoryCode);
 
-				if( !getCategoryCode.editable ){
+				if( !categoryCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');
 					rjt();
 					return;
@@ -29,19 +29,13 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var html = px2me.bindEjs(
 					px2me.getTemplates('editCategory'),
 					{
-						'moduleId': options.moduleId,
-						'getCategoryCode': getCategoryCode
+						'categoryId': options.categoryId,
+						'categoryCode': categoryCode
 					}
 				);
 				$canvasContent.html('').append(html);
 
-				// $canvasContent.find('[name=infoJson]').val( getCategoryCode.infoJson );
-				// $canvasContent.find('[name=template]').val( getCategoryCode.template );
-				// $canvasContent.find('[name=templateExt]').val( getCategoryCode.templateExt );
-				// $canvasContent.find('[name=css]').val( getCategoryCode.css );
-				// $canvasContent.find('[name=cssExt]').val( getCategoryCode.cssExt );
-				// $canvasContent.find('[name=js]').val( getCategoryCode.js );
-				// $canvasContent.find('[name=jsExt]').val( getCategoryCode.jsExt );
+				$canvasContent.find('[name=infoJson]').val( categoryCode.infoJson );
 				rlv();
 			} );
 		}); })
@@ -49,15 +43,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			// イベントをセット
 			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
 				var data = {};
-				// data.infoJson = $canvasContent.find('[name=infoJson]').val();
-				// data.template = $canvasContent.find('[name=template]').val();
-				// data.templateExt = $canvasContent.find('[name=templateExt]').val();
-				// data.css = $canvasContent.find('[name=css]').val();
-				// data.cssExt = $canvasContent.find('[name=cssExt]').val();
-				// data.js = $canvasContent.find('[name=js]').val();
-				// data.jsExt = $canvasContent.find('[name=jsExt]').val();
+				data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
-				px2me.saveModuleCode(options.moduleId, data, function(result){
+				px2me.saveCategoryCode(options.categoryId, data, function(result){
 					px2me.closeModal(function(){
 						px2me.loadPage('list', {}, function(){});
 					});

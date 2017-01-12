@@ -36,13 +36,13 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				console.log(this);
 				switch(act){
 					case 'editPackage':
-						px2me.loadPage('editPackage', {'moduleId': target}, function(){});
+						px2me.loadPage('editPackage', {'packageId': target}, function(){});
 						break;
 					case 'editCategory':
-						px2me.loadPage('editCategory', {'moduleId': target}, function(){});
+						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
 						break;
 					case 'addNewCategory':
-						px2me.loadPage('addNewCategory', {'moduleId': target}, function(){});
+						px2me.loadPage('addNewCategory', {'categoryId': target}, function(){});
 						break;
 					case 'editModule':
 						px2me.loadPage('editModule', {'moduleId': target}, function(){});

@@ -17,7 +17,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.addNewCategory( options.moduleId, function(addNewCategory){
+			px2me.addNewCategory( options.categoryId, function(addNewCategory){
 				// console.log(addNewCategory);
 
 				if( !addNewCategory.editable ){
@@ -29,7 +29,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var html = px2me.bindEjs(
 					px2me.getTemplates('addNewCategory'),
 					{
-						'moduleId': options.moduleId,
+						'categoryId': options.categoryId,
 						'addNewCategory': addNewCategory
 					}
 				);
@@ -57,7 +57,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				// data.js = $canvasContent.find('[name=js]').val();
 				// data.jsExt = $canvasContent.find('[name=jsExt]').val();
 
-				px2me.saveModuleCode(options.moduleId, data, function(result){
+				px2me.saveModuleCode(options.categoryId, data, function(result){
 					px2me.closeModal(function(){
 						px2me.loadPage('list', {}, function(){});
 					});
