@@ -33,7 +33,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var $this = $(this);
 				var act = $this.attr('data-pickles2-module-editor--action');
 				var target = $this.attr('data-pickles2-module-editor--target');
-				console.log(this);
+				// console.log(this);
 				switch(act){
 					case 'editPackage':
 						px2me.loadPage('editPackage', {'packageId': target}, function(){});

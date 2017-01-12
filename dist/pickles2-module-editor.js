@@ -16477,12 +16477,12 @@ module.exports = exports['default'];
 		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
-		this.addNewCategory = function(categoryId, data, callback){
+		this.addNewCategory = function(packageId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'addNewCategory',
-					'categoryId': categoryId,
+					'packageId': packageId,
 					'data': data
 				},
 				function(result){
@@ -16624,10 +16624,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.addNewCategory( options.categoryId, function(addNewCategory){
-				// console.log(addNewCategory);
+			px2me.getPackageCode( options.packageId, function(packageCode){
+				// console.log(packageCode);
 
-				if( !addNewCategory.editable ){
+				if( !packageCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');
 					rjt();
 					return;
@@ -16636,19 +16636,14 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var html = px2me.bindEjs(
 					px2me.getTemplates('addNewCategory'),
 					{
-						'categoryId': options.categoryId,
-						'addNewCategory': addNewCategory
+						'packageId': options.packageId,
+						'packageCode': packageCode
 					}
 				);
 				$canvasContent.html('').append(html);
 
-				// $canvasContent.find('[name=infoJson]').val( addNewCategory.infoJson );
-				// $canvasContent.find('[name=template]').val( addNewCategory.template );
-				// $canvasContent.find('[name=templateExt]').val( addNewCategory.templateExt );
-				// $canvasContent.find('[name=css]').val( addNewCategory.css );
-				// $canvasContent.find('[name=cssExt]').val( addNewCategory.cssExt );
-				// $canvasContent.find('[name=js]').val( addNewCategory.js );
-				// $canvasContent.find('[name=jsExt]').val( addNewCategory.jsExt );
+				$canvasContent.find('[name=categoryId]').val( '' );
+				$canvasContent.find('[name=categoryName]').val( '' );
 				rlv();
 			} );
 		}); })
@@ -16656,15 +16651,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			// イベントをセット
 			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
 				var data = {};
-				// data.infoJson = $canvasContent.find('[name=infoJson]').val();
-				// data.template = $canvasContent.find('[name=template]').val();
-				// data.templateExt = $canvasContent.find('[name=templateExt]').val();
-				// data.css = $canvasContent.find('[name=css]').val();
-				// data.cssExt = $canvasContent.find('[name=cssExt]').val();
-				// data.js = $canvasContent.find('[name=js]').val();
-				// data.jsExt = $canvasContent.find('[name=jsExt]').val();
+				data.categoryId = $canvasContent.find('[name=categoryId]').val();
+				data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
-				px2me.saveModuleCode(options.categoryId, data, function(result){
+				px2me.addNewCategory(options.packageId, data, function(result){
 					px2me.closeModal(function(){
 						px2me.loadPage('list', {}, function(){});
 					});
@@ -17058,7 +17048,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var $this = $(this);
 				var act = $this.attr('data-pickles2-module-editor--action');
 				var target = $this.attr('data-pickles2-module-editor--target');
-				console.log(this);
+				// console.log(this);
 				switch(act){
 					case 'editPackage':
 						px2me.loadPage('editPackage', {'packageId': target}, function(){});

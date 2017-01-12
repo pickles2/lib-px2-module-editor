@@ -318,12 +318,12 @@
 		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
-		this.addNewCategory = function(categoryId, data, callback){
+		this.addNewCategory = function(packageId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'addNewCategory',
-					'categoryId': categoryId,
+					'packageId': packageId,
 					'data': data
 				},
 				function(result){
