@@ -7,5 +7,5 @@ module.exports = function(px2me, data, callback){
 	var conf = {};
 	conf.appMode = px2me.getAppMode();
 	callback(conf);
-    return;
+	return;
 }

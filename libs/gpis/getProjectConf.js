@@ -7,5 +7,5 @@ module.exports = function(px2me, data, callback){
 	px2me.getProjectConf(function(conf){
 		callback(conf);
 	});
-    return;
+	return;
 }

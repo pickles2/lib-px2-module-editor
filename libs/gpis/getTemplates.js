@@ -14,5 +14,5 @@ module.exports = function(px2me, data, callback){
 	templates['addNewCategory'] = require('fs').readFileSync(__dirname+'/../templates/addNewCategory.html.ejs').toString();
 
 	callback(templates);
-    return;
+	return;
 }

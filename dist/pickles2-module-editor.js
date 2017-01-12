@@ -16964,10 +16964,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			// console.log(options);
-			px2me.getPackageCode( options.packageId, function(getPackageCode){
-				// console.log(getPackageCode);
+			px2me.getPackageCode( options.packageId, function(packageCode){
+				// console.log(packageCode);
 
-				if( !getPackageCode.editable ){
+				if( !packageCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');
 					rjt();
 					return;
@@ -16977,18 +16977,12 @@ module.exports = function(px2me, $canvasContent, options, callback){
 					px2me.getTemplates('editPackage'),
 					{
 						'packageId': options.packageId,
-						'getPackageCode': getPackageCode
+						'packageCode': packageCode
 					}
 				);
 				$canvasContent.html('').append(html);
 
-				// $canvasContent.find('[name=infoJson]').val( getPackageCode.infoJson );
-				// $canvasContent.find('[name=template]').val( getPackageCode.template );
-				// $canvasContent.find('[name=templateExt]').val( getPackageCode.templateExt );
-				// $canvasContent.find('[name=css]').val( getPackageCode.css );
-				// $canvasContent.find('[name=cssExt]').val( getPackageCode.cssExt );
-				// $canvasContent.find('[name=js]').val( getPackageCode.js );
-				// $canvasContent.find('[name=jsExt]').val( getPackageCode.jsExt );
+				$canvasContent.find('[name=infoJson]').val( packageCode.infoJson );
 				rlv();
 			} );
 		}); })
@@ -16996,13 +16990,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			// イベントをセット
 			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
 				var data = {};
-				// data.infoJson = $canvasContent.find('[name=infoJson]').val();
-				// data.template = $canvasContent.find('[name=template]').val();
-				// data.templateExt = $canvasContent.find('[name=templateExt]').val();
-				// data.css = $canvasContent.find('[name=css]').val();
-				// data.cssExt = $canvasContent.find('[name=cssExt]').val();
-				// data.js = $canvasContent.find('[name=js]').val();
-				// data.jsExt = $canvasContent.find('[name=jsExt]').val();
+				data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 				px2me.savePackageCode(options.packageId, data, function(result){
 					px2me.closeModal(function(){
