@@ -421,6 +421,27 @@
 		}
 
 		/**
+		 * ファイルをダウンロードする
+		 */
+		this.download = function(content, filename){
+			var blob = new Blob([ content ], { "type" : "application/octet-stream" });
+
+			if (window.navigator.msSaveBlob) {
+				window.navigator.msSaveBlob(blob, filename);
+
+				// msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+				window.navigator.msSaveOrOpenBlob(blob, filename);
+			} else {
+				var $a = $('<a>');
+				$a.attr({
+					'href': window.URL.createObjectURL(blob),
+					'download': filename
+				}).get(0).click();
+			}
+			return;
+		}
+
+		/**
 		* gpiBridgeを呼び出す
 		*/
 		this.gpiBridge = function(data, callback){

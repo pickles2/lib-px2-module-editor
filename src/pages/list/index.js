@@ -35,6 +35,17 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				var target = $this.attr('data-pickles2-module-editor--target');
 				// console.log(this);
 				switch(act){
+					case 'download':
+						px2me.gpiBridge(
+							{
+								'api':'download',
+								'target': target
+							},
+							function(bin){
+								px2me.download(bin, 'content.'+target);
+							}
+						);
+						break;
 					case 'editPackage':
 						px2me.loadPage('editPackage', {'packageId': target}, function(){});
 						break;
