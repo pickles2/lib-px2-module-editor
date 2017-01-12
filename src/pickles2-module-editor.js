@@ -336,12 +336,12 @@
 		/**
 		 * broccoli モジュールを新規追加する
 		 */
-		this.addNewModule = function(moduleId, data, callback){
+		this.addNewModule = function(categoryId, data, callback){
 			callback = callback || function(){};
 			this.gpiBridge(
 				{
 					'api':'addNewModule',
-					'moduleId': moduleId,
+					'categoryId': categoryId,
 					'data': data
 				},
 				function(result){

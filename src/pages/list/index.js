@@ -42,13 +42,13 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
 						break;
 					case 'addNewCategory':
-						px2me.loadPage('addNewCategory', {'categoryId': target}, function(){});
+						px2me.loadPage('addNewCategory', {'packageId': target}, function(){});
 						break;
 					case 'editModule':
 						px2me.loadPage('editModule', {'moduleId': target}, function(){});
 						break;
 					case 'addNewModule':
-						px2me.loadPage('addNewModule', {'moduleId': target}, function(){});
+						px2me.loadPage('addNewModule', {'categoryId': target}, function(){});
 						break;
 					default:
 						alert('ERROR: unknown action. - '+act);

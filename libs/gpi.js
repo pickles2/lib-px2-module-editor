@@ -125,7 +125,7 @@ module.exports = function(px2me, data, callback){
 			px2me.createBroccoli(function(broccoli){
 				// console.log(broccoli);
 				var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
-				if(parsedModId === false){
+				if( parsedModId === false ){
 					callback(false);
 					return;
 				}
@@ -141,10 +141,10 @@ module.exports = function(px2me, data, callback){
 
 				var rtn = {};
 				// rtn.realpath = realpath;
-				rtn.editable = px2me.isEditablePath( rtn.realpath ); // 編集可能なパスかどうか評価
+				rtn.editable = px2me.isEditablePath( realpath ); // 編集可能なパスかどうか評価
 
-				if( utils79.is_file(rtn.realpath+'/info.json') ){
-					rtn.infoJson = require('fs').readFileSync(rtn.realpath+'/info.json').toString();
+				if( utils79.is_file(realpath+'/info.json') ){
+					rtn.infoJson = require('fs').readFileSync(realpath+'/info.json').toString();
 				}
 
 				callback(rtn);
@@ -154,11 +154,10 @@ module.exports = function(px2me, data, callback){
 
 		case "saveCategoryCode":
 
-			var rtn = {};
 			px2me.createBroccoli(function(broccoli){
 				// console.log(broccoli);
 				var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
-				if(parsedModId === false){
+				if( parsedModId === false ){
 					callback(false);
 					return;
 				}
@@ -177,8 +176,6 @@ module.exports = function(px2me, data, callback){
 					callback(false);
 					return;
 				}
-				rtn.realpath = realpath;
-				rtn.editable = px2me.isEditablePath( rtn.realpath ); // 編集可能なパスかどうか評価
 
 				try { require('fs').writeFileSync(realpath+'/info.json', data.data.infoJson); } catch (e) {}
 
@@ -188,13 +185,60 @@ module.exports = function(px2me, data, callback){
 			break;
 
 		case "getPackageCode":
+			callback(true);
+			break;
+
 		case "savePackageCode":
 			callback(true);
 			break;
 
 		case "addNewCategory":
-		case "addNewModule":
 			callback(true);
+			break;
+
+		case "addNewModule":
+
+			px2me.createBroccoli(function(broccoli){
+				// console.log(broccoli);
+				var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
+				if( parsedModId === false ){
+					callback(false);
+					return;
+				}
+				if( !parsedModId.category ){
+					callback(false);
+					return;
+				}
+				var realpath = broccoli.paths_module_template[parsedModId.package]+'/'+parsedModId.category+'/';
+				if( !utils79.is_dir(realpath) ){
+					callback(false);
+					return;
+				}
+				if( !px2me.isEditablePath( realpath ) ){
+					// 編集可能なパスかどうか評価
+					// 駄目なら上書いてはいけない。
+					callback(false);
+					return;
+				}
+				realpath = realpath+'/'+data.data.moduleId;
+				if( utils79.is_dir(realpath) ){
+					// 既に存在する
+					callback(false);
+					return;
+				}
+				require('fs').mkdirSync(realpath);
+
+				var infoJson = {};
+				infoJson.name = data.data.moduleName;
+				try { require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(infoJson)); } catch (e) {}
+
+				try { require('fs').writeFileSync(realpath+'/template.html', ''); } catch (e) {}
+				try { require('fs').writeFileSync(realpath+'/module.css.scss', ''); } catch (e) {}
+				try { require('fs').writeFileSync(realpath+'/module.js', ''); } catch (e) {}
+
+				callback(true);
+				return;
+			});
 			break;
 
 		case "getProjectConf":
