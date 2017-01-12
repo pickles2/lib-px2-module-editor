@@ -1,0 +1,1 @@
+// JS (sample-module-2)
