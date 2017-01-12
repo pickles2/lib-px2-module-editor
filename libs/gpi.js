@@ -22,6 +22,10 @@ module.exports = function(px2me, data, callback){
 
 			templates['list'] = require('fs').readFileSync(__dirname+'/templates/list.html.ejs').toString();
 			templates['editModule'] = require('fs').readFileSync(__dirname+'/templates/editModule.html.ejs').toString();
+			templates['editCategory'] = require('fs').readFileSync(__dirname+'/templates/editCategory.html.ejs').toString();
+			templates['editPackage'] = require('fs').readFileSync(__dirname+'/templates/editPackage.html.ejs').toString();
+			templates['addNewModule'] = require('fs').readFileSync(__dirname+'/templates/addNewModule.html.ejs').toString();
+			templates['addNewCategory'] = require('fs').readFileSync(__dirname+'/templates/addNewCategory.html.ejs').toString();
 
 			callback(templates);
 			break;
@@ -112,6 +116,21 @@ module.exports = function(px2me, data, callback){
 				callback(true);
 				return;
 			});
+			break;
+
+		case "getCategoryCode":
+		case "saveCategoryCode":
+			callback(true);
+			break;
+
+		case "getPackageCode":
+		case "savePackageCode":
+			callback(true);
+			break;
+
+		case "addNewCategory":
+		case "addNewModule":
+			callback(true);
 			break;
 
 		case "getProjectConf":

@@ -40,7 +40,11 @@
 			templates;
 		var pages = {
 			'list': require('./pages/list/index.js'),
-			'editModule': require('./pages/editModule/index.js')
+			'editModule': require('./pages/editModule/index.js'),
+			'editCategory': require('./pages/editCategory/index.js'),
+			'editPackage': require('./pages/editPackage/index.js'),
+			'addNewCategory': require('./pages/addNewCategory/index.js'),
+			'addNewModule': require('./pages/addNewModule/index.js')
 		};
 
 		/**
@@ -87,6 +91,7 @@
 							'api':'getTemplates'
 						},
 						function(tpls){
+							console.log(tpls);
 							templates = tpls;
 							rlv();
 						}
@@ -230,6 +235,112 @@
 			this.gpiBridge(
 				{
 					'api':'saveModuleCode',
+					'moduleId': moduleId,
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールカテゴリのコードをすべて取得する
+		 */
+		this.getCategoryCode = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPackageCode',
+					'moduleId': moduleId
+				},
+				function(moduleCode){
+					callback(moduleCode);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールカテゴリのコードの変更をすべて保存する
+		 */
+		this.saveCategoryCode = function(moduleId, data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'saveCategoryCode',
+					'moduleId': moduleId,
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli パッケージのコードをすべて取得する
+		 */
+		this.getPackageCode = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPackageCode',
+					'moduleId': moduleId
+				},
+				function(moduleCode){
+					callback(moduleCode);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールパッケージのコードの変更をすべて保存する
+		 */
+		this.savePackageCode = function(moduleId, data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'savePackageCode',
+					'moduleId': moduleId,
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールカテゴリを新規追加
+		 */
+		this.addNewCategory = function(moduleId, data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'addNewCategory',
+					'moduleId': moduleId,
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールを新規追加する
+		 */
+		this.addNewModule = function(moduleId, data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'addNewModule',
 					'moduleId': moduleId,
 					'data': data
 				},

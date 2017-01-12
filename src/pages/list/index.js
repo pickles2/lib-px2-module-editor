@@ -36,21 +36,19 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				console.log(this);
 				switch(act){
 					case 'editPackage':
-						alert(act+' (開発中です)');
+						px2me.loadPage('editPackage', {'moduleId': target}, function(){});
 						break;
 					case 'editCategory':
-						alert(act+' (開発中です)');
+						px2me.loadPage('editCategory', {'moduleId': target}, function(){});
 						break;
 					case 'addNewCategory':
-						alert(act+' (開発中です)');
+						px2me.loadPage('addNewCategory', {'moduleId': target}, function(){});
 						break;
 					case 'editModule':
-						px2me.loadPage('editModule', {'moduleId': target}, function(){
-							// alert(act);
-						});
+						px2me.loadPage('editModule', {'moduleId': target}, function(){});
 						break;
 					case 'addNewModule':
-						alert(act+' (開発中です)');
+						px2me.loadPage('addNewModule', {'moduleId': target}, function(){});
 						break;
 					default:
 						alert('ERROR: unknown action. - '+act);
