@@ -1,5 +1,5 @@
 /**
- * pickles2-contents-editor.js
+ * pickles2-module-editor.js
  */
 module.exports = function(){
 	var px2agent = require('px2agent');
@@ -8,6 +8,7 @@ module.exports = function(){
 	var utils79 = require('utils79');
 	var Promise = require('es6-promise').Promise;
 	var _this = this;
+	var px2me = this;
 	var nodePhpBinOptions;
 
 	this.entryScript;
