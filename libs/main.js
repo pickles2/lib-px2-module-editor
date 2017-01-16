@@ -48,18 +48,23 @@ module.exports = function(){
 		this.px2proj = require('px2agent').createProject(options.entryScript, nodePhpBinOptions);
 		this.options = options;
 
-		// console.log(this.options);
-		this.getProjectInfo(function(pjInfo){
-			// console.log(pjInfo);
-			_this.pjInfo = pjInfo;
-			_this.px2conf = pjInfo.conf;
-			_this.pageInfo = pjInfo.pageInfo;
-			_this.documentRoot = pjInfo.documentRoot;
-			_this.contRoot = pjInfo.contRoot;
-			_this.realpathDataDir = pjInfo.realpathDataDir;
-			_this.pathResourceDir = pjInfo.pathResourceDir;
+		var LangBank = require('langbank');
+		_this.lb = new LangBank(__dirname+'/../data/language.csv', function(){
+			_this.lb.setLang('en'); // TODO: 仮実装
 
-			callback();
+			// console.log(this.options);
+			_this.getProjectInfo(function(pjInfo){
+				// console.log(pjInfo);
+				_this.pjInfo = pjInfo;
+				_this.px2conf = pjInfo.conf;
+				_this.pageInfo = pjInfo.pageInfo;
+				_this.documentRoot = pjInfo.documentRoot;
+				_this.contRoot = pjInfo.contRoot;
+				_this.realpathDataDir = pjInfo.realpathDataDir;
+				_this.pathResourceDir = pjInfo.pathResourceDir;
+
+				callback();
+			});
 		});
 
 		return;
