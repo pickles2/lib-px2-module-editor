@@ -179,3 +179,22 @@ $ gulp watch
 $ npm run test
 ```
 テストスクリプトを実行します。
+
+
+## 更新履歴 - Change log
+
+### pickles2-module-editor@2.0.0-beta.1 (2017年??月??日)
+
+- Initial Release.
+
+
+## License
+
+MIT License
+
+
+## Author
+
+- Tomoya Koyanagi <tomk79@gmail.com>
+- website: <http://www.pxt.jp/>
+- Twitter: @tomk79 <http://twitter.com/tomk79/>
