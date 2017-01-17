@@ -41,17 +41,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.categoryId = $canvasContent.find('[name=categoryId]').val();
-				data.categoryName = $canvasContent.find('[name=categoryName]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "新規カテゴリを作成する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.categoryId = $canvasContent.find('[name=categoryId]').val();
+						data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
-				px2me.addNewCategory(options.packageId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.addNewCategory(options.packageId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+					})
+				]
 			});
 			rlv();
 		}); })

@@ -72,6 +72,11 @@
 			;
 
 
+			/**
+			 * モーダルダイアログを開く
+			 */
+			require('./apis/modal.js')(this, $canvasModal);
+
 			new Promise(function(rlv){rlv();})
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.progress( function(){
@@ -126,10 +131,8 @@
 				});
 			}else{
 				var $cont = $('<div>');
-				_this.modal($cont, function(){
-					pages[pageName](_this, $cont, options, function(){
-						callback();
-					});
+				pages[pageName](_this, $cont, options, function(){
+					callback();
 				});
 			}
 			return;
@@ -390,33 +393,6 @@
 					}
 				)
 			;
-			return;
-		}
-
-		/**
-		 * モーダルダイアログを開く
-		 */
-		this.modal = function( $elm, callback ){
-			callback = callback||function(){};
-			this.closeModal(function(){
-				$canvasModal
-					.append( $('<div class="pickles2-module-editor__modal__inner">')
-						.append( $elm )
-					)
-					.show()
-				;
-				callback();
-			});
-			return;
-		}
-
-		/**
-		 * モーダルダイアログを閉じる
-		 */
-		this.closeModal = function( callback ){
-			callback = callback||function(){};
-			$canvasModal.html('').hide();
-			callback();
 			return;
 		}
 

@@ -24,9 +24,19 @@
       width: calc(100% - 40px);
       height: auto;
       padding: 20px;
-      overflow: auto;
       background-color: #fff;
       opacity: 1; }
+    .pickles2-module-editor__modal__inner-box {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: auto;
+      padding: 20px;
+      overflow: auto;
+      background-color: #fff;
+      opacity: 1;
+      padding-top: 4em; }
   .pickles2-module-editor__title {
     display: block;
     margin: 0;

@@ -16232,6 +16232,105 @@ function whitelist(str, chars) {
 module.exports = exports['default'];
 },{"./util/assertString":73}],77:[function(require,module,exports){
 /**
+ * modal.js
+ */
+module.exports = function(px2me, $canvasModal){
+	var $ = require('jquery');
+	var $modal;
+
+	/**
+	 * ダイアログを表示する
+	 */
+	px2me.modal = function(opt){
+		px2me.closeModal();
+
+		opt = opt||{};
+		opt.title = opt.title||'command:';
+		opt.body = opt.body||$('<div>');
+		opt.buttons = opt.buttons||[
+			$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+				px2me.closeModal();
+			})
+		];
+
+		for( var i in opt.buttons ){
+			var $btnElm = $(opt.buttons[i]);
+			$btnElm.each(function(){
+				if(!$(this).hasClass('btn') && !$(this).hasClass('px2-btn')){
+					$(this).addClass('px2-btn');
+				}
+			});
+			opt.buttons[i] = $btnElm;
+		}
+
+		var $modalButtons = $('<div class="modal-buttons center">').append(opt.buttons);
+
+		$modal = $('<div>')
+			.addClass('pickles2-module-editor__modal__inner')
+			.append( $('<div>')
+				.addClass('pickles2-module-editor__modal__inner-box')
+				.append( $('<div>')
+					// .addClass('modal_box')
+					.css({
+						'width':'80%',
+						'margin':'3em auto'
+					})
+					.append( $('<h1>')
+						.text(opt.title)
+					)
+					.append( $('<div>')
+						.append(opt.body)
+					)
+					.append( $modalButtons )
+				)
+			)
+		;
+
+		$canvasModal
+			.append($modal)
+		;
+		$canvasModal.find('*')
+			.attr({
+				'tabindex': '-1'
+			})
+		;
+		$modal.find('*')
+			.removeAttr('tabindex')
+		;
+		$canvasModal.show();
+		return $modal;
+	}//modal()
+
+	/**
+	 * ダイアログを閉じる
+	 */
+	px2me.closeModal = function(){
+		if( $modal ){
+			$modal.remove();
+			$('*')
+				.removeAttr('tabindex')
+			;
+			$canvasModal.hide();
+		}
+		return $modal;
+	}//closeModal()
+
+	/**
+	 * イベントリスナー
+	 */
+	$(window).on( 'resize', function(e){
+		if( typeof($modal) !== typeof( $('<div>') ) ){return;}
+		$modal
+			.css({
+				'height': $(window).height()
+			})
+		;
+	} );
+
+}
+
+},{"jquery":9}],78:[function(require,module,exports){
+/**
  * Pickles2ModuleEditor
  */
 (function(){
@@ -16305,6 +16404,11 @@ module.exports = exports['default'];
 			;
 
 
+			/**
+			 * モーダルダイアログを開く
+			 */
+			require('./apis/modal.js')(this, $canvasModal);
+
 			new Promise(function(rlv){rlv();})
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.progress( function(){
@@ -16359,10 +16463,8 @@ module.exports = exports['default'];
 				});
 			}else{
 				var $cont = $('<div>');
-				_this.modal($cont, function(){
-					pages[pageName](_this, $cont, options, function(){
-						callback();
-					});
+				pages[pageName](_this, $cont, options, function(){
+					callback();
 				});
 			}
 			return;
@@ -16627,33 +16729,6 @@ module.exports = exports['default'];
 		}
 
 		/**
-		 * モーダルダイアログを開く
-		 */
-		this.modal = function( $elm, callback ){
-			callback = callback||function(){};
-			this.closeModal(function(){
-				$canvasModal
-					.append( $('<div class="pickles2-module-editor__modal__inner">')
-						.append( $elm )
-					)
-					.show()
-				;
-				callback();
-			});
-			return;
-		}
-
-		/**
-		 * モーダルダイアログを閉じる
-		 */
-		this.closeModal = function( callback ){
-			callback = callback||function(){};
-			$canvasModal.html('').hide();
-			callback();
-			return;
-		}
-
-		/**
 		 * ファイルをダウンロードする
 		 */
 		this.download = function(content, filename){
@@ -16699,7 +16774,7 @@ module.exports = exports['default'];
 	}
 })();
 
-},{"./pages/addNewCategory/index.js":78,"./pages/addNewModule/index.js":79,"./pages/editCategory/index.js":80,"./pages/editModule/index.js":81,"./pages/editPackage/index.js":82,"./pages/list/index.js":83,"ejs":4,"es6-promise":7,"jquery":9}],78:[function(require,module,exports){
+},{"./apis/modal.js":77,"./pages/addNewCategory/index.js":79,"./pages/addNewModule/index.js":80,"./pages/editCategory/index.js":81,"./pages/editModule/index.js":82,"./pages/editPackage/index.js":83,"./pages/list/index.js":84,"ejs":4,"es6-promise":7,"jquery":9}],79:[function(require,module,exports){
 /**
  * pages/addNewCategory/index.js
  */
@@ -16743,17 +16818,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.categoryId = $canvasContent.find('[name=categoryId]').val();
-				data.categoryName = $canvasContent.find('[name=categoryName]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "新規カテゴリを作成する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.categoryId = $canvasContent.find('[name=categoryId]').val();
+						data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
-				px2me.addNewCategory(options.packageId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.addNewCategory(options.packageId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+					})
+				]
 			});
 			rlv();
 		}); })
@@ -16779,7 +16860,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}],79:[function(require,module,exports){
+},{"es6-promise":7,"jquery":9,"utils79":12}],80:[function(require,module,exports){
 /**
  * pages/addNewModule/index.js
  */
@@ -16824,17 +16905,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.moduleId = $canvasContent.find('[name=moduleId]').val();
-				data.moduleName = $canvasContent.find('[name=moduleName]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "新規モジュールを作成する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.moduleId = $canvasContent.find('[name=moduleId]').val();
+						data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
-				px2me.addNewModule(options.categoryId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.addNewModule(options.categoryId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+					})
+				]
 			});
 			rlv();
 		}); })
@@ -16860,7 +16947,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}],80:[function(require,module,exports){
+},{"es6-promise":7,"jquery":9,"utils79":12}],81:[function(require,module,exports){
 /**
  * pages/editCategory/index.js
  */
@@ -16903,16 +16990,22 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.infoJson = $canvasContent.find('[name=infoJson]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "カテゴリを編集する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
-				px2me.saveCategoryCode(options.categoryId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.saveCategoryCode(options.categoryId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+					})
+				]
 			});
 			rlv();
 		}); })
@@ -16938,7 +17031,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}],81:[function(require,module,exports){
+},{"es6-promise":7,"jquery":9,"utils79":12}],82:[function(require,module,exports){
 /**
  * pages/editModule/index.js
  */
@@ -16987,23 +17080,30 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.infoJson = $canvasContent.find('[name=infoJson]').val();
-				data.template = $canvasContent.find('[name=template]').val();
-				data.templateExt = $canvasContent.find('[name=templateExt]').val();
-				data.css = $canvasContent.find('[name=css]').val();
-				data.cssExt = $canvasContent.find('[name=cssExt]').val();
-				data.js = $canvasContent.find('[name=js]').val();
-				data.jsExt = $canvasContent.find('[name=jsExt]').val();
-				// console.log('data =',data);
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "モジュールを編集する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.infoJson = $canvasContent.find('[name=infoJson]').val();
+						data.template = $canvasContent.find('[name=template]').val();
+						data.templateExt = $canvasContent.find('[name=templateExt]').val();
+						data.css = $canvasContent.find('[name=css]').val();
+						data.cssExt = $canvasContent.find('[name=cssExt]').val();
+						data.js = $canvasContent.find('[name=js]').val();
+						data.jsExt = $canvasContent.find('[name=jsExt]').val();
+						// console.log('data =',data);
 
-				px2me.saveModuleCode(options.moduleId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.saveModuleCode(options.moduleId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+
+					})
+				]
 			});
 			rlv();
 		}); })
@@ -17029,7 +17129,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}],82:[function(require,module,exports){
+},{"es6-promise":7,"jquery":9,"utils79":12}],83:[function(require,module,exports){
 /**
  * pages/editPackage/index.js
  */
@@ -17072,16 +17172,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.infoJson = $canvasContent.find('[name=infoJson]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "パッケージを編集する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
-				px2me.savePackageCode(options.packageId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.savePackageCode(options.packageId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+
+					})
+				]
 			});
 			rlv();
 		}); })
@@ -17107,7 +17214,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}],83:[function(require,module,exports){
+},{"es6-promise":7,"jquery":9,"utils79":12}],84:[function(require,module,exports){
 /**
  * pages/list/index.js
  */
@@ -17193,4 +17300,4 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":7,"jquery":9,"utils79":12}]},{},[77])
+},{"es6-promise":7,"jquery":9,"utils79":12}]},{},[78])

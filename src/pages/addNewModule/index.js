@@ -42,17 +42,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.moduleId = $canvasContent.find('[name=moduleId]').val();
-				data.moduleName = $canvasContent.find('[name=moduleName]').val();
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "新規モジュールを作成する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.moduleId = $canvasContent.find('[name=moduleId]').val();
+						data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
-				px2me.addNewModule(options.categoryId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.addNewModule(options.categoryId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+					})
+				]
 			});
 			rlv();
 		}); })

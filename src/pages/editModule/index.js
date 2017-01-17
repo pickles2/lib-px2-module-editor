@@ -46,23 +46,30 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			} );
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button.pickles2-module-editor__save').on('click', function(e){
-				var data = {};
-				data.infoJson = $canvasContent.find('[name=infoJson]').val();
-				data.template = $canvasContent.find('[name=template]').val();
-				data.templateExt = $canvasContent.find('[name=templateExt]').val();
-				data.css = $canvasContent.find('[name=css]').val();
-				data.cssExt = $canvasContent.find('[name=cssExt]').val();
-				data.js = $canvasContent.find('[name=js]').val();
-				data.jsExt = $canvasContent.find('[name=jsExt]').val();
-				// console.log('data =',data);
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "モジュールを編集する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.infoJson = $canvasContent.find('[name=infoJson]').val();
+						data.template = $canvasContent.find('[name=template]').val();
+						data.templateExt = $canvasContent.find('[name=templateExt]').val();
+						data.css = $canvasContent.find('[name=css]').val();
+						data.cssExt = $canvasContent.find('[name=cssExt]').val();
+						data.js = $canvasContent.find('[name=js]').val();
+						data.jsExt = $canvasContent.find('[name=jsExt]').val();
+						// console.log('data =',data);
 
-				px2me.saveModuleCode(options.moduleId, data, function(result){
-					px2me.closeModal(function(){
-						px2me.loadPage('list', {}, function(){});
-					});
-				})
+						px2me.saveModuleCode(options.moduleId, data, function(result){
+							px2me.closeModal(function(){
+								px2me.loadPage('list', {}, function(){});
+							});
+						})
+
+					})
+				]
 			});
 			rlv();
 		}); })
