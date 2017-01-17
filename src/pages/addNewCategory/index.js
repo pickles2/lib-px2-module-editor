@@ -43,7 +43,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
 			px2me.modal({
-				"title": "新規カテゴリを作成する",
+				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){

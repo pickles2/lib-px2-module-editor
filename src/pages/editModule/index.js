@@ -48,7 +48,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
 			px2me.modal({
-				"title": "モジュールを編集する",
+				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
