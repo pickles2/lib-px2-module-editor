@@ -6,6 +6,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	var $ = require('jquery');
 	var utils79 = require('utils79');
 	var Promise = require('es6-promise').Promise;
+	var $preview,
+		$previewEditor;
+
 
 	new Promise(function(rlv){rlv();})
 		.then(function(){ return new Promise(function(rlv, rjt){
@@ -42,6 +45,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				$canvasContent.find('[name=cssExt]').val( moduleCode.cssExt );
 				$canvasContent.find('[name=js]').val( moduleCode.js );
 				$canvasContent.find('[name=jsExt]').val( moduleCode.jsExt );
+
 				rlv();
 			} );
 		}); })
@@ -70,6 +74,19 @@ module.exports = function(px2me, $canvasContent, options, callback){
 					})
 				]
 			});
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// プレビューiframeの準備
+			$preview = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
+			$previewIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview.html'});
+			$preview.html('').append($previewIframe);
+
+			$previewEditor = $canvasContent.find('.pickles2-module-editor__module-edit__preview-editor');
+			$previewEditorIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview_editor.html'});
+			$previewEditor.html('').append($previewEditorIframe);
+			// console.log($previewEditorIframe.get(0).contentWindow.location);
+
 			rlv();
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
