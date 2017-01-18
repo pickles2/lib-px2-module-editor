@@ -16263,7 +16263,7 @@ module.exports = function(px2me, $canvasModal){
 			opt.buttons[i] = $btnElm;
 		}
 
-		var $modalButtons = $('<div class="modal-buttons center">').append(opt.buttons);
+		var $modalButtons = $('<div class="pickles2-module-editor__modal__buttons">').append(opt.buttons);
 
 		$modal = $('<div>')
 			.addClass('pickles2-module-editor__modal__inner')
@@ -16307,7 +16307,7 @@ module.exports = function(px2me, $canvasModal){
 	px2me.closeModal = function(){
 		if( $modal ){
 			$modal.remove();
-			$('*')
+			$canvasModal.find('*')
 				.removeAttr('tabindex')
 			;
 			$canvasModal.hide();
@@ -16829,9 +16829,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
 						px2me.addNewCategory(options.packageId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 					})
 				]
@@ -16849,10 +16848,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})
@@ -16916,9 +16914,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
 						px2me.addNewModule(options.categoryId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 					})
 				]
@@ -16936,10 +16933,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})
@@ -17000,9 +16996,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 						px2me.saveCategoryCode(options.categoryId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 					})
 				]
@@ -17020,10 +17015,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})
@@ -17097,9 +17091,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						// console.log('data =',data);
 
 						px2me.saveModuleCode(options.moduleId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 
 					})
@@ -17118,10 +17111,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})
@@ -17182,9 +17174,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 						px2me.savePackageCode(options.packageId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 
 					})
@@ -17203,10 +17194,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})

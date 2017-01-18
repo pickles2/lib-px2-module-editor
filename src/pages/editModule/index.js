@@ -63,9 +63,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						// console.log('data =',data);
 
 						px2me.saveModuleCode(options.moduleId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 
 					})
@@ -84,10 +83,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})

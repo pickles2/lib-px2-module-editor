@@ -53,9 +53,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
 						px2me.addNewModule(options.categoryId, data, function(result){
-							px2me.closeModal(function(){
-								px2me.loadPage('list', {}, function(){});
-							});
+							px2me.closeModal();
+							px2me.loadPage('list', {}, function(){});
 						})
 					})
 				]
@@ -73,10 +72,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal(function(){
-					px2me.loadPage('list', {}, function(){
-						callback();
-					});
+				px2me.closeModal();
+				px2me.loadPage('list', {}, function(){
+					callback();
 				});
 			});
 		})

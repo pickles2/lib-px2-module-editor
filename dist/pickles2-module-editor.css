@@ -37,6 +37,9 @@
       background-color: #fff;
       opacity: 1;
       padding-top: 4em; }
+    .pickles2-module-editor__modal__buttons {
+      text-align: center;
+      margin: 20px 0 0 0; }
   .pickles2-module-editor__title {
     display: block;
     margin: 0;

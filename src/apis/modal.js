@@ -30,7 +30,7 @@ module.exports = function(px2me, $canvasModal){
 			opt.buttons[i] = $btnElm;
 		}
 
-		var $modalButtons = $('<div class="modal-buttons center">').append(opt.buttons);
+		var $modalButtons = $('<div class="pickles2-module-editor__modal__buttons">').append(opt.buttons);
 
 		$modal = $('<div>')
 			.addClass('pickles2-module-editor__modal__inner')
@@ -74,7 +74,7 @@ module.exports = function(px2me, $canvasModal){
 	px2me.closeModal = function(){
 		if( $modal ){
 			$modal.remove();
-			$('*')
+			$canvasModal.find('*')
 				.removeAttr('tabindex')
 			;
 			$canvasModal.hide();
