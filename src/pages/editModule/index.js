@@ -47,7 +47,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2me.modal({
+			px2.modal({
 				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
@@ -63,7 +63,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						// console.log('data =',data);
 
 						px2me.saveModuleCode(options.moduleId, data, function(result){
-							px2me.closeModal();
+							px2.closeModal();
 							px2me.loadPage('list', {}, function(){});
 						})
 
@@ -83,7 +83,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal();
+				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
 					callback();
 				});

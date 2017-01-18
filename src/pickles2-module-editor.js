@@ -30,8 +30,7 @@
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
 		var $canvas,
-			$canvasContent,
-			$canvasModal;
+			$canvasContent;
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
@@ -65,17 +64,10 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 			$canvasContent = $('<div class="pickles2-module-editor__content">');
-			$canvasModal = $('<div class="pickles2-module-editor__modal">');
 			$canvas.html('')
 				.append($canvasContent)
-				.append($canvasModal.hide())
 			;
 
-
-			/**
-			 * モーダルダイアログを開く
-			 */
-			require('./apis/modal.js')(this, $canvasModal);
 
 			new Promise(function(rlv){rlv();})
 				.then(function(){ return new Promise(function(rlv, rjt){
@@ -130,7 +122,7 @@
 					callback();
 				});
 			}else{
-				var $cont = $('<div>');
+				var $cont = $('<div class="pickles2-module-editor">');
 				pages[pageName](_this, $cont, options, function(){
 					callback();
 				});

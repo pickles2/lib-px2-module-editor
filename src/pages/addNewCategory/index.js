@@ -42,7 +42,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2me.modal({
+			px2.modal({
 				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
@@ -52,7 +52,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
 						px2me.addNewCategory(options.packageId, data, function(result){
-							px2me.closeModal();
+							px2.closeModal();
 							px2me.loadPage('list', {}, function(){});
 						})
 					})
@@ -71,7 +71,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2me.closeModal();
+				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
 					callback();
 				});
