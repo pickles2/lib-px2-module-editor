@@ -41,7 +41,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "カテゴリを編集",
 				"body": $canvasContent,
 				"buttons": [
@@ -50,8 +50,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 						px2me.saveCategoryCode(options.categoryId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 					})
 				]
@@ -69,9 +70,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})

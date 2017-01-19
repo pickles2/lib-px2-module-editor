@@ -16263,7 +16263,9 @@ module.exports = exports['default'];
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
 		var $canvas,
-			$canvasContent;
+			$canvasContent,
+			$canvasModal;
+
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
@@ -16297,8 +16299,10 @@ module.exports = exports['default'];
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 			$canvasContent = $('<div class="pickles2-module-editor__content">');
+			$canvasModal = $('<div class="pickles2-module-editor__modal">');
 			$canvas.html('')
 				.append($canvasContent)
+				.append($canvasModal.hide())
 			;
 
 
@@ -16355,7 +16359,7 @@ module.exports = exports['default'];
 					callback();
 				});
 			}else{
-				var $cont = $('<div class="pickles2-module-editor">');
+				var $cont = $('<div>');
 				pages[pageName](_this, $cont, options, function(){
 					callback();
 				});
@@ -16643,6 +16647,28 @@ module.exports = exports['default'];
 		}
 
 		/**
+		* Open modal dialog.
+		*/
+		this.modal = function(options, callback){
+			callback = callback||function(){};
+			options.target = $canvasModal;
+			$canvasModal.show();
+			return px2.modal(options, function(){
+				callback();
+			});
+		}
+
+		/**
+		* Close modal dialog.
+		*/
+		this.closeModal = function(callback){
+			return px2.closeModal(function(){
+				$canvasModal.hide();
+				callback();
+			});
+		}
+
+		/**
 		* gpiBridgeを呼び出す
 		*/
 		this.gpiBridge = function(data, callback){
@@ -16712,7 +16738,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
@@ -16722,8 +16748,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
 						px2me.addNewCategory(options.packageId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 					})
 				]
@@ -16741,9 +16768,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})
@@ -16797,7 +16825,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "新規モジュールを追加",
 				"body": $canvasContent,
 				"buttons": [
@@ -16807,8 +16835,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
 						px2me.addNewModule(options.categoryId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 					})
 				]
@@ -16826,9 +16855,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})
@@ -16880,7 +16910,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "カテゴリを編集",
 				"body": $canvasContent,
 				"buttons": [
@@ -16889,8 +16919,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 						px2me.saveCategoryCode(options.categoryId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 					})
 				]
@@ -16908,9 +16939,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})
@@ -16972,7 +17004,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
@@ -16988,8 +17020,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						// console.log('data =',data);
 
 						px2me.saveModuleCode(options.moduleId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 
 					})
@@ -17021,9 +17054,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})
@@ -17075,7 +17109,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2.modal({
+			px2me.modal({
 				"title": "パッケージを編集する",
 				"body": $canvasContent,
 				"buttons": [
@@ -17084,8 +17118,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
 						px2me.savePackageCode(options.packageId, data, function(result){
-							px2.closeModal();
-							px2me.loadPage('list', {}, function(){});
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
 						})
 
 					})
@@ -17104,9 +17139,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.catch(function(){
 			px2me.closeProgress(function(){
-				px2.closeModal();
 				px2me.loadPage('list', {}, function(){
-					callback();
+					px2me.closeModal(function(){
+						callback();
+					});
 				});
 			});
 		})

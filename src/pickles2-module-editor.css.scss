@@ -12,38 +12,12 @@
 		overflow: auto;
 	}
 	&__modal{
+		// px2-modal の入れ物になっている
 		position: absolute;
 		left: 0; top: 0;
 		width: 100%;
 		height: 100%;
 		overflow: auto;
-		background-color: rgba(0,0,0,0.7);
-		opacity: 1;
-
-		&__inner{
-			position: absolute;
-			left: 20px; top: 20px;
-			width: calc(100% - 40px);
-			height: auto;
-			padding: 20px;
-			background-color: #fff;
-			opacity: 1;
-		}
-		&__inner-box{
-			position: absolute;
-			left: 0px; top: 0px;
-			width: 100%;
-			height: auto;
-			padding: 20px;
-			overflow: auto;
-			background-color: #fff;
-			opacity: 1;
-			padding-top: 4em;
-		}
-		&__buttons{
-			text-align: center;
-			margin: 20px 0 0 0;
-		}
 	}
 
 	// module title

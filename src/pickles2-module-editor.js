@@ -30,7 +30,9 @@
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
 		var $canvas,
-			$canvasContent;
+			$canvasContent,
+			$canvasModal;
+
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
@@ -64,8 +66,10 @@
 			$canvas = $(options.elmCanvas);
 			$canvas.addClass('pickles2-module-editor');
 			$canvasContent = $('<div class="pickles2-module-editor__content">');
+			$canvasModal = $('<div class="pickles2-module-editor__modal">');
 			$canvas.html('')
 				.append($canvasContent)
+				.append($canvasModal.hide())
 			;
 
 
@@ -122,7 +126,7 @@
 					callback();
 				});
 			}else{
-				var $cont = $('<div class="pickles2-module-editor">');
+				var $cont = $('<div>');
 				pages[pageName](_this, $cont, options, function(){
 					callback();
 				});
@@ -407,6 +411,28 @@
 				}).get(0).click();
 			}
 			return;
+		}
+
+		/**
+		* Open modal dialog.
+		*/
+		this.modal = function(options, callback){
+			callback = callback||function(){};
+			options.target = $canvasModal;
+			$canvasModal.show();
+			return px2.modal(options, function(){
+				callback();
+			});
+		}
+
+		/**
+		* Close modal dialog.
+		*/
+		this.closeModal = function(callback){
+			return px2.closeModal(function(){
+				$canvasModal.hide();
+				callback();
+			});
 		}
 
 		/**
