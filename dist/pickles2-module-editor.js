@@ -16653,7 +16653,7 @@ module.exports = exports['default'];
 			callback = callback||function(){};
 			options.target = $canvasModal;
 			$canvasModal.show();
-			return px2.modal(options, function(){
+			return px2style.modal(options, function(){
 				callback();
 			});
 		}
@@ -16662,7 +16662,7 @@ module.exports = exports['default'];
 		* Close modal dialog.
 		*/
 		this.closeModal = function(callback){
-			return px2.closeModal(function(){
+			return px2style.closeModal(function(){
 				$canvasModal.hide();
 				callback();
 			});
