@@ -16959,8 +16959,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	var $ = require('jquery');
 	var utils79 = require('utils79');
 	var Promise = require('es6-promise').Promise;
-	var $preview,
-		$previewEditor;
+	var $previewWin,
+		$previewEditorWin;
 
 
 	new Promise(function(rlv){rlv();})
@@ -17031,17 +17031,40 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			rlv();
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
-			// プレビューiframeの準備
-			$preview = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
-			$previewIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview.html'});
+			// Preview iframe の準備
+			var $preview = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
+			var $previewIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview.html'});
 			$preview.html('').append($previewIframe);
+			$($previewIframe.get(0).contentWindow).on('load', function(){
+				$previewWin = $($previewIframe.get(0).contentWindow.document).find('body');
+				$previewWin.addClass('pickles2-module-editor');
+				$previewWin.append('<div>preview</div>');
+				rlv();
+			});
 
-			$previewEditor = $canvasContent.find('.pickles2-module-editor__module-edit__preview-editor');
-			$previewEditorIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview_editor.html'});
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// Preview Editor iframe の準備
+			var $previewEditor = $canvasContent.find('.pickles2-module-editor__module-edit__preview-editor');
+			var $previewEditorIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview_editor.html'});
 			$previewEditor.html('').append($previewEditorIframe);
-			// console.log($previewEditorIframe.get(0).contentWindow.location);
+			$($previewEditorIframe.get(0).contentWindow).on('load', function(){
+				$previewEditorWin = $($previewEditorIframe.get(0).contentWindow.document).find('body');
+				$previewEditorWin.addClass('pickles2-module-editor');
 
-			rlv();
+				// bootstrap をロード
+				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/bootstrap/dist/css/bootstrap.css" />') );
+
+				// px2style をロード
+				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/px2style/dist/styles.css" />') );
+
+				// broccoli-html-editor をロード
+				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/broccoli-html-editor/client/dist/broccoli.css" />') );
+
+				$previewEditorWin.append( $('<button class="px2-btn">test</button>') );
+				rlv();
+			});
+
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			px2me.closeProgress(function(){
