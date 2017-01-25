@@ -18,6 +18,7 @@ var _tasks = [
 	'.css',
 	'.css.scss',
 	'test/contents.js',
+	'.js',
 	'pickles2-module-editor.js',
 	'client-libs'
 ];
@@ -76,7 +77,7 @@ gulp.task('.css.scss', function(){
 	;
 });
 
-// *.js を処理
+// pickles2-module-editor.js を処理
 gulp.task("pickles2-module-editor.js", function() {
 	gulp.src(["src/pickles2-module-editor.js"])
 		.pipe(plumber())
@@ -89,6 +90,16 @@ gulp.task("pickles2-module-editor.js", function() {
 		.pipe(concat('pickles2-module-editor.min.js'))
 		.pipe(uglify())
 		// .pipe(sourcemaps.write())
+		.pipe(gulp.dest( './dist/' ))
+	;
+});
+
+// *.js を処理
+gulp.task(".js", function() {
+	gulp.src(["src/**/*.js","!src/pickles2-module-editor.js","!src/**/_*.js","!src/pages/**/*.js"])
+		.pipe(plumber())
+		.pipe(browserify({
+		}))
 		.pipe(gulp.dest( './dist/' ))
 	;
 });
@@ -115,7 +126,7 @@ gulp.task(".html.twig", function() {
 	;
 });
 
-// *.js を処理
+// contents.js を処理
 gulp.task("test/contents.js", function() {
 	gulp.src(["tests/app/client/index_files/contents.src.js"])
 		.pipe(plumber())
