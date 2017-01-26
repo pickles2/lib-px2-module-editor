@@ -22,9 +22,9 @@
 	document.write('<script src="'+__dirname+'/libs/px2style/dist/scripts.js"></script>');
 	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/px2style/dist/styles.css" />');
 
-	// broccoli-html-editor をロード
-	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/broccoli-html-editor/client/dist/broccoli.css" />');
-	document.write('<script src="'+__dirname+'/libs/broccoli-html-editor/client/dist/broccoli.js"></script>');
+	// pickles2-contents-editor をロード
+	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/pickles2-contents-editor/dist/pickles2-contents-editor.css" />');
+	document.write('<script src="'+__dirname+'/libs/pickles2-contents-editor/dist/pickles2-contents-editor.js"></script>');
 
 	window.Pickles2ModuleEditor = function(){
 		var $ = require('jquery');
@@ -47,6 +47,7 @@
 			'addNewCategory': require('./pages/addNewCategory/index.js'),
 			'addNewModule': require('./pages/addNewModule/index.js')
 		};
+		var px2ce;
 
 		/**
 		* initialize
@@ -72,12 +73,55 @@
 				.append($canvasModal.hide())
 			;
 
-
 			new Promise(function(rlv){rlv();})
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.progress( function(){
 						rlv();
 					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					px2ce = new window.Pickles2ContentsEditor();
+					px2ce.init(
+						{
+							'page_path': '/px2me-dummy.html' , // <- 編集対象ページのパス
+							'elmCanvas': document.createElement('div'), // <- 編集画面を描画するための器となる要素
+							'preview':{ // プレビュー用サーバーの情報を設定します。
+								'origin': window.location.origin
+							},
+							'customFields': {},
+							'gpiBridge': function(input, callback){
+								// GPI(General Purpose Interface) Bridge
+								// broccoliは、バックグラウンドで様々なデータ通信を行います。
+								// GPIは、これらのデータ通信を行うための汎用的なAPIです。
+								_this.gpiBridge(
+									{
+										'api':'px2ceBridge',
+										'forPx2CE': input
+									},
+									function(result){
+										callback(result);
+									}
+								);
+								return;
+							},
+							'complete': function(){
+								alert('完了しました。');
+							},
+							'onClickContentsLink': function( uri, data ){
+								alert('編集: ' + uri);
+							},
+							'onMessage': function( message ){
+								// ユーザーへ知らせるメッセージを表示する
+								console.info('message: '+message);
+							}
+						},
+						function(){
+							// スタンバイ完了したら呼び出されるコールバックメソッドです。
+							console.info('pickles2-contents-editor standby!!');
+							rlv();
+						}
+					);
+
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
@@ -348,6 +392,14 @@
 				}
 			);
 			return;
+		}
+
+		/**
+		 * プログレスを表示する
+		 */
+		this.createBroccoli = function(callback){
+			callback = callback||function(){};
+			callback(px2ce);
 		}
 
 		/**

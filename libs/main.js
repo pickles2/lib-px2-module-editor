@@ -156,6 +156,19 @@ module.exports = function(){
 	 */
 	this.createBroccoli = function(callback){
 		callback = callback||function(){};
+		this.createPickles2ContentsEditor(function(px2ce){
+			px2ce.createBroccoli(function(broccoli){
+				callback(broccoli);
+			});
+		});
+		return;
+	}
+
+	/**
+	 * create pickles2-contents-editor object
+	 */
+	this.createPickles2ContentsEditor = function(callback){
+		callback = callback||function(){};
 		var Px2CE = require('pickles2-contents-editor');
 		var px2ce = new Px2CE();
 
@@ -169,9 +182,7 @@ module.exports = function(){
 				'commands': (this.options.commands||undefined)
 			},
 			function(){
-				px2ce.createBroccoli( function(broccoli){
-					callback(broccoli);
-				});
+				callback(px2ce);
 			}
 		);
 

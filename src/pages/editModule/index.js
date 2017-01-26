@@ -8,6 +8,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	var Promise = require('es6-promise').Promise;
 	var $previewWin,
 		$previewEditorWin;
+	var broccoli;
 
 
 	new Promise(function(rlv){rlv();})
@@ -76,6 +77,15 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				]
 			});
 			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// broccoli-html-editor インスタンスを生成
+			px2me.createBroccoli(function(b){
+				broccoli = b;
+				console.log(broccoli);
+				rlv();
+			});
+
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// Preview iframe の準備
