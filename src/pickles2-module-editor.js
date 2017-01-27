@@ -36,6 +36,7 @@
 		var _this = this;
 		this.__dirname = __dirname;
 		this.options = {};
+		this.moduleId;
 
 		var px2meConf,
 			templates;
@@ -395,11 +396,44 @@
 		}
 
 		/**
-		 * プログレスを表示する
+		 * broccoli インスタンスを生成する
 		 */
-		this.createBroccoli = function(callback){
+		this.createBroccoli = function(options, callback){
+			options = options||{};
 			callback = callback||function(){};
-			callback(px2ce);
+			var broccoli = new Broccoli();
+			px2ce.createBroccoliInitOptions(function(broccoliInitOptions){
+				for(var key in options){
+					broccoliInitOptions[key] = options[key];
+				}
+				broccoliInitOptions.gpiBridge = function(api, options, callback){
+					// GPI(General Purpose Interface) Bridge
+					// broccoliは、バックグラウンドで様々なデータ通信を行います。
+					// GPIは、これらのデータ通信を行うための汎用的なAPIです。
+					_this.gpiBridge(
+						{
+							'api': 'broccoliBridge',
+							'forBroccoli':{
+								'api': JSON.stringify(api) ,
+								'options': JSON.stringify(options)
+							}
+						},
+						function(rtn){
+							callback(rtn);
+						}
+					);
+					return;
+				}
+				console.log(broccoliInitOptions);
+				broccoli.init(
+					broccoliInitOptions ,
+					function(){
+						console.log(broccoli);
+						callback( broccoli );
+					}
+				);
+			});
+			return;
 		}
 
 		/**
@@ -491,6 +525,7 @@
 		* gpiBridgeを呼び出す
 		*/
 		this.gpiBridge = function(data, callback){
+			data.moduleId = this.moduleId;
 			return this.options.gpiBridge(data, callback);
 		}
 

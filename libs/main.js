@@ -15,7 +15,6 @@ module.exports = function(){
 	this.px2proj;
 	this.page_path;
 	this.options;
-	this.broccoli;
 
 	this.init = function(options, callback){
 		callback = callback||function(){};
@@ -154,11 +153,32 @@ module.exports = function(){
 	/**
 	 * create broccoli-html-editor object
 	 */
-	this.createBroccoli = function(callback){
+	this.createBroccoli = function(options, callback){
+		options = options||{};
 		callback = callback||function(){};
 		this.createPickles2ContentsEditor(function(px2ce){
-			px2ce.createBroccoli(function(broccoli){
-				callback(broccoli);
+			px2ce.createBroccoliInitOptions(function(broccoliInitOptions){
+				// console.log(broccoliInitOptions);
+				var broccoli = new (require('broccoli-html-editor'))();
+				// console.log(options);
+				var parsedModuleId = broccoli.parseModuleId( options.moduleId );
+				// console.log(parsedModuleId);
+				if( parsedModuleId !== false ){
+					broccoliInitOptions.documentRoot = require('path').resolve(broccoliInitOptions.paths_module_template[parsedModuleId.package]+'/'+parsedModuleId.category+'/'+parsedModuleId.module+'/preview.ignore/')+'/';
+					broccoliInitOptions.pathHtml = '/default/index.html';
+					broccoliInitOptions.pathResourceDir = broccoliInitOptions.documentRoot+'default/index_files/resources/';
+					broccoliInitOptions.realpathDataDir = broccoliInitOptions.documentRoot+'default/index_files/guieditor.ignore/';
+					fsx.mkdirpSync( broccoliInitOptions.documentRoot+'default/' );
+					fsx.mkdirpSync( broccoliInitOptions.documentRoot+'default/index_files/guieditor.ignore/' );
+				}
+				// console.log(broccoliInitOptions);
+				broccoli.init(
+					broccoliInitOptions,
+					function(){
+						// console.log(broccoli);
+						callback(broccoli);
+					}
+				);
 			});
 		});
 		return;

@@ -6,7 +6,7 @@ module.exports = function(px2me, data, callback){
 
 	var utils79 = require('utils79');
 
-	px2me.createBroccoli(function(broccoli){
+	px2me.createBroccoli({}, function(broccoli){
 		// console.log(broccoli);
 		if( !data.target ){
 			callback(false);

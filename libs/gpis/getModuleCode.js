@@ -7,7 +7,7 @@ module.exports = function(px2me, data, callback){
 	var utils79 = require('utils79');
 
 	var rtn = {};
-	px2me.createBroccoli(function(broccoli){
+	px2me.createBroccoli({}, function(broccoli){
 		// console.log(broccoli);
 		var realpath = broccoli.getModuleRealpath(data.moduleId);
 		// rtn.realpath = realpath;
