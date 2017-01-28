@@ -7,12 +7,12 @@ module.exports = function(px2me, data, callback){
 	px2me.createBroccoli({
 		'moduleId': data.moduleId
 	}, function(broccoli){
-		console.log('GPI called - broccoliBridge');
-		console.log(data);
-		// console.log(px2ce);
+		// console.log('GPI called - broccoliBridge');
+		// console.log(data);
+		// console.log(broccoli);
 		broccoli.gpi(
-			data.forBroccoli.api,
-			data.forBroccoli.options,
+			JSON.parse(data.forBroccoli.api),
+			JSON.parse(data.forBroccoli.options),
 			function(rtn){
 				// console.log(rtn);
 				// console.log('GPI responced');

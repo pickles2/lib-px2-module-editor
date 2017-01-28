@@ -88,15 +88,16 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				.find('.pickles2-module-editor__module-edit__preview')
 				.attr({"data-broccoli-preview": px2me.__dirname+'/html/preview.html'})
 			;
-			console.log('---------------------- calling createBroccoli');
+
+			// console.log('---------------------- calling createBroccoli');
 			px2me.createBroccoli(
 				{
 					'elmCanvas': $canvas.get(0)
 				},
 				function(b){
-					console.log('---------------------- calling createBroccoli //');
+					// console.log('---------------------- calling createBroccoli //');
 					broccoli = b;
-					console.log(broccoli);
+					// console.log(broccoli);
 					rlv();
 				}
 			);
@@ -139,10 +140,12 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				console.log(broccoli);
 				console.log(broccoli.editWindow);
 				console.log(broccoli.editWindow.init);
-				broccoli.editWindow.init( '/main@0', $editWindow, function(res){
-					console.log('-------------=-=------------------');
-					rlv();
-				} );
+				rlv();
+
+				// broccoli.editWindow.init( '/main@0', $editWindow, function(res){
+				// 	console.log('-------------=-=------------------');
+				// 	rlv();
+				// } );
 			});
 
 		}); })

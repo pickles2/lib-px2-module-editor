@@ -410,6 +410,7 @@
 					// GPI(General Purpose Interface) Bridge
 					// broccoliは、バックグラウンドで様々なデータ通信を行います。
 					// GPIは、これらのデータ通信を行うための汎用的なAPIです。
+					// console.log(api, options);
 					_this.gpiBridge(
 						{
 							'api': 'broccoliBridge',
@@ -419,6 +420,7 @@
 							}
 						},
 						function(rtn){
+							// console.log(rtn);
 							callback(rtn);
 						}
 					);
@@ -428,7 +430,7 @@
 				broccoli.init(
 					broccoliInitOptions ,
 					function(){
-						console.log(broccoli);
+						// console.log(broccoli);
 						callback( broccoli );
 					}
 				);
