@@ -162,23 +162,24 @@ module.exports = function(){
 				var broccoli = new (require('broccoli-html-editor'))();
 				// console.log(options);
 				var parsedModuleId = broccoli.parseModuleId( options.moduleId );
+				var previewContentName = options.previewContentName||'default';
 				// console.log(parsedModuleId);
 				if( parsedModuleId !== false ){
 					broccoliInitOptions.documentRoot = require('path').resolve(broccoliInitOptions.paths_module_template[parsedModuleId.package]+'/'+parsedModuleId.category+'/'+parsedModuleId.module+'/preview.ignore/')+'/';
-					broccoliInitOptions.pathHtml = '/default/index.html';
-					broccoliInitOptions.pathResourceDir = broccoliInitOptions.documentRoot+'default/index_files/resources/';
-					broccoliInitOptions.realpathDataDir = broccoliInitOptions.documentRoot+'default/index_files/guieditor.ignore/';
-					fsx.mkdirpSync( broccoliInitOptions.documentRoot+'default/' );
-					fsx.mkdirpSync( broccoliInitOptions.documentRoot+'default/index_files/guieditor.ignore/' );
+					broccoliInitOptions.pathHtml = '/'+previewContentName+'.html';
+					broccoliInitOptions.pathResourceDir = broccoliInitOptions.documentRoot+previewContentName+'_files/resources/';
+					broccoliInitOptions.realpathDataDir = broccoliInitOptions.documentRoot+previewContentName+'_files/guieditor.ignore/';
 				}
 				// console.log(broccoliInitOptions);
-				broccoli.init(
-					broccoliInitOptions,
-					function(){
-						// console.log(broccoli);
-						callback(broccoli);
-					}
-				);
+				_this.initPreviewContent(options.moduleId, broccoliInitOptions, function(){
+					broccoli.init(
+						broccoliInitOptions,
+						function(){
+							// console.log(broccoli);
+							callback(broccoli);
+						}
+					);
+				});
 			});
 		});
 		return;
@@ -206,6 +207,43 @@ module.exports = function(){
 			}
 		);
 
+		return;
+	}
+
+	/**
+	 * プレビュー用コンテンツを初期化する
+	 */
+	this.initPreviewContent = function(modId, broccoliInitOptions, callback){
+		callback = callback||function(){};
+		if( !modId ){
+			callback();return;
+		}
+		if( utils79.is_file( broccoliInitOptions.realpathDataDir+'/data.json' ) ){
+			callback();return;
+		}
+
+		fsx.mkdirpSync( broccoliInitOptions.realpathDataDir );
+		fs.writeFileSync( broccoliInitOptions.realpathDataDir+'/data.json', JSON.stringify({
+			"bowl": {
+			 	"main": {
+					"modId": "_sys/root",
+					"fields": {
+						"main": [
+							{
+							 	"modId": modId,
+							 	"fields": {},
+							 	"anchor": "",
+							 	"dec": ""
+							}
+						]
+					},
+					"anchor": "",
+					"dec": ""
+				}
+			}
+		}, null, 1) );
+
+		callback();
 		return;
 	}
 
