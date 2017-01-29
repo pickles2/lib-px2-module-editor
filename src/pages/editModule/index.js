@@ -122,27 +122,46 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	}
 	function loadBroccoli(callback){
 		callback = callback || function(){};
-		var $frame = $canvasContent
-			.find('.pickles2-module-editor__module-edit__preview')
-		;
-		var $canvas = $('<div>');
-		var $palette = $('<div>');
-		$frame.html('').append($canvas).append($palette);
-		$canvas.attr({"data-broccoli-preview": px2me.__dirname+'/html/preview.html'});
 
-		// console.log('---------------------- calling createBroccoli');
-		px2me.createBroccoli(
+		px2me.gpiBridge(
 			{
-				'elmCanvas': $canvas.get(0),
-				'elmModulePalette': $palette.get(0)
+				'api':'download',
+				'target': 'css'
 			},
-			function(b){
-				// console.log('---------------------- calling createBroccoli //');
-				broccoli = b;
-				// console.log(broccoli);
-				callback();
+			function(cssBin){
+				px2me.gpiBridge(
+					{
+						'api':'download',
+						'target': 'js'
+					},
+					function(jsBin){
+						var $frame = $canvasContent
+							.find('.pickles2-module-editor__module-edit__preview')
+						;
+						var $canvas = $('<div>');
+						var $palette = $('<div>');
+						$frame.html('').append($canvas).append($palette);
+						$canvas.attr({
+							"data-broccoli-preview": px2me.__dirname+'/html/preview.html'
+								+'?css='+encodeURIComponent(utils79.base64_encode(cssBin))
+								+'&js='+encodeURIComponent(utils79.base64_encode(jsBin))
+						});
+
+						px2me.createBroccoli(
+							{
+								'elmCanvas': $canvas.get(0),
+								'elmModulePalette': $palette.get(0)
+							},
+							function(b){
+								broccoli = b;
+								callback();
+							}
+						);
+					}
+				);
 			}
 		);
+
 		return;
 	}
 

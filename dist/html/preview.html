@@ -3,6 +3,31 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>pickles2-module-editor - preview</title>
+<script>
+	/**
+	 * URIパラメータをパースする
+	 */
+	function parseUriParam(url){
+		var paramsArray = [];
+		parameters = url.split("?");
+		if( parameters.length > 1 ) {
+			var params = parameters[1].split("&");
+			for ( var i = 0; i < params.length; i++ ) {
+				var paramItem = params[i].split("=");
+				for( var i2 in paramItem ){
+					paramItem[i2] = decodeURIComponent( paramItem[i2] );
+				}
+				paramsArray.push( paramItem[0] );
+				paramsArray[paramItem[0]] = paramItem[1];
+			}
+		}
+		return paramsArray;
+	}
+	var params = parseUriParam(window.location.href);
+	// console.log(params);
+	document.write('<link rel="stylesheet" href="data:text/css;base64,'+params.css+'" />');
+	document.write('<scr'+'ipt src="data:text/javascript;base64,'+params.js+'"></scr'+'ipt>');
+</script>
 	</head>
 	<body>
 		<div data-contents-area="main"></div>
