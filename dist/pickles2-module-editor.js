@@ -16659,7 +16659,7 @@ module.exports = exports['default'];
 					);
 					return;
 				}
-				console.log(broccoliInitOptions);
+				// console.log(broccoliInitOptions);
 				broccoli.init(
 					broccoliInitOptions ,
 					function(){
@@ -17102,6 +17102,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						save(function(result){
+							$(window).off('resize.editModule');
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
@@ -17122,6 +17123,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// broccoli-html-editor インスタンスを生成
 			loadBroccoli(function(){
+				$(window).on('resize.editModule', function(){
+					console.log('--- window resized.');
+					broccoli.redraw();
+				});
 				rlv();
 			});
 		}); })

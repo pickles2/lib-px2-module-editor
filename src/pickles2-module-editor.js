@@ -426,7 +426,7 @@
 					);
 					return;
 				}
-				console.log(broccoliInitOptions);
+				// console.log(broccoliInitOptions);
 				broccoli.init(
 					broccoliInitOptions ,
 					function(){
