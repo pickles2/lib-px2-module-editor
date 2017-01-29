@@ -17101,95 +17101,29 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.infoJson = $canvasContent.find('[name=infoJson]').val();
-						data.template = $canvasContent.find('[name=template]').val();
-						data.templateExt = $canvasContent.find('[name=templateExt]').val();
-						data.css = $canvasContent.find('[name=css]').val();
-						data.cssExt = $canvasContent.find('[name=cssExt]').val();
-						data.js = $canvasContent.find('[name=js]').val();
-						data.jsExt = $canvasContent.find('[name=jsExt]').val();
-						// console.log('data =',data);
-
-						px2me.saveModuleCode(options.moduleId, data, function(result){
+						save(function(result){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
-						})
-
+						});
 					})
 				]
 			});
+			$canvasContent.find('button')
+				.on('click', function(){
+					save(function(result){
+						loadBroccoli(function(){
+						});
+					});
+				})
+			;
 			rlv();
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// broccoli-html-editor インスタンスを生成
-			// var $canvas = $('<div data-broccoli-preview="'+px2me.__dirname+'/html/preview.html">');
-			// $canvasContent.append($canvas);
-			var $canvas = $canvasContent
-				.find('.pickles2-module-editor__module-edit__preview')
-				.attr({"data-broccoli-preview": px2me.__dirname+'/html/preview.html'})
-			;
-
-			// console.log('---------------------- calling createBroccoli');
-			px2me.createBroccoli(
-				{
-					'elmCanvas': $canvas.get(0)
-				},
-				function(b){
-					// console.log('---------------------- calling createBroccoli //');
-					broccoli = b;
-					// console.log(broccoli);
-					rlv();
-				}
-			);
-
-		}); })
-		// .then(function(){ return new Promise(function(rlv, rjt){
-		// 	// Preview iframe の準備
-		// 	var $preview = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
-		// 	var $previewIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview.html'});
-		// 	$preview.html('').append($previewIframe);
-		// 	$($previewIframe.get(0).contentWindow).on('load', function(){
-		// 		$previewWin = $($previewIframe.get(0).contentWindow.document).find('body');
-		// 		$previewWin.addClass('pickles2-module-editor');
-		// 		$previewWin.append('<div>preview</div>');
-		// 		rlv();
-		// 	});
-		//
-		// }); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// Preview Editor iframe の準備
-			var $previewEditor = $canvasContent.find('.pickles2-module-editor__module-edit__preview-editor');
-			var $previewEditorIframe = $('<iframe>').attr({'src': px2me.__dirname+'/html/preview_editor.html'});
-			$previewEditor.html('').append($previewEditorIframe);
-			$($previewEditorIframe.get(0).contentWindow).on('load', function(){
-				$previewEditorWin = $($previewEditorIframe.get(0).contentWindow.document).find('body');
-				$previewEditorWin.addClass('pickles2-module-editor');
-
-				// bootstrap をロード
-				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/bootstrap/dist/css/bootstrap.css" />') );
-
-				// px2style をロード
-				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/px2style/dist/styles.css" />') );
-
-				// broccoli-html-editor をロード
-				$previewEditorWin.append( $('<link rel="stylesheet" href="'+px2me.__dirname+'/libs/broccoli-html-editor/client/dist/broccoli.css" />') );
-
-				var $editWindow = $('<div>');
-				$previewEditorWin.append( $('<button class="px2-btn">test</button>') );
-
-				console.log(broccoli);
-				console.log(broccoli.editWindow);
-				console.log(broccoli.editWindow.init);
+			loadBroccoli(function(){
 				rlv();
-
-				// broccoli.editWindow.init( '/main@0', $editWindow, function(res){
-				// 	console.log('-------------=-=------------------');
-				// 	rlv();
-				// } );
 			});
-
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			px2me.closeProgress(function(){
@@ -17210,6 +17144,49 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			});
 		})
 	;
+
+	function save(callback){
+		callback = callback || function(){};
+		var data = {};
+		data.infoJson = $canvasContent.find('[name=infoJson]').val();
+		data.template = $canvasContent.find('[name=template]').val();
+		data.templateExt = $canvasContent.find('[name=templateExt]').val();
+		data.css = $canvasContent.find('[name=css]').val();
+		data.cssExt = $canvasContent.find('[name=cssExt]').val();
+		data.js = $canvasContent.find('[name=js]').val();
+		data.jsExt = $canvasContent.find('[name=jsExt]').val();
+		// console.log('data =',data);
+
+		px2me.saveModuleCode(options.moduleId, data, function(result){
+			callback(result);
+		});
+		return;
+	}
+	function loadBroccoli(callback){
+		callback = callback || function(){};
+		var $frame = $canvasContent
+			.find('.pickles2-module-editor__module-edit__preview')
+		;
+		var $canvas = $('<div>');
+		var $palette = $('<div>');
+		$frame.html('').append($canvas).append($palette);
+		$canvas.attr({"data-broccoli-preview": px2me.__dirname+'/html/preview.html'});
+
+		// console.log('---------------------- calling createBroccoli');
+		px2me.createBroccoli(
+			{
+				'elmCanvas': $canvas.get(0),
+				'elmModulePalette': $palette.get(0)
+			},
+			function(b){
+				// console.log('---------------------- calling createBroccoli //');
+				broccoli = b;
+				// console.log(broccoli);
+				callback();
+			}
+		);
+		return;
+	}
 
 }
 

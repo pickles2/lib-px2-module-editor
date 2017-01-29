@@ -108,6 +108,14 @@
 	// pages/editModule
 	&__module-edit__preview{
 		height: 400px;
+		display: flex;
+		>div{
+			height: 100%;
+			width: 30%;
+			&:first-child{
+				width: 70%;
+			}
+		}
 	}
 
 	// progress
