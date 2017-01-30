@@ -24,13 +24,24 @@ module.exports = function(px2me, data, callback){
 		try { require('fs').unlinkSync(realpath+'/template.html.twig'); } catch (e) {}
 		try { require('fs').writeFileSync(realpath+'/template.'+data.data.templateExt, data.data.template); } catch (e) {}
 
-		try { require('fs').writeFileSync(realpath+'/info.json', data.data.infoJson); } catch (e) {}
+		try {
+			require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(JSON.parse(data.data.infoJson), null, 2));
+		} catch (e) {}
 
 		try { require('fs').unlinkSync(realpath+'/module.css'); } catch (e) {}
 		try { require('fs').unlinkSync(realpath+'/module.css.scss'); } catch (e) {}
-		try { require('fs').writeFileSync(realpath+'/module.'+data.data.cssExt, data.data.css); } catch (e) {}
+		try {
+			if( utils79.toStr( data.data.css ).length ){
+				require('fs').writeFileSync(realpath+'/module.'+data.data.cssExt, data.data.css);
+			}
+		} catch (e) {}
 
-		try { require('fs').writeFileSync(realpath+'/module.'+data.data.jsExt, data.data.js); } catch (e) {}
+		try { require('fs').unlinkSync(realpath+'/module.js'); } catch (e) {}
+		try {
+			if( utils79.toStr( data.data.js ).length ){
+				require('fs').writeFileSync(realpath+'/module.'+data.data.jsExt, data.data.js);
+			}
+		} catch (e) {}
 
 		callback(true);
 		return;

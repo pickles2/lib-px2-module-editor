@@ -1,0 +1,19 @@
+{
+ "bowl": {
+  "main": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "local:sample/sample2",
+      "fields": {},
+      "anchor": "",
+      "dec": ""
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  }
+ }
+}

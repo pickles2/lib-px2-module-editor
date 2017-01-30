@@ -24,7 +24,9 @@ module.exports = function(px2me, data, callback){
 			return;
 		}
 
-		try { require('fs').writeFileSync(realpath+'/info.json', data.data.infoJson); } catch (e) {}
+		try {
+			require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(JSON.parse(data.data.infoJson), null, 2));
+		} catch (e) {}
 
 		callback(true);
 		return;
