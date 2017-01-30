@@ -60,9 +60,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						save(function(result){
-							$(window).off('resize.editModule');
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
+							broccoli.saveContents(function(result){
+								$(window).off('resize.editModule');
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
 							});
 						});
 					})
