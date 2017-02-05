@@ -406,6 +406,8 @@
 				for(var key in options){
 					broccoliInitOptions[key] = options[key];
 				}
+				broccoliInitOptions.contents_area_selector = "[data-contents-area]";
+				broccoliInitOptions.contents_bowl_name_by = "data-contents-area";
 				broccoliInitOptions.gpiBridge = function(api, options, callback){
 					// GPI(General Purpose Interface) Bridge
 					// broccoliは、バックグラウンドで様々なデータ通信を行います。
