@@ -165,9 +165,9 @@ module.exports = function(){
 				var previewContentName = options.previewContentName||'default';
 				// console.log(parsedModuleId);
 				if( parsedModuleId !== false ){
-					broccoliInitOptions.documentRoot = require('path').resolve(broccoliInitOptions.paths_module_template[parsedModuleId.package]+'/'+parsedModuleId.category+'/'+parsedModuleId.module+'/preview.ignore/')+'/';
-					broccoliInitOptions.pathHtml = '/'+previewContentName+'.html';
-					broccoliInitOptions.pathResourceDir = broccoliInitOptions.documentRoot+previewContentName+'_files/resources/';
+					broccoliInitOptions.documentRoot = require('path').resolve(broccoliInitOptions.paths_module_template[parsedModuleId.package]+'/'+parsedModuleId.category+'/'+parsedModuleId.module+'/coding-example/')+'/';
+					broccoliInitOptions.pathHtml = require('path').resolve('/'+previewContentName+'.html');
+					broccoliInitOptions.pathResourceDir = require('path').resolve('/'+previewContentName+'_files/resources/')+'/';
 					broccoliInitOptions.realpathDataDir = broccoliInitOptions.documentRoot+previewContentName+'_files/guieditor.ignore/';
 				}
 				// console.log(broccoliInitOptions);
