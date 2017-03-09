@@ -49,6 +49,11 @@ module.exports = function(px2me, data, callback){
 			rtn.finalizeJs = require('fs').readFileSync(realpath+'/finalize.js').toString();
 		}
 
+		rtn.clipJson = '';
+		if( utils79.is_file(realpath+'/clip.json') ){
+			rtn.clipJson = require('fs').readFileSync(realpath+'/clip.json').toString();
+		}
+
 		callback(rtn);
 	});
 	return;

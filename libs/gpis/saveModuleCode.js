@@ -50,6 +50,13 @@ module.exports = function(px2me, data, callback){
 			}
 		} catch (e) {}
 
+		try { require('fs').unlinkSync(realpath+'/clip.json'); } catch (e) {}
+		try {
+			if( utils79.toStr( data.data.clipJson ).length ){
+				require('fs').writeFileSync(realpath+'/clip.json', JSON.stringify(JSON.parse(data.data.clipJson), null, 2));
+			}
+		} catch (e) {}
+
 		callback(true);
 		return;
 	});
