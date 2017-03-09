@@ -117,37 +117,90 @@ module.exports = function(){
 	this.getProjectInfo = function(callback){
 		callback = callback || function(){};
 		var pjInfo = {};
-		_this.px2proj.get_config(function(conf){
-			pjInfo.conf = conf;
+		var page_info = _this.page_path;
+		if(!page_info){
+			page_info = '/px2me-dummy.html';
+		}
 
-			_this.px2proj.get_page_info(_this.page_path, function(pageInfo){
-				pjInfo.pageInfo = pageInfo;
+		new Promise(function(rlv){rlv();})
+			.then(function(){ return new Promise(function(rlv, rjt){
+				_this.px2proj.query(page_info+'?PX=px2dthelper.get.all', {
+					"output": "json",
+					"complete": function(data, code){
+						try {
+							var allData = JSON.parse(data);
+							if( typeof(allData) !== typeof({}) ){
+								console.error("Error: Parsed JSON from `PX=px2dthelper.get.all` is NOT a object.", allData);
+								rlv();
+								return;
+							}
+							if( typeof(allData.config) !== typeof({}) ){
+								console.error("Error: Parsed JSON from `PX=px2dthelper.get.all` is NOT conains a config object.", allData);
+								rlv();
+								return;
+							}
+							// console.log(allData, code);
 
-				_this.px2proj.get_path_docroot(function(documentRoot){
-					pjInfo.documentRoot = documentRoot;
-
-					_this.px2proj.realpath_files(_this.page_path, '', function(realpathDataDir){
-						realpathDataDir = require('path').resolve(realpathDataDir, 'guieditor.ignore')+'/';
-						pjInfo.realpathDataDir = realpathDataDir;
-
-						_this.px2proj.path_files(_this.page_path, '', function(pathResourceDir){
-							pathResourceDir = require('path').resolve(pathResourceDir, 'resources')+'/';
-							pathResourceDir = pathResourceDir.replace(new RegExp('\\\\','g'), '/').replace(new RegExp('^[a-zA-Z]\\:\\/'), '/');
-								// Windows でボリュームラベル "C:" などが含まれるようなパスを渡すと、
-								// broccoli-html-editor内 resourceMgr で
-								// 「Uncaught RangeError: Maximum call stack size exceeded」が起きて落ちる。
-								// ここで渡すのはウェブ側からみえる外部のパスでありサーバー内部パスではないので、
-								// ボリュームラベルが付加された値を渡すのは間違い。
-
-							pjInfo.pathResourceDir = pathResourceDir;
-
+							pjInfo.conf = allData.config;
+							pjInfo.pageInfo = allData.page_info;
+							pjInfo.contRoot = allData.path_controot;
+							pjInfo.documentRoot = allData.realpath_docroot;
+							pjInfo.realpathFiles = allData.realpath_files;
+							pjInfo.pathFiles = allData.path_files;
+							pjInfo.realpathDataDir = allData.realpath_data_dir;
+							pjInfo.pathResourceDir = allData.path_resource_dir;
+							pjInfo.realpath_homedir = allData.realpath_homedir;
 							callback(pjInfo);
+							return;
 
+						} catch (e) {
+							// うまく解析できなかったら、
+							// 旧来の方法で個別に取得する
+							console.error("Error: FAILED to parse JSON from `PX=px2dthelper.get.all`.");
+							rlv();
+							return;
+						}
+					}
+				});
+			}); })
+			.then(function(){ return new Promise(function(rlv, rjt){
+
+				_this.px2proj.get_config(function(conf){
+					pjInfo.conf = conf;
+
+					_this.px2proj.get_page_info(page_info, function(pageInfo){
+						pjInfo.pageInfo = pageInfo;
+
+						_this.px2proj.get_path_docroot(function(documentRoot){
+							pjInfo.documentRoot = documentRoot;
+
+							_this.px2proj.realpath_files(page_info, '', function(realpathDataDir){
+								realpathDataDir = require('path').resolve(realpathDataDir, 'guieditor.ignore')+'/';
+								pjInfo.realpathDataDir = realpathDataDir;
+
+								_this.px2proj.path_files(page_info, '', function(pathResourceDir){
+									pathResourceDir = require('path').resolve(pathResourceDir, 'resources')+'/';
+									pathResourceDir = pathResourceDir.replace(new RegExp('\\\\','g'), '/').replace(new RegExp('^[a-zA-Z]\\:\\/'), '/');
+										// Windows でボリュームラベル "C:" などが含まれるようなパスを渡すと、
+										// broccoli-html-editor内 resourceMgr で
+										// 「Uncaught RangeError: Maximum call stack size exceeded」が起きて落ちる。
+										// ここで渡すのはウェブ側からみえる外部のパスでありサーバー内部パスではないので、
+										// ボリュームラベルが付加された値を渡すのは間違い。
+
+									pjInfo.pathResourceDir = pathResourceDir;
+
+									callback(pjInfo);
+
+								});
+							});
 						});
 					});
 				});
-			});
-		});
+
+			}); })
+		;
+
+
 	}
 
 	/**
