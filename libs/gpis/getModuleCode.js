@@ -22,6 +22,7 @@ module.exports = function(px2me, data, callback){
 			rtn.template = require('fs').readFileSync(realpath+'/template.html.twig').toString();
 			rtn.templateExt = 'html.twig';
 		}
+		rtn.infoJson = '';
 		if( utils79.is_file(realpath+'/info.json') ){
 			rtn.infoJson = require('fs').readFileSync(realpath+'/info.json').toString();
 		}
@@ -41,6 +42,11 @@ module.exports = function(px2me, data, callback){
 		if( utils79.is_file(realpath+'/module.js') ){
 			rtn.js = require('fs').readFileSync(realpath+'/module.js').toString();
 			rtn.jsExt = 'js';
+		}
+
+		rtn.finalizeJs = '';
+		if( utils79.is_file(realpath+'/finalize.js') ){
+			rtn.finalizeJs = require('fs').readFileSync(realpath+'/finalize.js').toString();
 		}
 
 		callback(rtn);

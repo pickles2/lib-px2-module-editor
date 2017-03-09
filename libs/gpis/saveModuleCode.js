@@ -43,6 +43,13 @@ module.exports = function(px2me, data, callback){
 			}
 		} catch (e) {}
 
+		try { require('fs').unlinkSync(realpath+'/finalize.js'); } catch (e) {}
+		try {
+			if( utils79.toStr( data.data.finalizeJs ).length ){
+				require('fs').writeFileSync(realpath+'/finalize.js', data.data.finalizeJs);
+			}
+		} catch (e) {}
+
 		callback(true);
 		return;
 	});
