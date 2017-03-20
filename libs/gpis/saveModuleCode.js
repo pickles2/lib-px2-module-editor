@@ -22,7 +22,14 @@ module.exports = function(px2me, data, callback){
 
 		try { require('fs').unlinkSync(realpath+'/template.html'); } catch (e) {}
 		try { require('fs').unlinkSync(realpath+'/template.html.twig'); } catch (e) {}
-		try { require('fs').writeFileSync(realpath+'/template.'+data.data.templateExt, data.data.template); } catch (e) {}
+		try {
+			if( utils79.toStr( data.data.clipJson ).length && !utils79.toStr(data.data.template).length ){
+				// clip に値があって、 template に値がない場合、
+				// クリップモジュールとみなしてテンプレートファイルの生成は行わない。
+			}else{
+				require('fs').writeFileSync(realpath+'/template.'+data.data.templateExt, data.data.template);
+			}
+		} catch (e) {}
 
 		try {
 			require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(JSON.parse(data.data.infoJson), null, 2));
