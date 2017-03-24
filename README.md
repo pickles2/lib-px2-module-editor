@@ -101,6 +101,7 @@ var pickles2ModuleEditor = new Pickles2ModuleEditor();
 pickles2ModuleEditor.init(
 	{
 		'elmCanvas': document.getElementById('canvas'), // <- 編集画面を描画するための器となる要素
+		'lang': 'en', // language
 		'preview':{ // プレビュー用サーバーの情報を設定します。
 			'origin': 'http://127.0.0.1:8081'
 		},

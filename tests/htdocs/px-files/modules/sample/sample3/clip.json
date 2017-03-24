@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "modId": "local:dev/sample",
+      "fields": {
+        "fieldname1": "<p>HTMLコードを入力しますよ。</p>"
+      },
+      "anchor": "",
+      "dec": ""
+    }
+  ],
+  "resources": {}
+}

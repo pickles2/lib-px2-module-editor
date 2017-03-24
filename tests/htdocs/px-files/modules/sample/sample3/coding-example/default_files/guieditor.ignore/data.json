@@ -1,0 +1,39 @@
+{
+ "bowl": {
+  "main": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "local:sample/sample",
+      "fields": {
+       "main": {
+        "src": "## クリップモジュールにクリップしてみます。",
+        "editor": "markdown"
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "local:sample/sample",
+      "fields": {
+       "main": {
+        "src": "## クリップモジュールにクリップしてみます。",
+        "editor": "markdown"
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "local:sample/sample2",
+      "fields": {}
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  }
+ }
+}
