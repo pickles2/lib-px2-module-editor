@@ -14,18 +14,6 @@
 		}
 	})().replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 
-	// bootstrap をロード
-	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/bootstrap/dist/css/bootstrap.css" />');
-	document.write('<script src="'+__dirname+'/libs/bootstrap/dist/js/bootstrap.js"></script>');
-
-	// px2style をロード
-	document.write('<script src="'+__dirname+'/libs/px2style/dist/scripts.js"></script>');
-	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/px2style/dist/styles.css" />');
-
-	// pickles2-contents-editor をロード
-	document.write('<link rel="stylesheet" href="'+__dirname+'/libs/pickles2-contents-editor/dist/pickles2-contents-editor.css" />');
-	document.write('<script src="'+__dirname+'/libs/pickles2-contents-editor/dist/pickles2-contents-editor.js"></script>');
-
 	window.Pickles2ModuleEditor = function(){
 		var $ = require('jquery');
 		var Promise = require('es6-promise').Promise;
