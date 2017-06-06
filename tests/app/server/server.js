@@ -25,7 +25,12 @@ console.log('Pickles 2 preview server port number is '+conf.px2server.originPars
 
 
 app.use( require('body-parser')() );
-app.use( '/common/', express.static( path.resolve(__dirname, '../../../dist/') ) );
+app.use( '/common/bootstrap/', express.static( path.resolve(__dirname, '../../../node_modules/bootstrap/dist/') ) );
+app.use( '/common/pickles2-contents-editor/', express.static( path.resolve(__dirname, '../../../node_modules/pickles2-contents-editor/dist/') ) );
+app.use( '/common/broccoli-html-editor/', express.static( path.resolve(__dirname, '../../../node_modules/broccoli-html-editor/client/dist/') ) );
+app.use( '/common/px2style/', express.static( path.resolve(__dirname, '../../../node_modules/px2style/dist/') ) );
+app.use( '/common/ace-builds/', express.static( path.resolve(__dirname, '../../../node_modules/ace-builds/src-noconflict/') ) );
+app.use( '/common/pickles2-module-editor/', express.static( path.resolve(__dirname, '../../../dist/') ) );
 app.use( '/apis/px2me', require('./apis/px2me.js')() );
 
 app.use( express.static( __dirname+'/../client/' ) );
