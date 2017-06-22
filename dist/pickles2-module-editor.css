@@ -32,7 +32,7 @@
         content: ')'; }
   .pickles2-module-editor__buttons {
     display: block;
-    padding: 10px 0;
+    padding: 5px 0;
     margin: 0; }
     .pickles2-module-editor__buttons > li {
       display: inline-block;
@@ -40,7 +40,7 @@
       margin: 0;
       list-style-type: none; }
   .pickles2-module-editor__packageList {
-    margin: 1em 0;
+    margin: 0.5em 0;
     padding: 0; }
   .pickles2-module-editor__packageList > li {
     display: block;
@@ -52,7 +52,7 @@
     border-radius: 3px;
     color: #fff; }
   .pickles2-module-editor__categoryList {
-    margin: 1em 0;
+    margin: 0.5em 0;
     padding: 0; }
   .pickles2-module-editor__categoryList > li {
     display: block;
@@ -64,7 +64,7 @@
     border-radius: 3px;
     color: #333; }
   .pickles2-module-editor__moduleList {
-    margin: 1em 0;
+    margin: 0.3em 0;
     padding: 0; }
   .pickles2-module-editor__moduleList > li {
     display: block;
