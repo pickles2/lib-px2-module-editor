@@ -17809,7 +17809,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+					$('<button class="px2-btn px2-btn--primary">').text('SAVE & CLOSE').on('click', function(){
 						save(function(result){
 							broccoli.saveContents(function(result){
 								$(window).off('resize.editModule');
@@ -17821,21 +17821,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 					})
 				]
 			});
-			$canvasContent.find('button')
-				.on('click', function(){
-					save(function(result){
-						loadBroccoli(function(){
-						});
-					});
-				})
-			;
 			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// broccoli-html-editor インスタンスを生成
-			loadBroccoli(function(){
-				rlv();
-			});
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			px2me.closeProgress(function(){
@@ -17884,6 +17870,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		});
 		return;
 	}
+
+	/**
+	 * broccoli-html-editorをロードしてプレビュー画面を生成する
+	 */
 	function loadBroccoli(callback){
 		callback = callback || function(){};
 
@@ -17927,7 +17917,26 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		);
 
 		return;
-	}
+	} // loadBroccoli();
+
+	/**
+	 * broccoli-html-editorをアンロードする
+	 */
+	function unloadBroccoli(callback){
+		callback = callback || function(){};
+
+		var $frame = $canvasContent
+			.find('.pickles2-module-editor__module-edit__preview')
+		;
+		$frame.html('');
+
+		broccoli = undefined;
+		delete(broccoli);
+		callback();
+
+		return;
+	} // unloadBroccoli();
+
 
 	function changeTabTo(target){
 		if(target){
@@ -17947,6 +17956,26 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		$targetTab.find('textarea').css({
 			'height': $editModuleWindow.innerHeight() - 60 - height_h2 - height_select
 		});
+
+		new Promise(function(rlv){rlv();})
+			.then(function(){ return new Promise(function(rlv, rjt){
+				if( currentTab == 'preview' ){
+					px2me.progress( function(){
+						save(function(result){
+							loadBroccoli(function(){
+								px2me.closeProgress(function(){
+									rlv();
+								});
+							});
+						});
+					} );
+				}else{
+					unloadBroccoli(function(){
+						rlv();
+					});
+				}
+			}); })
+		;
 	}
 
 	function windowResizedEvent(){
