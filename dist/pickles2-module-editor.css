@@ -81,12 +81,23 @@
     font-size: 14px; }
   .pickles2-module-editor__module-edit__tab {
     display: flex;
-    padding: 5px 0; }
-    .pickles2-module-editor__module-edit__tab > * {
+    justify-content: center;
+    padding: 5px 0;
+    min-width: 100%;
+    overflow: hidden; }
+    .pickles2-module-editor__module-edit__tab > button {
       width: auto;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap; }
+      white-space: nowrap;
+      padding-left: 2px;
+      padding-right: 2px;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: auto;
+      transition: flex-grow 0.2s, flex-shrink 0.2s; }
+      .pickles2-module-editor__module-edit__tab > button:hover {
+        flex-grow: 2; }
   .pickles2-module-editor__module-edit__layout {
     position: relative;
     width: 100%;

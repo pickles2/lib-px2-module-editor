@@ -70,16 +70,16 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">').text('SAVE & CLOSE').on('click', function(){
-						save(function(result){
-							broccoli.saveContents(function(result){
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('SAVE & CLOSE')
+						.on('click', function(){
+							save(function(result){
 								$(window).off('resize.editModule');
 								px2me.loadPage('list', {}, function(){
 									px2me.closeModal();
 								});
 							});
-						});
-					})
+						})
 				]
 			});
 			rlv();
