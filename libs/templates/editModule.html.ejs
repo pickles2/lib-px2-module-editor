@@ -1,38 +1,62 @@
-<form action="javascript:;" method="post">
+<form action="javascript:;" method="post" class="pickles2-module-editor__module-edit">
+	<div class="pickles2-module-editor__module-edit__tab">
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="infojson">info.json</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="html">HTML</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="css">CSS</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="js">JavaScript</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="finalizejs">finalize.js</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="clipjson">clip.json</button>
+		<button class="px2-btn px2-btn--sm" data-pickles2-module-editor-target="preview">Preview</button>
+	</div>
 
-	<h2>info.json</h2>
-	<textarea name="infoJson" class="form-control"></textarea>
+	<div class="pickles2-module-editor__module-edit__layout">
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--infojson">
+			<h2>info.json</h2>
+			<textarea name="infoJson" class="form-control"></textarea>
+		</div>
 
-	<h2>HTML</h2>
-	<select name="templateExt" class="form-control">
-		<option value="html">.html</option>
-		<option value="html.twig">.html.twig</option>
-	</select>
-	<textarea name="template" class="form-control"></textarea>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--html">
+			<h2>HTML</h2>
+			<select name="templateExt" class="form-control">
+				<option value="html">.html</option>
+				<option value="html.twig">.html.twig</option>
+			</select>
+			<textarea name="template" class="form-control"></textarea>
+		</div>
 
-	<h2>CSS (SCSS)</h2>
-	<select name="cssExt" class="form-control">
-		<option value="css">.css</option>
-		<option value="css.scss">.css.scss</option>
-	</select>
-	<textarea name="css" class="form-control"></textarea>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--css">
+			<h2>CSS</h2>
+			<select name="cssExt" class="form-control">
+				<option value="css">.css</option>
+				<option value="css.scss">.css.scss</option>
+			</select>
+			<textarea name="css" class="form-control"></textarea>
+		</div>
 
-	<h2>JavaScript</h2>
-	<select name="jsExt" class="form-control">
-		<option value="js">.js</option>
-	</select>
-	<textarea name="js" class="form-control"></textarea>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--js">
+			<h2>JavaScript</h2>
+			<select name="jsExt" class="form-control">
+				<option value="js">.js</option>
+			</select>
+			<textarea name="js" class="form-control"></textarea>
+		</div>
 
-	<h2>finalize.js</h2>
-	<textarea name="finalizeJs" class="form-control"></textarea>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--finalizejs">
+			<h2>finalize.js</h2>
+			<textarea name="finalizeJs" class="form-control"></textarea>
+		</div>
 
-	<h2>clip.json</h2>
-	<textarea name="clipJson" class="form-control"></textarea>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--clipjson">
+			<h2>clip.json</h2>
+			<textarea name="clipJson" class="form-control"></textarea>
+		</div>
 
-	<p><button class="px2-btn px2-btn--primary">SAVE</button></p>
+		<div class="pickles2-module-editor__module-edit__layout__content pickles2-module-editor__module-edit__layout__content--preview">
+			<h2>Preview</h2>
+			<div class="pickles2-module-editor__module-edit__preview"></div>
 
-	<hr />
-	<h2>Preview</h2>
-	<div class="pickles2-module-editor__module-edit__preview"></div>
+		</div>
+
+	</div><!-- / .pickles2-module-editor__module-edit__layout -->
 
 </form>
