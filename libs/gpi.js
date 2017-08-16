@@ -15,8 +15,8 @@ module.exports = function(px2me, data, callback){
 	}
 
 	// API をロードして実行
-	if( utils79.is_file(__dirname+'/gpis/'+data.api+'.js') ){
-		var Api = require('./gpis/'+data.api+'.js');
+	if( utils79.is_file(__dirname+'/gpis/'+encodeURIComponent(data.api)+'.js') ){
+		var Api = require('./gpis/'+encodeURIComponent(data.api)+'.js');
 		var api = new Api(px2me, data, function(result){
 			callback(result);
 		});

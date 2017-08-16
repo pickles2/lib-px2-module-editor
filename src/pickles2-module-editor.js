@@ -27,14 +27,19 @@
 		this.moduleId;
 
 		var px2meConf,
+			px2conf,
 			templates;
 		var pages = {
 			'list': require('./pages/list/index.js'),
 			'editModule': require('./pages/editModule/index.js'),
 			'editCategory': require('./pages/editCategory/index.js'),
 			'editPackage': require('./pages/editPackage/index.js'),
+			'addNewPackage': require('./pages/addNewPackage/index.js'),
 			'addNewCategory': require('./pages/addNewCategory/index.js'),
-			'addNewModule': require('./pages/addNewModule/index.js')
+			'addNewModule': require('./pages/addNewModule/index.js'),
+			'deletePackage': require('./pages/deletePackage/index.js'),
+			'deleteCategory': require('./pages/deleteCategory/index.js'),
+			'deleteModule': require('./pages/deleteModule/index.js')
 		};
 		var px2ce;
 
@@ -43,10 +48,9 @@
 		*/
 		this.init = function(options, callback){
 			console.info('initialize pickles2-module-editor...');
-
 			callback = callback || function(){};
-			var _this = this;
 			// console.log(options);
+
 			this.options = options;
 			this.options.gpiBridge = this.options.gpiBridge || function(){ alert('gpiBridge required.'); };
 			this.options.complete = this.options.complete || function(){ alert('finished.'); };
@@ -117,6 +121,16 @@
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
 						px2meConf = conf;
+						_this.px2meConf = px2meConf;
+						// console.log(px2meConf);
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getPickles2Config( function(conf){
+						px2conf = conf;
+						_this.px2conf = px2conf;
+						// console.log(px2conf);
 						rlv();
 					} );
 				}); })
@@ -195,6 +209,22 @@
 			this.gpiBridge(
 				{
 					'api':'getConfig'
+				},
+				function(conf){
+					callback(conf);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * Pickles 2 のコンフィグ情報を取得する
+		 */
+		this.getPickles2Config = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPickles2Config'
 				},
 				function(conf){
 					callback(conf);
