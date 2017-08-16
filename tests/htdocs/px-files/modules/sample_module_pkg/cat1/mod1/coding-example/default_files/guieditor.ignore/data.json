@@ -1,0 +1,24 @@
+{
+ "bowl": {
+  "main": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "sample_module_pkg:cat1/mod1",
+      "fields": {
+       "main_text": {
+        "src": "## これは開発中の画面です\n\nメインテキストを入力します。 `Markdown` で。",
+        "editor": "markdown"
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  }
+ }
+}
