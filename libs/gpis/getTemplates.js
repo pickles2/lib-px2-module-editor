@@ -13,7 +13,7 @@ module.exports = function(px2me, data, callback){
 	templates['addNewPackage'] = require('fs').readFileSync(__dirname+'/../templates/addNewPackage.html.ejs').toString();
 	templates['addNewCategory'] = require('fs').readFileSync(__dirname+'/../templates/addNewCategory.html.ejs').toString();
 	templates['addNewModule'] = require('fs').readFileSync(__dirname+'/../templates/addNewModule.html.ejs').toString();
-	// templates['deletePackage'] = require('fs').readFileSync(__dirname+'/../templates/deletePackage.html.ejs').toString();
+	templates['deletePackage'] = require('fs').readFileSync(__dirname+'/../templates/deletePackage.html.ejs').toString();
 	// templates['deleteCategory'] = require('fs').readFileSync(__dirname+'/../templates/deleteCategory.html.ejs').toString();
 	// templates['deleteModule'] = require('fs').readFileSync(__dirname+'/../templates/deleteModule.html.ejs').toString();
 

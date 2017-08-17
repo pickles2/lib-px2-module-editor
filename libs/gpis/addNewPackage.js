@@ -11,7 +11,7 @@ module.exports = function(px2me, data, callback){
 
 		var realpath;
 		try {
-			realpath = require('path').resolve(px2me.entryScript, '..', px2me.px2conf.plugins.px2dt.path_module_templates_dir);
+			realpath = require('path').resolve(px2me.entryScript, '..', px2me.px2conf.plugins.px2dt.path_module_templates_dir)+'/';
 		} catch (e) {
 		}
 		if( !utils79.is_dir(realpath) ){

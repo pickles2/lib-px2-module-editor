@@ -397,6 +397,24 @@
 		}
 
 		/**
+		 * broccoli モジュールパッケージを削除
+		 */
+		this.deletePackage = function(packageId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deletePackage',
+					'packageId': packageId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
 		this.addNewCategory = function(packageId, data, callback){

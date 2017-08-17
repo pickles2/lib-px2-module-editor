@@ -1,5 +1,5 @@
 /**
- * pages/addNewCategory/index.js
+ * pages/addNewPackage/index.js
  */
 module.exports = function(px2me, $canvasContent, options, callback){
 	callback = callback||function(){};
