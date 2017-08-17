@@ -16989,14 +16989,19 @@ module.exports = exports['default'];
 		this.moduleId;
 
 		var px2meConf,
+			px2conf,
 			templates;
 		var pages = {
 			'list': require('./pages/list/index.js'),
 			'editModule': require('./pages/editModule/index.js'),
 			'editCategory': require('./pages/editCategory/index.js'),
 			'editPackage': require('./pages/editPackage/index.js'),
+			'addNewPackage': require('./pages/addNewPackage/index.js'),
 			'addNewCategory': require('./pages/addNewCategory/index.js'),
-			'addNewModule': require('./pages/addNewModule/index.js')
+			'addNewModule': require('./pages/addNewModule/index.js'),
+			'deletePackage': require('./pages/deletePackage/index.js'),
+			'deleteCategory': require('./pages/deleteCategory/index.js'),
+			'deleteModule': require('./pages/deleteModule/index.js')
 		};
 		var px2ce;
 
@@ -17005,10 +17010,9 @@ module.exports = exports['default'];
 		*/
 		this.init = function(options, callback){
 			console.info('initialize pickles2-module-editor...');
-
 			callback = callback || function(){};
-			var _this = this;
 			// console.log(options);
+
 			this.options = options;
 			this.options.gpiBridge = this.options.gpiBridge || function(){ alert('gpiBridge required.'); };
 			this.options.complete = this.options.complete || function(){ alert('finished.'); };
@@ -17079,6 +17083,16 @@ module.exports = exports['default'];
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
 						px2meConf = conf;
+						_this.px2meConf = px2meConf;
+						// console.log(px2meConf);
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getPickles2Config( function(conf){
+						px2conf = conf;
+						_this.px2conf = px2conf;
+						// console.log(px2conf);
 						rlv();
 					} );
 				}); })
@@ -17157,6 +17171,22 @@ module.exports = exports['default'];
 			this.gpiBridge(
 				{
 					'api':'getConfig'
+				},
+				function(conf){
+					callback(conf);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * Pickles 2 のコンフィグ情報を取得する
+		 */
+		this.getPickles2Config = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPickles2Config'
 				},
 				function(conf){
 					callback(conf);
@@ -17312,6 +17342,41 @@ module.exports = exports['default'];
 		}
 
 		/**
+		 * broccoli モジュールパッケージを新規追加
+		 */
+		this.addNewPackage = function(data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'addNewPackage',
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールパッケージを削除
+		 */
+		this.deletePackage = function(packageId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deletePackage',
+					'packageId': packageId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
 		this.addNewCategory = function(packageId, data, callback){
@@ -17330,6 +17395,24 @@ module.exports = exports['default'];
 		}
 
 		/**
+		 * broccoli モジュールカテゴリを削除
+		 */
+		this.deleteCategory = function(categoryId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteCategory',
+					'categoryId': categoryId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールを新規追加する
 		 */
 		this.addNewModule = function(categoryId, data, callback){
@@ -17339,6 +17422,24 @@ module.exports = exports['default'];
 					'api':'addNewModule',
 					'categoryId': categoryId,
 					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールを削除する
+		 */
+		this.deleteModule = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteModule',
+					'moduleId': moduleId,
+					'data': {}
 				},
 				function(result){
 					callback(result);
@@ -17503,7 +17604,7 @@ module.exports = exports['default'];
 	}
 })();
 
-},{"./pages/addNewCategory/index.js":101,"./pages/addNewModule/index.js":102,"./pages/editCategory/index.js":103,"./pages/editModule/index.js":104,"./pages/editPackage/index.js":105,"./pages/list/index.js":106,"ejs":10,"es6-promise":13,"jquery":15}],101:[function(require,module,exports){
+},{"./pages/addNewCategory/index.js":101,"./pages/addNewModule/index.js":102,"./pages/addNewPackage/index.js":103,"./pages/deleteCategory/index.js":104,"./pages/deleteModule/index.js":105,"./pages/deletePackage/index.js":106,"./pages/editCategory/index.js":107,"./pages/editModule/index.js":108,"./pages/editPackage/index.js":109,"./pages/list/index.js":110,"ejs":10,"es6-promise":13,"jquery":15}],101:[function(require,module,exports){
 /**
  * pages/addNewCategory/index.js
  */
@@ -17552,6 +17653,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						var data = {};
 						data.categoryId = $canvasContent.find('[name=categoryId]').val();
@@ -17639,6 +17745,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規モジュールを追加",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						var data = {};
 						data.moduleId = $canvasContent.find('[name=moduleId]').val();
@@ -17677,6 +17788,350 @@ module.exports = function(px2me, $canvasContent, options, callback){
 }
 
 },{"es6-promise":13,"jquery":15,"utils79":35}],103:[function(require,module,exports){
+/**
+ * pages/addNewPackage/index.js
+ */
+module.exports = function(px2me, $canvasContent, options, callback){
+	callback = callback||function(){};
+	var $ = require('jquery');
+	var utils79 = require('utils79');
+	var Promise = require('es6-promise').Promise;
+
+	new Promise(function(rlv){rlv();})
+		.then(function(){ return new Promise(function(rlv, rjt){
+			console.log('loading addNewPackage page...');
+			px2me.progress( function(){
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// 編集画面を描画
+			var html = px2me.bindEjs(
+				px2me.getTemplates('addNewPackage'),
+				{}
+			);
+			$canvasContent.html('').append(html);
+
+			$canvasContent.find('[name=packageId]').val( '' );
+			$canvasContent.find('[name=packageName]').val( '' );
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "新規パッケージを追加",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						var data = {};
+						data.packageId = $canvasContent.find('[name=packageId]').val();
+						data.packageName = $canvasContent.find('[name=packageName]').val();
+
+						px2me.addNewPackage(data, function(result){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
+						})
+					})
+				]
+			});
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			px2me.closeProgress(function(){
+				rlv();
+			});
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			callback();
+			rlv();
+		}); })
+		.catch(function(){
+			px2me.closeProgress(function(){
+				px2me.loadPage('list', {}, function(){
+					px2me.closeModal(function(){
+						callback();
+					});
+				});
+			});
+		})
+	;
+
+}
+
+},{"es6-promise":13,"jquery":15,"utils79":35}],104:[function(require,module,exports){
+/**
+ * pages/deleteCategory/index.js
+ */
+module.exports = function(px2me, $canvasContent, options, callback){
+	callback = callback||function(){};
+	var $ = require('jquery');
+	var utils79 = require('utils79');
+	var Promise = require('es6-promise').Promise;
+
+	new Promise(function(rlv){rlv();})
+		.then(function(){ return new Promise(function(rlv, rjt){
+			console.log('loading deleteCategory page...');
+			px2me.progress( function(){
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// 編集画面を描画
+			// console.log(options);
+			px2me.getCategoryCode( options.categoryId, function(categoryCode){
+				// console.log(categoryCode);
+
+				if( !categoryCode.editable ){
+					alert('このモジュールは編集許可されていないパスにあります。');
+					rjt();
+					return;
+				}
+
+				var html = px2me.bindEjs(
+					px2me.getTemplates('deleteCategory'),
+					{
+						'categoryId': options.categoryId,
+						'categoryCode': categoryCode
+					}
+				);
+				$canvasContent.html('').append(html);
+
+				$canvasContent.find('[name=infoJson]').val( categoryCode.infoJson );
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "カテゴリを削除",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
+					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
+						px2me.deleteCategory(options.categoryId, function(result){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
+						})
+					})
+				]
+			});
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			px2me.closeProgress(function(){
+				rlv();
+			});
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			callback();
+			rlv();
+		}); })
+		.catch(function(){
+			px2me.closeProgress(function(){
+				px2me.loadPage('list', {}, function(){
+					px2me.closeModal(function(){
+						callback();
+					});
+				});
+			});
+		})
+	;
+
+}
+
+},{"es6-promise":13,"jquery":15,"utils79":35}],105:[function(require,module,exports){
+/**
+ * pages/deleteModule/index.js
+ */
+module.exports = function(px2me, $canvasContent, options, callback){
+	callback = callback||function(){};
+	var $ = require('jquery');
+	var utils79 = require('utils79');
+	var Promise = require('es6-promise').Promise;
+	var $deleteModuleWindow,
+		$previewWin,
+		$previewEditorWin;
+	var broccoli;
+	var currentTab;
+
+	px2me.moduleId = options.moduleId;
+
+	new Promise(function(rlv){rlv();})
+		.then(function(){ return new Promise(function(rlv, rjt){
+			console.log('loading deleteModule page...');
+			px2me.progress( function(){
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// 編集画面を描画
+			// console.log(options);
+			console.log('module ID:', options.moduleId);
+			px2me.getModuleCode( options.moduleId, function(moduleCode){
+				// console.log(moduleCode);
+
+				if( !moduleCode.editable ){
+					alert('このモジュールは編集許可されていないパスにあります。');
+					rjt();
+					return;
+				}
+
+				var html = px2me.bindEjs(
+					px2me.getTemplates('deleteModule'),
+					{
+						'moduleId': options.moduleId,
+						'moduleCode': moduleCode
+					}
+				);
+				$deleteModuleWindow = $(html);
+				$canvasContent.html('').append($deleteModuleWindow);
+
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "モジュールを削除",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
+					$('<button class="px2-btn px2-btn--danger">')
+						.text('削除する')
+						.on('click', function(){
+							px2me.deleteModule(options.moduleId, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				]
+			});
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			px2me.closeProgress(function(){
+				rlv();
+			});
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			callback();
+			rlv();
+		}); })
+		.catch(function(){
+			px2me.closeProgress(function(){
+				px2me.loadPage('list', {}, function(){
+					px2me.closeModal(function(){
+						callback();
+					});
+				});
+			});
+		})
+	;
+
+}
+
+},{"es6-promise":13,"jquery":15,"utils79":35}],106:[function(require,module,exports){
+/**
+ * pages/deletePackage/index.js
+ */
+module.exports = function(px2me, $canvasContent, options, callback){
+	callback = callback||function(){};
+
+	var $ = require('jquery');
+	var utils79 = require('utils79');
+	var Promise = require('es6-promise').Promise;
+
+	new Promise(function(rlv){rlv();})
+		.then(function(){ return new Promise(function(rlv, rjt){
+			console.log('loading deletePackage page...');
+			px2me.progress( function(){
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// 編集画面を描画
+			// console.log(options);
+			px2me.getPackageCode( options.packageId, function(packageCode){
+				// console.log(packageCode);
+
+				if( !packageCode.editable ){
+					alert('このモジュールは編集許可されていないパスにあります。');
+					rjt();
+					return;
+				}
+				var html = px2me.bindEjs(
+					px2me.getTemplates('deletePackage'),
+					{
+						'packageId': options.packageId,
+						'packageCode': packageCode
+					}
+				);
+				$canvasContent.html('').append(html);
+				rlv();
+			} );
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			// モーダルダイアログを開く
+			px2me.modal({
+				"title": "パッケージを削除する",
+				"body": $canvasContent,
+				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
+					$('<button class="px2-btn px2-btn--danger">').text('削除する').click(function(){
+						px2me.deletePackage(options.packageId, function(result){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
+							});
+						})
+
+					})
+				]
+			});
+			rlv();
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			px2me.closeProgress(function(){
+				rlv();
+			});
+		}); })
+		.then(function(){ return new Promise(function(rlv, rjt){
+			callback();
+			rlv();
+		}); })
+		.catch(function(){
+			px2me.closeProgress(function(){
+				px2me.loadPage('list', {}, function(){
+					px2me.closeModal(function(){
+						callback();
+					});
+				});
+			});
+		})
+	;
+
+}
+
+},{"es6-promise":13,"jquery":15,"utils79":35}],107:[function(require,module,exports){
 /**
  * pages/editCategory/index.js
  */
@@ -17724,6 +18179,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "カテゴリを編集",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						var data = {};
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
@@ -17760,7 +18220,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":13,"jquery":15,"utils79":35}],104:[function(require,module,exports){
+},{"es6-promise":13,"jquery":15,"utils79":35}],108:[function(require,module,exports){
 /**
  * pages/editModule/index.js
  */
@@ -17833,6 +18293,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "モジュールを編集",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">')
 						.text('SAVE & CLOSE')
 						.on('click', function(){
@@ -18017,7 +18482,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":13,"jquery":15,"utils79":35}],105:[function(require,module,exports){
+},{"es6-promise":13,"jquery":15,"utils79":35}],109:[function(require,module,exports){
 /**
  * pages/editPackage/index.js
  */
@@ -18065,6 +18530,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "パッケージを編集する",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						var data = {};
 						data.infoJson = $canvasContent.find('[name=infoJson]').val();
@@ -18102,7 +18572,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 }
 
-},{"es6-promise":13,"jquery":15,"utils79":35}],106:[function(require,module,exports){
+},{"es6-promise":13,"jquery":15,"utils79":35}],110:[function(require,module,exports){
 /**
  * pages/list/index.js
  */
@@ -18126,7 +18596,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 				var html = px2me.bindEjs(
 					px2me.getTemplates('list'),
-					{'packageList': packageList}
+					{
+						'packageList': packageList,
+						'px2conf': px2me.px2conf
+					}
 				);
 				$canvasContent.html('').append(html);
 				rlv();
@@ -18151,20 +18624,32 @@ module.exports = function(px2me, $canvasContent, options, callback){
 							}
 						);
 						break;
+					case 'addNewPackage':
+						px2me.loadPage('addNewPackage', {}, function(){});
+						break;
 					case 'editPackage':
 						px2me.loadPage('editPackage', {'packageId': target}, function(){});
 						break;
-					case 'editCategory':
-						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
+					case 'deletePackage':
+						px2me.loadPage('deletePackage', {'packageId': target}, function(){});
 						break;
 					case 'addNewCategory':
 						px2me.loadPage('addNewCategory', {'packageId': target}, function(){});
 						break;
-					case 'editModule':
-						px2me.loadPage('editModule', {'moduleId': target}, function(){});
+					case 'editCategory':
+						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
+						break;
+					case 'deleteCategory':
+						px2me.loadPage('deleteCategory', {'categoryId': target}, function(){});
 						break;
 					case 'addNewModule':
 						px2me.loadPage('addNewModule', {'categoryId': target}, function(){});
+						break;
+					case 'editModule':
+						px2me.loadPage('editModule', {'moduleId': target}, function(){});
+						break;
+					case 'deleteModule':
+						px2me.loadPage('deleteModule', {'moduleId': target}, function(){});
 						break;
 					default:
 						alert('ERROR: unknown action. - '+act);
