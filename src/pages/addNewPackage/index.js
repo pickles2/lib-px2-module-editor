@@ -32,6 +32,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規パッケージを追加",
 				"body": $canvasContent,
 				"buttons": [
+					$('<button class="px2-btn">').text('キャンセル').click(function(){
+						px2me.loadPage('list', {}, function(){
+							px2me.closeModal();
+						});
+					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
 						var data = {};
 						data.packageId = $canvasContent.find('[name=packageId]').val();
