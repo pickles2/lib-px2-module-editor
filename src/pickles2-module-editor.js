@@ -433,6 +433,24 @@
 		}
 
 		/**
+		 * broccoli モジュールカテゴリを削除
+		 */
+		this.deleteCategory = function(categoryId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteCategory',
+					'categoryId': categoryId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールを新規追加する
 		 */
 		this.addNewModule = function(categoryId, data, callback){
@@ -442,6 +460,24 @@
 					'api':'addNewModule',
 					'categoryId': categoryId,
 					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールを削除する
+		 */
+		this.deleteModule = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteModule',
+					'moduleId': moduleId,
+					'data': {}
 				},
 				function(result){
 					callback(result);

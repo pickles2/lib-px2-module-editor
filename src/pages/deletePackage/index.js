@@ -10,7 +10,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 	new Promise(function(rlv){rlv();})
 		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading editPackage page...');
+			console.log('loading deletePackage page...');
 			px2me.progress( function(){
 				rlv();
 			} );

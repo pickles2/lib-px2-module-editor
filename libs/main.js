@@ -55,12 +55,18 @@ module.exports = function(){
 			_this.getProjectInfo(function(pjInfo){
 				// console.log(pjInfo);
 				_this.pjInfo = pjInfo;
-				_this.px2conf = pjInfo.conf;
+				_this.px2conf = pjInfo.conf || {};
 				_this.pageInfo = pjInfo.pageInfo;
 				_this.documentRoot = pjInfo.documentRoot;
 				_this.contRoot = pjInfo.contRoot;
 				_this.realpathDataDir = pjInfo.realpathDataDir;
 				_this.pathResourceDir = pjInfo.pathResourceDir;
+
+				// configを初期化
+				_this.px2conf.plugins = _this.px2conf.plugins || {};
+				_this.px2conf.plugins.px2dt = _this.px2conf.plugins.px2dt || {};
+				_this.px2conf.plugins.px2dt.paths_module_template = _this.px2conf.plugins.px2dt.paths_module_template || {};
+				_this.px2conf.plugins.px2dt.path_module_templates_dir = _this.px2conf.plugins.px2dt.path_module_templates_dir || null;
 
 				callback();
 			});

@@ -20,7 +20,7 @@
 			<li><button type="button" class="px2-btn" data-pickles2-module-editor--action="addNewCategory" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>">ADD NEW CATEGORY</button></li>
 			<li><button type="button" class="px2-btn px2-btn--primary" data-pickles2-module-editor--action="editPackage" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>">EDIT PACKAGE</button></li>
 			<% if( !px2conf.plugins.px2dt.paths_module_template[packageId] ){ %>
-				<li><button type="button" class="px2-btn px2-btn--danger" data-pickles2-module-editor--action="deletePackage" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>">DELETE PACKAGE</button></li>
+				<li><button type="button" class="px2-btn px2-btn--danger" data-pickles2-module-editor--action="deletePackage" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>">DELETE</button></li>
 			<%} %>
 		</ul>
 		<%} %>
@@ -35,6 +35,7 @@
 				<ul class="pickles2-module-editor__buttons">
 					<li><button type="button" class="px2-btn" data-pickles2-module-editor--action="addNewModule" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>:<%= packageList[packageId].categories[categoryId].categoryId %>">ADD NEW MODULE</button></li>
 					<li><button type="button" class="px2-btn px2-btn--primary" data-pickles2-module-editor--action="editCategory" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>:<%= packageList[packageId].categories[categoryId].categoryId %>">EDIT CATEGORY</button></li>
+					<li><button type="button" class="px2-btn px2-btn--danger" data-pickles2-module-editor--action="deleteCategory" data-pickles2-module-editor--target="<%= packageList[packageId].packageId %>:<%= packageList[packageId].categories[categoryId].categoryId %>">DELETE</button></li>
 				</ul>
 				<%} %>
 				<ul class="pickles2-module-editor__moduleList"><% for( var moduleId in packageList[packageId].categories[categoryId].modules ){ %>
@@ -46,6 +47,7 @@
 						<% if( packageList[packageId].isEditable ){ %>
 						<ul class="pickles2-module-editor__buttons">
 							<li><button type="button" class="px2-btn px2-btn--primary" data-pickles2-module-editor--action="editModule" data-pickles2-module-editor--target="<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>">EDIT MODULE</button></li>
+							<li><button type="button" class="px2-btn px2-btn--danger" data-pickles2-module-editor--action="deleteModule" data-pickles2-module-editor--target="<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>">DELETE</button></li>
 						</ul>
 						<%} %>
 					</li>
