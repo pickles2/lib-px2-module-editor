@@ -59,6 +59,7 @@ module.exports = function(){
 				_this.pageInfo = pjInfo.pageInfo;
 				_this.documentRoot = pjInfo.documentRoot;
 				_this.contRoot = pjInfo.contRoot;
+				_this.packages = pjInfo.packages || {};
 				_this.realpathDataDir = pjInfo.realpathDataDir;
 				_this.pathResourceDir = pjInfo.pathResourceDir;
 
@@ -156,6 +157,7 @@ module.exports = function(){
 							pjInfo.realpathDataDir = allData.realpath_data_dir;
 							pjInfo.pathResourceDir = allData.path_resource_dir;
 							pjInfo.realpath_homedir = allData.realpath_homedir;
+							pjInfo.packages = allData.packages;
 							callback(pjInfo);
 							return;
 
