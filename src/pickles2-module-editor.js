@@ -380,6 +380,23 @@
 		}
 
 		/**
+		 * broccoli モジュールパッケージを新規追加
+		 */
+		this.addNewPackage = function(data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'addNewPackage',
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
 		this.addNewCategory = function(packageId, data, callback){
