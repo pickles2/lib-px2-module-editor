@@ -35,24 +35,30 @@ module.exports = function(px2me, data, callback){
 		}
 
 		fs.mkdirSync(realpath);
-		// console.log(broccoli.paths_module_template);
-		// console.log(data.data.importFrom);
+		console.log(broccoli.paths_module_template);
+		console.log(data.data.importFrom);
 		if( data.data.importFrom.length ){
 			data.data.importFrom.match(/^(moduleCollection|modulePlugin)\:([\S]+)$/);
 			var fromDiv = RegExp.$1;
 			var fromId = RegExp.$2;
-			// console.log(fromDiv, fromId);
+			console.log(fromDiv, fromId);
 			if( fromDiv == 'moduleCollection' ){
 				fsx.copySync(
 					broccoli.paths_module_template[fromId],
 					realpath
 				);
 			}else if(fromDiv == 'modulePlugin'){
-				var pluginInfo = modulePluginList[fromId];
-				// px.utils.copy_r(
-				// 	pluginInfo.path,
-				// 	realpath
-				// );
+				try {
+console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-= modulePlugin');
+					var pluginInfo = px2me.packages.package_list.broccoliModules[fromId];
+console.log(pluginInfo);
+					fsx.copySync(
+						pluginInfo.path,
+						realpath
+					);
+console.log(realpath);
+				} catch (e) {
+				}
 			}
 		}
 

@@ -14,7 +14,7 @@
     <h3>プラグインパッケージからインポート</h3>
     <ul>
     <% for( var idx in pluginPackages ){ %>
-        <li><label><input type="radio" name="import_from" value="modulePlugin:<%= pluginPackages[idx].name %>" /> <%= pluginPackages[idx].name %></label></li>
+        <li><label><input type="radio" name="import_from" value="modulePlugin:<%= idx %>" /> <%= pluginPackages[idx].name %></label></li>
     <% } %>
     </ul>
     <h3>既存のパッケージからインポート</h3>

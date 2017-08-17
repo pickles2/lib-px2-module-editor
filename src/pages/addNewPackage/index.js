@@ -22,9 +22,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				{
 					'api':'getPluginPackage'
 				},
-				function(pluginPackages){
+				function(packages){
 					try {
-						pluginPackages = pluginPackages.package_list.broccoliModules;
+						pluginPackages = packages.package_list.broccoliModules;
 					} catch (e) {
 					}
 					// console.log(pluginPackages);
