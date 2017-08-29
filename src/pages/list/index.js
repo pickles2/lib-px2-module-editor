@@ -21,7 +21,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 				var html = px2me.bindEjs(
 					px2me.getTemplates('list'),
-					{'packageList': packageList}
+					{
+						'packageList': packageList,
+						'px2conf': px2me.px2conf
+					}
 				);
 				$canvasContent.html('').append(html);
 				rlv();
@@ -46,20 +49,32 @@ module.exports = function(px2me, $canvasContent, options, callback){
 							}
 						);
 						break;
+					case 'addNewPackage':
+						px2me.loadPage('addNewPackage', {}, function(){});
+						break;
 					case 'editPackage':
 						px2me.loadPage('editPackage', {'packageId': target}, function(){});
 						break;
-					case 'editCategory':
-						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
+					case 'deletePackage':
+						px2me.loadPage('deletePackage', {'packageId': target}, function(){});
 						break;
 					case 'addNewCategory':
 						px2me.loadPage('addNewCategory', {'packageId': target}, function(){});
 						break;
-					case 'editModule':
-						px2me.loadPage('editModule', {'moduleId': target}, function(){});
+					case 'editCategory':
+						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
+						break;
+					case 'deleteCategory':
+						px2me.loadPage('deleteCategory', {'categoryId': target}, function(){});
 						break;
 					case 'addNewModule':
 						px2me.loadPage('addNewModule', {'categoryId': target}, function(){});
+						break;
+					case 'editModule':
+						px2me.loadPage('editModule', {'moduleId': target}, function(){});
+						break;
+					case 'deleteModule':
+						px2me.loadPage('deleteModule', {'moduleId': target}, function(){});
 						break;
 					default:
 						alert('ERROR: unknown action. - '+act);

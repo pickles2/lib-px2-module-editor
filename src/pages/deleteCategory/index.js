@@ -1,5 +1,5 @@
 /**
- * pages/addNewModule/index.js
+ * pages/deleteCategory/index.js
  */
 module.exports = function(px2me, $canvasContent, options, callback){
 	callback = callback||function(){};
@@ -9,7 +9,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 	new Promise(function(rlv){rlv();})
 		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading addNewModule page...');
+			console.log('loading deleteCategory page...');
 			px2me.progress( function(){
 				rlv();
 			} );
@@ -27,7 +27,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				}
 
 				var html = px2me.bindEjs(
-					px2me.getTemplates('addNewModule'),
+					px2me.getTemplates('deleteCategory'),
 					{
 						'categoryId': options.categoryId,
 						'categoryCode': categoryCode
@@ -35,16 +35,14 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				);
 				$canvasContent.html('').append(html);
 
-				$canvasContent.find('[name=moduleId]').val( '' );
-				$canvasContent.find('[name=moduleName]').val( '' );
+				$canvasContent.find('[name=infoJson]').val( categoryCode.infoJson );
 				rlv();
 			} );
-
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
 			px2me.modal({
-				"title": "新規モジュールを追加",
+				"title": "カテゴリを削除",
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn">').text('キャンセル').click(function(){
@@ -53,11 +51,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						});
 					}),
 					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.moduleId = $canvasContent.find('[name=moduleId]').val();
-						data.moduleName = $canvasContent.find('[name=moduleName]').val();
-
-						px2me.addNewModule(options.categoryId, data, function(result){
+						px2me.deleteCategory(options.categoryId, function(result){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});

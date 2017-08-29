@@ -27,14 +27,19 @@
 		this.moduleId;
 
 		var px2meConf,
+			px2conf,
 			templates;
 		var pages = {
 			'list': require('./pages/list/index.js'),
 			'editModule': require('./pages/editModule/index.js'),
 			'editCategory': require('./pages/editCategory/index.js'),
 			'editPackage': require('./pages/editPackage/index.js'),
+			'addNewPackage': require('./pages/addNewPackage/index.js'),
 			'addNewCategory': require('./pages/addNewCategory/index.js'),
-			'addNewModule': require('./pages/addNewModule/index.js')
+			'addNewModule': require('./pages/addNewModule/index.js'),
+			'deletePackage': require('./pages/deletePackage/index.js'),
+			'deleteCategory': require('./pages/deleteCategory/index.js'),
+			'deleteModule': require('./pages/deleteModule/index.js')
 		};
 		var px2ce;
 
@@ -43,10 +48,9 @@
 		*/
 		this.init = function(options, callback){
 			console.info('initialize pickles2-module-editor...');
-
 			callback = callback || function(){};
-			var _this = this;
 			// console.log(options);
+
 			this.options = options;
 			this.options.gpiBridge = this.options.gpiBridge || function(){ alert('gpiBridge required.'); };
 			this.options.complete = this.options.complete || function(){ alert('finished.'); };
@@ -117,6 +121,16 @@
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
 						px2meConf = conf;
+						_this.px2meConf = px2meConf;
+						// console.log(px2meConf);
+						rlv();
+					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					_this.getPickles2Config( function(conf){
+						px2conf = conf;
+						_this.px2conf = px2conf;
+						// console.log(px2conf);
 						rlv();
 					} );
 				}); })
@@ -195,6 +209,22 @@
 			this.gpiBridge(
 				{
 					'api':'getConfig'
+				},
+				function(conf){
+					callback(conf);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * Pickles 2 のコンフィグ情報を取得する
+		 */
+		this.getPickles2Config = function(callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'getPickles2Config'
 				},
 				function(conf){
 					callback(conf);
@@ -350,6 +380,41 @@
 		}
 
 		/**
+		 * broccoli モジュールパッケージを新規追加
+		 */
+		this.addNewPackage = function(data, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'addNewPackage',
+					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールパッケージを削除
+		 */
+		this.deletePackage = function(packageId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deletePackage',
+					'packageId': packageId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールカテゴリを新規追加
 		 */
 		this.addNewCategory = function(packageId, data, callback){
@@ -368,6 +433,24 @@
 		}
 
 		/**
+		 * broccoli モジュールカテゴリを削除
+		 */
+		this.deleteCategory = function(categoryId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteCategory',
+					'categoryId': categoryId,
+					'data': {}
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
 		 * broccoli モジュールを新規追加する
 		 */
 		this.addNewModule = function(categoryId, data, callback){
@@ -377,6 +460,24 @@
 					'api':'addNewModule',
 					'categoryId': categoryId,
 					'data': data
+				},
+				function(result){
+					callback(result);
+				}
+			);
+			return;
+		}
+
+		/**
+		 * broccoli モジュールを削除する
+		 */
+		this.deleteModule = function(moduleId, callback){
+			callback = callback || function(){};
+			this.gpiBridge(
+				{
+					'api':'deleteModule',
+					'moduleId': moduleId,
+					'data': {}
 				},
 				function(result){
 					callback(result);
