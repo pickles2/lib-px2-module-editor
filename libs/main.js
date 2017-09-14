@@ -257,7 +257,7 @@ module.exports = function(){
 		px2ce.init(
 			{
 				'page_path': '/px2me-dummy.html', // <- 編集対象ページのパス
-				'appMode': 'web', // 'web' or 'desktop'. default to 'web'
+				'appMode': _this.getAppMode(), // 'web' or 'desktop'. default to 'web'
 				'entryScript': this.entryScript,
 				'customFields': {} ,
 				'log': function(msg){},
