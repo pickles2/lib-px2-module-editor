@@ -8,7 +8,7 @@
     "start": "node ./tests/app/server/server.js;",
     "up": "node ./tests/app/server/server.js;",
     "preview": "gulp preview;",
-    "submodules-update": "npm install file:node_modules/px2style; npm install file:node_modules/broccoli-html-editor; npm install file:node_modules/pickles2-contents-editor; npm install file:node_modules/utils79; npm install file:node_modules/ace-builds; gulp;",
+    "submodules-update": "npm install file:submodules/px2style; npm install file:submodules/broccoli-html-editor; npm install file:submodules/node-pickles2-contents-editor; npm install file:submodules/node-utils79; npm install file:submodules/ace-builds; gulp;",
     "test": "gulp; mocha --ui tdd ./tests/"
   },
   "author": "Tomoya Koyanagi",
