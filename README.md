@@ -184,7 +184,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2-module-editor@2.0.0-beta.1 (2017年??月??日)
+### pickles2-module-editor@0.1.0 (2018年6月22日)
 
 - Initial Release.
 
