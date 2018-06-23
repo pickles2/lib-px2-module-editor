@@ -1,6 +1,6 @@
 {
   "name": "pickles2-module-editor",
-  "version": "2.0.0-alpha.2+nb",
+  "version": "0.1.0",
   "description": "Pickles 2 module editor library.",
   "main": "libs/main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "node ./tests/app/server/server.js;",
     "up": "node ./tests/app/server/server.js;",
     "preview": "gulp preview;",
-    "submodules-update": "rm -rfv node_modules/px2style; rm -rfv node_modules/broccoli-html-editor; rm -rfv node_modules/pickles2-contents-editor; rm -rfv node_modules/utils79; rm -rfv node_modules/ace-builds; npm install; gulp;",
+    "submodules-update": "npm install file:submodules/px2style; npm install file:submodules/broccoli-html-editor; npm install file:submodules/node-pickles2-contents-editor; npm install file:submodules/node-utils79; npm install file:submodules/ace-builds; gulp;",
     "test": "gulp; mocha --ui tdd ./tests/"
   },
   "author": "Tomoya Koyanagi",

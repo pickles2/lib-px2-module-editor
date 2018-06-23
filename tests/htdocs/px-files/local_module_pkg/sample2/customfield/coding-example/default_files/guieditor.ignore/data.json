@@ -1,0 +1,28 @@
+{
+ "bowl": {
+  "main": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "local:sample2/customfield",
+      "fields": {
+       "custom1": {
+        "src": "custom1",
+        "editor": "markdown"
+       },
+       "custom2": {
+        "src": "custom2",
+        "editor": "markdown"
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  }
+ }
+}
