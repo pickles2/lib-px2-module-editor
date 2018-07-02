@@ -26,7 +26,7 @@ class gpi{
 	/**
 	 * General Purpose Interface
 	 */
-	public function gpi(){
+	public function gpi($data){
 		// // var_dump(data);
 
 		// var _this = this;

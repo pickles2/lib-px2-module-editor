@@ -1,18 +1,11 @@
 <?php
 require_once(__DIR__.'/../../../vendor/autoload.php');
-$px2ce = new pickles2\libs\moduleEditor\main();
-$px2ce->init(array(
-	'target_mode' => (strlen(@$_REQUEST['target_mode']) ? $_REQUEST['target_mode'] : 'page_content'),
-	'page_path' => @$_REQUEST['page_path'], // <- 編集対象ページのパス
+$px2ｍe = new pickles2\libs\moduleEditor\main();
+$px2ｍe->init(array(
 	'appMode' => 'web', // 'web' or 'desktop'. default to 'web'
-	'entryScript' => realpath(__DIR__.'/../../htdocs2/htdocs/subapp/.px_execute.php'),
-	// 'entryScript' => realpath(__DIR__.'/../../htdocs/.px_execute.php'),
-	'customFields' => array(
-	) ,
-	'log' => function($msg){
-	}
+	'entryScript' => realpath(__DIR__.'/../../htdocs2/htdocs/subapp/.px_execute.php')
 ));
-$value = $px2ce->gpi( json_decode( $_REQUEST['data'] ) );
+$value = $px2ｍe->gpi( json_decode( $_REQUEST['data'] ) );
 header('Content-type: text/json');
 echo json_encode($value);
 exit;
