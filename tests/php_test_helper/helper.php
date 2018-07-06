@@ -53,7 +53,7 @@ class testHelper{
 		$px2ce->init(array(
 			'page_path' => '/sample_pages/page3/index.html', // <- 編集対象ページのパス
 			'appMode' => 'web', // 'web' or 'desktop'. default to 'web'
-			'entryScript' => realpath(__DIR__.'/../htdocs2/htdocs/subapp/.px_execute.php'),
+			'entryScript' => realpath(__DIR__.'/../htdocs/.px_execute.php'),
 			'customFields' => array(
 				// この設定項目は、 broccoli-html-editor に渡されます
 				'custom1' => function($broccoli){
