@@ -119,6 +119,14 @@ class main{
 	}
 
 	/**
+	 * $px2conf
+	 * @return object Pickles 2 Config object.
+	 */
+	public function get_px2conf(){
+		return $this->px2conf;
+	}
+
+	/**
 	 * プロジェクトの設定情報を取得する
 	 */
 	public function getProjectConf(){
