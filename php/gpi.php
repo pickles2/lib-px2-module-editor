@@ -27,24 +27,18 @@ class gpi{
 	 * General Purpose Interface
 	 */
 	public function gpi($data){
-		// // var_dump(data);
+		// var_dump($data);
 
-		// var _this = this;
-		// callback = callback || function(){};
-		// var utils79 = require('utils79');
-		// if( !data.api.match(/^[a-zA-Z0-9\_]+$/) ){
-		// 	callback(false);
-		// 	return;
-		// }
+		if( !preg_match('/^[a-zA-Z0-9\_]+$/s', $data['api']) ){
+			return false;
+		}
 
-		// // API をロードして実行
-		// if( utils79.is_file(__dirname+'/gpis/'+encodeURIComponent(data.api)+'.js') ){
-		// 	var Api = require('./gpis/'+encodeURIComponent(data.api)+'.js');
-		// 	var api = new Api(px2me, data, function(result){
-		// 		callback(result);
-		// 	});
-		// 	return;
-		// }
+		// API をロードして実行
+		if( is_file(__DIR__.'/gpis/'.urlencode($data['api']).'.php') ){
+			$Api = include(__DIR__.'/gpis/'.urlencode($data['api']).'.php');
+			$result = $Api($this->px2me, $data);
+			return $result;
+		}
 
 		return false;
 	}

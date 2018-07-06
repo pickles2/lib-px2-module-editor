@@ -246,30 +246,25 @@ class main{
 	// 	return;
 	// }
 
-	// /**
-	//  * create pickles2-contents-editor object
-	//  */
-	// this.createPickles2ContentsEditor = function(callback){
-	// 	callback = callback||function(){};
-	// 	var Px2CE = require('pickles2-contents-editor');
-	// 	var px2ce = new Px2CE();
+	/**
+	 * create pickles2-contents-editor object
+	 */
+	public function createPickles2ContentsEditor(){
+		$px2ce = new \pickles2\libs\contentsEditor\main();
 
-	// 	px2ce.init(
-	// 		{
-	// 			'page_path': '/px2me-dummy.html', // <- 編集対象ページのパス
-	// 			'appMode': _this.getAppMode(), // 'web' or 'desktop'. default to 'web'
-	// 			'entryScript': this.entryScript,
-	// 			'customFields': {} ,
-	// 			'log': function(msg){},
-	// 			'commands': (this.options.commands||undefined)
-	// 		},
-	// 		function(){
-	// 			callback(px2ce);
-	// 		}
-	// 	);
+		$px2ce->init(
+			array(
+				'page_path' => '/px2me-dummy.html', // <- 編集対象ページのパス
+				'appMode' => $this->getAppMode(), // 'web' or 'desktop'. default to 'web'
+				'entryScript' => $this->entryScript,
+				'customFields' => array() ,
+				'log' => function($msg){},
+				'commands' => @$this->options['commands'],
+			)
+		);
 
-	// 	return;
-	// }
+		return $px2ce;
+	}
 
 	// /**
 	//  * プレビュー用コンテンツを初期化する
