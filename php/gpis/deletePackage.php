@@ -1,37 +1,25 @@
+<?php
 /**
  * GPI: deletePackage
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
-	var fsx = require('fs-extra');
-
-	var realpath;
-	try {
-		realpath = require('path').resolve(px2me.entryScript, '..', px2me.px2conf.plugins.px2dt.path_module_templates_dir)+'/';
-	} catch (e) {
-	}
-	if( !utils79.is_dir(realpath) ){
-		callback(false);
-		return;
+	$realpath = $px2me->fs()->get_realpath( $px2me->get_px2conf()->plugins->px2dt->path_module_templates_dir.'/', dirname($px2me->entry_script()));
+	if( !is_dir($realpath) ){
+		return false;
 	}
 
-	if( !px2me.isEditablePath( realpath ) ){
+	if( !$px2me->isEditablePath( $realpath ) ){
 		// 編集可能なパスかどうか評価
 		// 駄目なら上書いてはいけない。
-		callback(false);
-		return;
+		return false;
 	}
-	realpath = realpath+'/'+encodeURIComponent(data.packageId)+'/';
-	if( !utils79.is_dir(realpath) ){
+	$realpath = $realpath.'/'.urlencode($data['packageId']).'/';
+	if( !is_dir($realpath) ){
 		// 既に存在していない
-		callback(false);
-		return;
+		return false;
 	}
-	var result = fsx.removeSync(realpath);
+	$result = $px2me->fs()->rm($realpath);
 
-	callback(!!result);
-
-	return;
-}
+	return !!$result;
+};
