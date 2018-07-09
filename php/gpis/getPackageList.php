@@ -1,18 +1,17 @@
+<?php
 /**
  * GPI: getPackageList
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
+	$broccoli = $px2me->createBroccoli(array());
+	// var_dump($broccoli);
 
-	px2me.createBroccoli({}, function(broccoli){
-		// console.log(broccoli);
-		broccoli.getPackageList(function(packageList){
-			// console.log('getPackageList', packageList);
-			for(var idx in packageList){
-				packageList[idx].isEditable = px2me.isEditablePath(packageList[idx].realpath);
-			}
-			callback(packageList);
-		});
-	});
-	return;
-}
+	$packageList = $broccoli->getPackageList();
+	// var_dump('getPackageList', $packageList);
+
+	foreach( $packageList as $idx=>$packageInfo){
+		$packageList[$idx]['isEditable'] = $px2me->isEditablePath($packageList[$idx]['realpath']);
+	}
+
+	return $packageList;
+};

@@ -219,40 +219,39 @@ class main{
 		return $pjInfo;
 	}
 
-	// /**
-	//  * create broccoli-html-editor object
-	//  */
-	// this.createBroccoli = function(options, callback){
-	// 	options = options||{};
-	// 	callback = callback||function(){};
-	// 	this.createPickles2ContentsEditor(function(px2ce){
-	// 		px2ce.createBroccoliInitOptions(function(broccoliInitOptions){
-	// 			// var_dump(broccoliInitOptions);
-	// 			var broccoli = new (require('broccoli-html-editor'))();
-	// 			// var_dump(options);
-	// 			var parsedModuleId = broccoli.parseModuleId( options.moduleId );
-	// 			var previewContentName = options.previewContentName||'default';
-	// 			// var_dump(parsedModuleId);
-	// 			if( parsedModuleId !== false ){
-	// 				broccoliInitOptions.documentRoot = require('path').resolve(broccoliInitOptions.paths_module_template[parsedModuleId.package]+'/'+parsedModuleId.category+'/'+parsedModuleId.module+'/coding-example/')+'/';
-	// 				broccoliInitOptions.pathHtml = require('path').resolve('/'+previewContentName+'.html');
-	// 				broccoliInitOptions.pathResourceDir = require('path').resolve('/'+previewContentName+'_files/resources/')+'/';
-	// 				broccoliInitOptions.realpathDataDir = broccoliInitOptions.documentRoot+previewContentName+'_files/guieditor.ignore/';
-	// 			}
-	// 			// var_dump(broccoliInitOptions);
-	// 			_this.initPreviewContent(options.moduleId, broccoliInitOptions, function(){
-	// 				broccoli.init(
-	// 					broccoliInitOptions,
-	// 					function(){
-	// 						// var_dump(broccoli);
-	// 						callback(broccoli);
-	// 					}
-	// 				);
-	// 			});
-	// 		});
-	// 	});
-	// 	return;
-	// }
+	/**
+	 * create broccoli-html-editor object
+	 */
+	public function createBroccoli($options){
+		if( !$options ){
+			$options = array();
+		}
+		$px2ce = $this->createPickles2ContentsEditor();
+
+		$broccoliInitOptions = $px2ce->createBroccoliInitOptions();
+		// var_dump($broccoliInitOptions);
+
+		$broccoli = new \broccoliHtmlEditor\broccoliHtmlEditor();
+		// var_dump($options);
+		$parsedModuleId = $broccoli->parseModuleId( @$options['moduleId'] );
+		$previewContentName = @$options['previewContentName'];
+		if(!$previewContentName){
+			$previewContentName = 'default';
+		}
+		// var_dump($parsedModuleId);
+		if( $parsedModuleId !== false ){
+			$broccoliInitOptions['documentRoot'] = $this->fs->get_realpath($broccoliInitOptions['paths_module_template'][$parsedModuleId['package']].'/'.$parsedModuleId['category'].'/'.$parsedModuleId['module'].'/coding-example/');
+			$broccoliInitOptions['pathHtml'] = $this->fs->get_realpath('/'.$previewContentName.'.html');
+			$broccoliInitOptions['pathResourceDir'] = $this->fs->get_realpath('/'.$previewContentName.'_files/resources/');
+			$broccoliInitOptions['realpathDataDir'] = $broccoliInitOptions['documentRoot'].$previewContentName.'_files/guieditor.ignore/';
+		}
+		// var_dump($broccoliInitOptions);
+		$this->initPreviewContent(@$options['moduleId'], $broccoliInitOptions);
+
+		$broccoli->init( $broccoliInitOptions );
+
+		return $broccoli;
+	}
 
 	/**
 	 * create pickles2-contents-editor object
@@ -274,42 +273,39 @@ class main{
 		return $px2ce;
 	}
 
-	// /**
-	//  * プレビュー用コンテンツを初期化する
-	//  */
-	// this.initPreviewContent = function(modId, broccoliInitOptions, callback){
-	// 	callback = callback||function(){};
-	// 	if( !modId ){
-	// 		callback();return;
-	// 	}
-	// 	if( utils79.is_file( broccoliInitOptions.realpathDataDir+'/data.json' ) ){
-	// 		callback();return;
-	// 	}
+	/**
+	 * プレビュー用コンテンツを初期化する
+	 */
+	private function initPreviewContent($modId, $broccoliInitOptions){
+		if( !$modId ){
+			return;
+		}
+		if( is_file( $broccoliInitOptions['realpathDataDir'].'/data.json' ) ){
+			return;
+		}
 
-	// 	fsx.mkdirpSync( broccoliInitOptions.realpathDataDir );
-	// 	fs.writeFileSync( broccoliInitOptions.realpathDataDir+'/data.json', JSON.stringify({
-	// 		"bowl": {
-	// 		 	"main": {
-	// 				"modId": "_sys/root",
-	// 				"fields": {
-	// 					"main": [
-	// 						{
-	// 						 	"modId": modId,
-	// 						 	"fields": {},
-	// 						 	"anchor": "",
-	// 						 	"dec": ""
-	// 						}
-	// 					]
-	// 				},
-	// 				"anchor": "",
-	// 				"dec": ""
-	// 			}
-	// 		}
-	// 	}, null, 1) );
-
-	// 	callback();
-	// 	return;
-	// }
+		$this->fs->mkdir_r( $broccoliInitOptions['realpathDataDir'] );
+		$this->fs->save_file( $broccoliInitOptions['realpathDataDir'].'/data.json', json_encode(array(
+			"bowl" => array(
+			 	"main" => array(
+					"modId" => "_sys/root",
+					"fields" => array(
+						"main" => array(
+							array(
+							 	"modId" => $modId,
+							 	"fields" => array(),
+							 	"anchor" => "",
+							 	"dec" => ""
+							)
+						)
+					),
+					"anchor" => "",
+					"dec" => ""
+				)
+			)
+		)) );
+		return;
+	}
 
 	/**
 	 * 汎用API
