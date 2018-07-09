@@ -111,6 +111,14 @@ class main{
 	}
 
 	/**
+	 * $fs
+	 * @return object Filesystem Utility.
+	 */
+	public function fs(){
+		return $this->fs;
+	}
+
+	/**
 	 * $lb
 	 * @return object LangBank Object.
 	 */
@@ -124,6 +132,14 @@ class main{
 	 */
 	public function get_px2conf(){
 		return $this->px2conf;
+	}
+
+	/**
+	 * Getting Entry Script path
+	 * @return string Entry Script path.
+	 */
+	public function entry_script(){
+		return $this->entryScript;
 	}
 
 	/**
