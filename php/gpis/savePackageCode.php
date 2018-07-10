@@ -1,35 +1,26 @@
+<?php
 /**
  * GPI: savePackageCode
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
+	$broccoli = $px2me->createBroccoli(array());
 
-	px2me.createBroccoli({}, function(broccoli){
-		// console.log(broccoli);
-		if( !data.packageId ){
-			callback(false);
-			return;
-		}
-		var realpath = broccoli.paths_module_template[data.packageId]+'/';
-		if( !utils79.is_dir(realpath) ){
-			callback(false);
-			return;
-		}
-		if( !px2me.isEditablePath( realpath ) ){
-			// 編集可能なパスかどうか評価
-			// 駄目なら上書いてはいけない。
-			callback(false);
-			return;
-		}
+	// console.log(broccoli);
+	if( !$data['packageId'] ){
+		return false;
+	}
+	$realpath = $broccoli->paths_module_template[$data['packageId']].'/';
+	if( !is_dir($realpath) ){
+		return false;
+	}
+	if( !$px2me->isEditablePath( $realpath ) ){
+		// 編集可能なパスかどうか評価
+		// 駄目なら上書いてはいけない。
+		return false;
+	}
 
-		try {
-			require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(JSON.parse(data.data.infoJson), null, 2));
-		} catch (e) {}
+	$px2me->fs()->save_file($realpath.'/info.json', json_encode(json_decode($data['data']['infoJson']), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES ));
 
-		callback(true);
-		return;
-	});
-	return;
-}
+	return true;
+};

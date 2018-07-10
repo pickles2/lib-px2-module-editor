@@ -4,40 +4,34 @@
  */
 return function($px2me, $data){
 
-	// px2me.createBroccoli({}, function(broccoli){
-	// 	// console.log(broccoli);
+	$broccoli = $px2me->createBroccoli(array());
 
-	// 	if( !data.packageId ){
-	// 		callback(false);
-	// 		return;
-	// 	}
-	// 	var realpath = broccoli.paths_module_template[data.packageId]+'/';
-	// 	if( !utils79.is_dir(realpath) ){
-	// 		callback(false);
-	// 		return;
-	// 	}
+	// console.log(broccoli);
 
-	// 	if( !px2me.isEditablePath( realpath ) ){
-	// 		// 編集可能なパスかどうか評価
-	// 		// 駄目なら上書いてはいけない。
-	// 		callback(false);
-	// 		return;
-	// 	}
-	// 	realpath = realpath+'/'+encodeURIComponent(data.data.categoryId);
-	// 	if( utils79.is_dir(realpath) ){
-	// 		// 既に存在する
-	// 		callback(false);
-	// 		return;
-	// 	}
+	if( !$data['packageId'] ){
+		return false;
+	}
+	$realpath = $broccoli->paths_module_template[$data['packageId']].'/';
+	if( !is_dir($realpath) ){
+		return false;
+	}
 
-	// 	require('fs').mkdirSync(realpath);
+	if( !$px2me->isEditablePath( $realpath ) ){
+		// 編集可能なパスかどうか評価
+		// 駄目なら上書いてはいけない。
+		return false;
+	}
+	$realpath = $realpath.'/'.urlencode($data['data']['categoryId']);
+	if( is_dir($realpath) ){
+		// 既に存在する
+		return false;
+	}
 
-	// 	var infoJson = {};
-	// 	infoJson.name = data.data.categoryName;
-	// 	try { require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(infoJson)); } catch (e) {}
+	$px2me->fs()->mkdir_r($realpath);
 
-	// 	callback(true);
-	// 	return;
-	// });
+	$infoJson = json_decode('{}');
+	$infoJson->name = $data['data']['categoryName'];
+	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+
 	return true;
 };
