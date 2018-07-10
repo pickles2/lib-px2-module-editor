@@ -1,51 +1,42 @@
+<?php
 /**
  * GPI: addNewModule
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
+	$broccoli = $px2me->createBroccoli(array());
 
-	px2me.createBroccoli({}, function(broccoli){
-		// console.log(broccoli);
-		var parsedModId = broccoli.parseModuleId(data.categoryId+'/dmy');
-		if( parsedModId === false ){
-			callback(false);
-			return;
-		}
-		if( !parsedModId.category ){
-			callback(false);
-			return;
-		}
-		var realpath = broccoli.paths_module_template[parsedModId.package]+'/'+parsedModId.category+'/';
-		if( !utils79.is_dir(realpath) ){
-			callback(false);
-			return;
-		}
-		if( !px2me.isEditablePath( realpath ) ){
-			// 編集可能なパスかどうか評価
-			// 駄目なら上書いてはいけない。
-			callback(false);
-			return;
-		}
-		realpath = realpath+'/'+data.data.moduleId;
-		if( utils79.is_dir(realpath) ){
-			// 既に存在する
-			callback(false);
-			return;
-		}
-		require('fs').mkdirSync(realpath);
+	// console.log(broccoli);
+	$parsedModId = $broccoli->parseModuleId($data['categoryId'].'/dmy');
+	if( $parsedModId === false ){
+		return false;
+	}
+	if( !$parsedModId['category'] ){
+		return false;
+	}
+	$realpath = $broccoli->paths_module_template[$parsedModId['package']].'/'.$parsedModId['category'].'/';
+	if( !is_dir($realpath) ){
+		return false;
+	}
+	if( !$px2me->isEditablePath( $realpath ) ){
+		// 編集可能なパスかどうか評価
+		// 駄目なら上書いてはいけない。
+		return false;
+	}
+	$realpath = $realpath.'/'.$data['data']['moduleId'];
+	if( is_dir($realpath) ){
+		// 既に存在する
+		return false;
+	}
+	$px2me->fs()->mkdir_r($realpath);
 
-		var infoJson = {};
-		infoJson.name = data.data.moduleName;
-		try { require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(infoJson)); } catch (e) {}
+	$infoJson = array();
+	$infoJson['name'] = $data['data']['moduleName'];
+	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 
-		try { require('fs').writeFileSync(realpath+'/template.html', ''); } catch (e) {}
-		try { require('fs').writeFileSync(realpath+'/module.css.scss', ''); } catch (e) {}
-		try { require('fs').writeFileSync(realpath+'/module.js', ''); } catch (e) {}
+	$px2me->fs()->save_file($realpath.'/template.html', '');
+	$px2me->fs()->save_file($realpath.'/module.css.scss', '');
+	$px2me->fs()->save_file($realpath.'/module.js', '');
 
-		callback(true);
-		return;
-	});
-	return;
-}
+	callback(true);
+	return;};

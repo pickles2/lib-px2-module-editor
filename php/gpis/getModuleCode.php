@@ -1,60 +1,57 @@
+<?php
 /**
  * GPI: getModuleCode
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
+	$rtn = array();
+	$broccoli = $px2me->createBroccoli(array());
 
-	var rtn = {};
-	px2me.createBroccoli({}, function(broccoli){
-		// console.log(broccoli);
-		var realpath = broccoli.getModuleRealpath(data.moduleId);
-		// rtn.realpath = realpath;
-		rtn.editable = px2me.isEditablePath( realpath ); // 編集可能なパスかどうか評価
+	// console.log(broccoli);
+	$realpath = $broccoli->getModuleRealpath($data['moduleId']);
+	// $rtn['realpath'] = $realpath;
+	$rtn['editable'] = $px2me->isEditablePath( $realpath ); // 編集可能なパスかどうか評価
 
-		rtn.template = '';
-		rtn.templateExt = 'html';
-		if( utils79.is_file(realpath+'/template.html') ){
-			rtn.template = require('fs').readFileSync(realpath+'/template.html').toString();
-			rtn.templateExt = 'html';
-		}else if( utils79.is_file(realpath+'/template.html.twig') ){
-			rtn.template = require('fs').readFileSync(realpath+'/template.html.twig').toString();
-			rtn.templateExt = 'html.twig';
-		}
-		rtn.infoJson = '';
-		if( utils79.is_file(realpath+'/info.json') ){
-			rtn.infoJson = require('fs').readFileSync(realpath+'/info.json').toString();
-		}
+	$rtn['template'] = '';
+	$rtn['templateExt'] = 'html';
+	if( is_file($realpath.'/template.html') ){
+		$rtn['template'] = file_get_contents($realpath.'/template.html');
+		$rtn['templateExt'] = 'html';
+	}elseif( is_file($realpath.'/template.html.twig') ){
+		$rtn['template'] = file_get_contents($realpath.'/template.html.twig');
+		$rtn['templateExt'] = 'html.twig';
+	}
+	$rtn['infoJson'] = '';
+	if( is_file($realpath.'/info.json') ){
+		$rtn['infoJson'] = file_get_contents($realpath.'/info.json');
+	}
 
-		rtn.css = '';
-		rtn.cssExt = 'css.scss';
-		if( utils79.is_file(realpath+'/module.css') ){
-			rtn.css = require('fs').readFileSync(realpath+'/module.css').toString();
-			rtn.cssExt = 'css';
-		}else if( utils79.is_file(realpath+'/module.css.scss') ){
-			rtn.css = require('fs').readFileSync(realpath+'/module.css.scss').toString();
-			rtn.cssExt = 'css.scss';
-		}
+	$rtn['css'] = '';
+	$rtn['cssExt'] = 'css.scss';
+	if( is_file($realpath.'/module.css') ){
+		$rtn['css'] = file_get_contents($realpath.'/module.css');
+		$rtn['cssExt'] = 'css';
+	}else if( is_file($realpath.'/module.css.scss') ){
+		$rtn['css'] = file_get_contents($realpath.'/module.css.scss');
+		$rtn['cssExt'] = 'css.scss';
+	}
 
-		rtn.js = '';
-		rtn.jsExt = 'js';
-		if( utils79.is_file(realpath+'/module.js') ){
-			rtn.js = require('fs').readFileSync(realpath+'/module.js').toString();
-			rtn.jsExt = 'js';
-		}
+	$rtn['js'] = '';
+	$rtn['jsExt'] = 'js';
+	if( is_file($realpath.'/module.js') ){
+		$rtn['js'] = file_get_contents($realpath.'/module.js');
+		$rtn['jsExt'] = 'js';
+	}
 
-		rtn.finalizeJs = '';
-		if( utils79.is_file(realpath+'/finalize.js') ){
-			rtn.finalizeJs = require('fs').readFileSync(realpath+'/finalize.js').toString();
-		}
+	$rtn['finalizeJs'] = '';
+	if( is_file($realpath.'/finalize.js') ){
+		$rtn['finalizeJs'] = file_get_contents($realpath.'/finalize.js');
+	}
 
-		rtn.clipJson = '';
-		if( utils79.is_file(realpath+'/clip.json') ){
-			rtn.clipJson = require('fs').readFileSync(realpath+'/clip.json').toString();
-		}
+	$rtn['clipJson'] = '';
+	if( is_file($realpath.'/clip.json') ){
+		$rtn['clipJson'] = file_get_contents($realpath.'/clip.json');
+	}
 
-		callback(rtn);
-	});
-	return;
-}
+	return $rtn;
+};

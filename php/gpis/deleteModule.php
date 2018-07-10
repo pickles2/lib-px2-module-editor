@@ -1,35 +1,24 @@
+<?php
 /**
  * GPI: deleteModule
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
-	var fsx = require('fs-extra');
+	$broccoli = $px2me->createBroccoli(array());
 
-	px2me.createBroccoli({}, function(broccoli){
-		var parsedModId = broccoli.parseModuleId(data.moduleId);
-		var realpath;
-		try {
-			realpath = broccoli.paths_module_template[parsedModId.package]+'/'+encodeURIComponent(parsedModId.category)+'/'+encodeURIComponent(parsedModId.module)+'/';
-		} catch (e) {
-		}
+	$parsedModId = $broccoli->parseModuleId($data['moduleId']);
+	$realpath = $broccoli->paths_module_template[$parsedModId['package']].'/'.urlencode($parsedModId['category']).'/'.urlencode($parsedModId['module']).'/';
 
-		if( !px2me.isEditablePath( realpath ) ){
-			// 編集可能なパスかどうか評価
-			// 駄目なら上書いてはいけない。
-			callback(false);
-			return;
-		}
-		if( !utils79.is_dir(realpath) ){
-			// 既に存在していない
-			callback(false);
-			return;
-		}
-		var result = fsx.removeSync(realpath);
+	if( !$px2me->isEditablePath( $realpath ) ){
+		// 編集可能なパスかどうか評価
+		// 駄目なら上書いてはいけない。
+		return false;
+	}
+	if( !is_dir($realpath) ){
+		// 既に存在していない
+		return false;
+	}
+	$result = $px2me->fs()->rm($realpath);
 
-		callback(!!result);
-	});
-
-	return;
-}
+	return !!$result;
+};
