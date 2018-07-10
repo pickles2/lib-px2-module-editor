@@ -184,11 +184,11 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2-module-editor@0.1.1 (リリース日未定)
+### pickles2-module-editor, pickles2/lib-px2-module-editor v0.2.0 (リリース日未定)
 
-- ?????????????????????
+- バックエンドスクリプトをPHPに移行した。 (NodeJS の実装は、しばらく残したのち、削除される予定)
 
-### pickles2-module-editor@0.1.0 (2018年6月22日)
+### pickles2-module-editor v0.1.0 (2018年6月22日)
 
 - Initial Release.
 
