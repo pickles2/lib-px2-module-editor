@@ -1,8 +1,8 @@
 {
   "name": "pickles2-module-editor",
-  "version": "0.2.0-alpha.1+nb",
+  "version": "0.2.0",
   "description": "Pickles 2 module editor library.",
-  "private": true,
+  "private": false,
   "main": "libs/main.js",
   "scripts": {
     "preinstall": "git submodule update --init --recursive --force",
