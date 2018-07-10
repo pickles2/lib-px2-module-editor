@@ -135,6 +135,14 @@ class main{
 	}
 
 	/**
+	 * $packages
+	 * @return object packages.
+	 */
+	public function get_packages(){
+		return $this->packages;
+	}
+
+	/**
 	 * Getting Entry Script path
 	 * @return string Entry Script path.
 	 */

@@ -1,71 +1,54 @@
+<?php
 /**
  * GPI: saveModuleCode
  */
-module.exports = function(px2me, data, callback){
-	delete(require.cache[require('path').resolve(__filename)]);
+return function($px2me, $data){
 
-	var utils79 = require('utils79');
+	$broccoli = $px2me->createBroccoli(array());
 
-	px2me.createBroccoli({}, function(broccoli){
-		// console.log(broccoli);
-		var realpath = broccoli.getModuleRealpath(data.moduleId);
-		if( !utils79.is_dir(realpath) ){
-			callback(false);
-			return;
-		}
-		if( !px2me.isEditablePath( realpath ) ){
-			// 編集可能なパスかどうか評価
-			// 駄目なら上書いてはいけない。
-			callback(false);
-			return;
-		}
+	// console.log(broccoli);
+	$realpath = $broccoli->getModuleRealpath($data['moduleId']);
+	if( !is_dir($realpath) ){
+		return false;
+	}
+	if( !$px2me->isEditablePath( $realpath ) ){
+		// 編集可能なパスかどうか評価
+		// 駄目なら上書いてはいけない。
+		return false;
+	}
 
-		try { require('fs').unlinkSync(realpath+'/template.html'); } catch (e) {}
-		try { require('fs').unlinkSync(realpath+'/template.html.twig'); } catch (e) {}
-		try {
-			if( utils79.toStr( data.data.clipJson ).length && !utils79.toStr(data.data.template).length ){
-				// clip に値があって、 template に値がない場合、
-				// クリップモジュールとみなしてテンプレートファイルの生成は行わない。
-			}else{
-				require('fs').writeFileSync(realpath+'/template.'+data.data.templateExt, data.data.template);
-			}
-		} catch (e) {}
+	$px2me->fs()->rm($realpath.'/template.html');
+	$px2me->fs()->rm($realpath.'/template.html.twig');
+	if( strlen( $data['data']['clipJson'] ) && !strlen($data['data']['template']) ){
+		// clip に値があって、 template に値がない場合、
+		// クリップモジュールとみなしてテンプレートファイルの生成は行わない。
+	}else{
+		$px2me->fs()->save_file($realpath.'/template.'.$data['data']['templateExt'], $data['data']['template']);
+	}
 
-		try {
-			require('fs').writeFileSync(realpath+'/info.json', JSON.stringify(JSON.parse(data.data.infoJson), null, 2));
-		} catch (e) {}
+	$px2me->fs()->save_file($realpath.'/info.json', json_encode(json_decode($data['data']['infoJson']), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 
-		try { require('fs').unlinkSync(realpath+'/module.css'); } catch (e) {}
-		try { require('fs').unlinkSync(realpath+'/module.css.scss'); } catch (e) {}
-		try {
-			if( utils79.toStr( data.data.css ).length ){
-				require('fs').writeFileSync(realpath+'/module.'+data.data.cssExt, data.data.css);
-			}
-		} catch (e) {}
+	$px2me->fs()->rm($realpath.'/module.css');
+	$px2me->fs()->rm($realpath.'/module.css.scss');
 
-		try { require('fs').unlinkSync(realpath+'/module.js'); } catch (e) {}
-		try {
-			if( utils79.toStr( data.data.js ).length ){
-				require('fs').writeFileSync(realpath+'/module.'+data.data.jsExt, data.data.js);
-			}
-		} catch (e) {}
+	if( strlen( $data['data']['css'] ) ){
+		$px2me->fs()->save_file($realpath.'/module.'.$data['data']['cssExt'], $data['data']['css']);
+	}
 
-		try { require('fs').unlinkSync(realpath+'/finalize.js'); } catch (e) {}
-		try {
-			if( utils79.toStr( data.data.finalizeJs ).length ){
-				require('fs').writeFileSync(realpath+'/finalize.js', data.data.finalizeJs);
-			}
-		} catch (e) {}
+	$px2me->fs()->rm($realpath.'/module.js');
+	if( strlen( $data['data']['js'] ) ){
+		$px2me->fs()->save_file($realpath.'/module.'.$data['data']['jsExt'], $data['data']['js']);
+	}
 
-		try { require('fs').unlinkSync(realpath+'/clip.json'); } catch (e) {}
-		try {
-			if( utils79.toStr( data.data.clipJson ).length ){
-				require('fs').writeFileSync(realpath+'/clip.json', JSON.stringify(JSON.parse(data.data.clipJson), null, 2));
-			}
-		} catch (e) {}
+	$px2me->fs()->rm($realpath.'/finalize.js');
+	if( strlen( $data['data']['finalizeJs'] ) ){
+		$px2me->fs()->save_file($realpath.'/finalize.js', $data['data']['finalizeJs']);
+	}
 
-		callback(true);
-		return;
-	});
-	return;
-}
+	$px2me->fs()->rm($realpath.'/clip.json');
+	if( strlen( $data['data']['clipJson'] ) ){
+		$px2me->fs()->save_file($realpath.'/clip.json', json_encode(json_decode($data['data']['clipJson']), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+	}
+
+	return true;
+};
