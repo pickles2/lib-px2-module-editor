@@ -45,12 +45,12 @@ class testHelper{
 	}
 
 	/**
-	 * $px2ce を生成する
+	 * $px2me を生成する
 	 */
 	static public function makeDefaultPx2Me($options = array()){
 		require_once(__DIR__.'/test_php_field_custom1.php');
-		$px2ce = new pickles2\libs\moduleEditor\main();
-		$px2ce->init(array(
+		$px2me = new pickles2\libs\moduleEditor\main();
+		$px2me->init(array(
 			'page_path' => '/sample_pages/page3/index.html', // <- 編集対象ページのパス
 			'appMode' => 'web', // 'web' or 'desktop'. default to 'web'
 			'entryScript' => realpath(__DIR__.'/../htdocs/.px_execute.php'),
@@ -68,6 +68,6 @@ class testHelper{
 				// fs.writeFileSync('/path/to/px2ce.log', {}, msg);
 			}
 		));
-		return $px2ce;
+		return $px2me;
 	}
 }
