@@ -44,6 +44,7 @@ class main{
 	 * Constructor
 	 */
 	public function __construct(){
+		$this->fs = new \tomk79\filesystem();
 	}
 
 	/**
@@ -63,7 +64,6 @@ class main{
 			};
 		}
 
-		$this->fs = new \tomk79\filesystem();
 		$this->entryScript = $options['entryScript'];
 
 		// PHP Command setting
@@ -158,7 +158,7 @@ class main{
 	 * @return object css および js ファイルの一覧
 	 */
 	public function get_client_resources($realpath_dist = null){
-		$px2ce = new pickles2\libs\contentsEditor\main();
+		$px2ce = new \pickles2\libs\contentsEditor\main();
 		$rtn = $px2ce->get_client_resources($realpath_dist);
 		array_push($rtn->js, realpath(__DIR__.'/../dist/pickles2-module-editor.min.js'));
 		array_push($rtn->css, realpath(__DIR__.'/../dist/pickles2-module-editor.min.css'));
