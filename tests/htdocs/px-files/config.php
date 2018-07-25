@@ -218,32 +218,59 @@ return call_user_func( function(){
 
 	// config for Pickles2 Desktop Tool.
 	$conf->plugins->px2dt = new stdClass;
+	$conf->plugins->px2dt->guiEngine = 'broccoli-html-editor-php';
 	$conf->plugins->px2dt->path_module_templates_dir = './px-files/modules/';
 	$conf->plugins->px2dt->paths_module_template = array(
 		"local" => "./px-files/local_module_pkg/",
 		"PlainHTMLElements" => "../../vendor/broccoli-html-editor/broccoli-module-plain-html-elements/modules/",
 		"FESS" => "../../vendor/broccoli-html-editor/broccoli-module-fess/modules/"
 	);
-	@$conf->plugins->px2dt->guieditor->custom_fields = array( // broccoli-html-editor のフィールド拡張
-		'projectCustom1'=>array(
-			'backend'=>array(
-				'require' => './px-files/broccoli-fields/projectCustom1/backend.js'
+	if($conf->plugins->px2dt->guiEngine == 'broccoli-html-editor-php'){
+		@$conf->plugins->px2dt->guieditor->custom_fields = array( // broccoli-html-editor のフィールド拡張
+			'projectCustom1'=>array(
+				'backend'=>array(
+					'require' => './px-files/broccoli-fields/projectCustom1/backend.php',
+					'class' => 'projectCustom1',
+				),
+				'frontend'=>array(
+					'file' => './px-files/broccoli-fields/projectCustom1/frontend.js',
+					'function' => 'window.broccoliFieldProjectCustom1'
+				),
 			),
-			'frontend'=>array(
-				'file' => './px-files/broccoli-fields/projectCustom1/frontend.js',
-				'function' => 'window.broccoliFieldProjectCustom1'
+			'projectCustom2'=>array(
+				'backend'=>array(
+					'require' => './px-files/broccoli-fields/projectCustom2/backend.php',
+					'class' => 'projectCustom2',
+				),
+				'frontend'=>array(
+					'file' => './px-files/broccoli-fields/projectCustom2/frontend.js',
+					'function' => 'window.broccoliFieldProjectCustom2'
+				),
 			),
-		),
-		'projectCustom2'=>array(
-			'backend'=>array(
-				'require' => './px-files/broccoli-fields/projectCustom2/backend.js'
+		);
+	}else{
+		@$conf->plugins->px2dt->guieditor->custom_fields = array( // broccoli-html-editor のフィールド拡張
+			'projectCustom1'=>array(
+				'backend'=>array(
+					'require' => './px-files/broccoli-fields/projectCustom1/backend.js'
+				),
+				'frontend'=>array(
+					'file' => './px-files/broccoli-fields/projectCustom1/frontend.js',
+					'function' => 'window.broccoliFieldProjectCustom1'
+				),
 			),
-			'frontend'=>array(
-				'file' => './px-files/broccoli-fields/projectCustom2/frontend.js',
-				'function' => 'window.broccoliFieldProjectCustom2'
+			'projectCustom2'=>array(
+				'backend'=>array(
+					'require' => './px-files/broccoli-fields/projectCustom2/backend.js'
+				),
+				'frontend'=>array(
+					'file' => './px-files/broccoli-fields/projectCustom2/frontend.js',
+					'function' => 'window.broccoliFieldProjectCustom2'
+				),
 			),
-		),
-	);
+		);
+	}
+
 	$conf->plugins->px2dt->contents_area_selector = '[data-contents-area]'; // <- コンテンツエリアを識別するセレクタ(複数の要素がマッチしてもよい)
 	$conf->plugins->px2dt->contents_bowl_name_by = 'data-contents-area'; // <- コンテンツエリアのbowl名を指定する属性名
 
