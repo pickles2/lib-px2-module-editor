@@ -152,6 +152,7 @@ $ npm run test
 ### pickles2-module-editor, pickles2/lib-px2-module-editor v0.2.1 (リリース日未定)
 
 - PHP版で、`finalize.php` を編集できるようになった。
+- PHP版で、カスタムフィールドが読み込まれない問題を修正した。
 
 ### pickles2-module-editor, pickles2/lib-px2-module-editor v0.2.0 (2018年7月11日)
 
