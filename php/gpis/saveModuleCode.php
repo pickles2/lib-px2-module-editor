@@ -45,6 +45,11 @@ return function($px2me, $data){
 		$px2me->fs()->save_file($realpath.'/finalize.js', $data['data']['finalizeJs']);
 	}
 
+	$px2me->fs()->rm($realpath.'/finalize.php');
+	if( strlen( $data['data']['finalizePhp'] ) ){
+		$px2me->fs()->save_file($realpath.'/finalize.php', $data['data']['finalizePhp']);
+	}
+
 	$px2me->fs()->rm($realpath.'/clip.json');
 	if( strlen( $data['data']['clipJson'] ) ){
 		$px2me->fs()->save_file($realpath.'/clip.json', json_encode(json_decode($data['data']['clipJson']), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));

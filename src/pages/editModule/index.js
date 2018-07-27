@@ -52,6 +52,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				$editModuleWindow.find('[name=js]').val( moduleCode.js );
 				$editModuleWindow.find('[name=jsExt]').val( moduleCode.jsExt );
 				$editModuleWindow.find('[name=finalizeJs]').val( moduleCode.finalizeJs );
+				$editModuleWindow.find('[name=finalizePhp]').val( moduleCode.finalizePhp );
 				$editModuleWindow.find('[name=clipJson]').val( moduleCode.clipJson );
 
 				$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button').on('click', function(e){
@@ -128,6 +129,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		data.js = $canvasContent.find('[name=js]').val();
 		data.jsExt = $canvasContent.find('[name=jsExt]').val();
 		data.finalizeJs = $canvasContent.find('[name=finalizeJs]').val();
+		data.finalizePhp = $canvasContent.find('[name=finalizePhp]').val();
 		data.clipJson = $canvasContent.find('[name=clipJson]').val();
 		// console.log('data =',data);
 

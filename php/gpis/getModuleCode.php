@@ -48,6 +48,11 @@ return function($px2me, $data){
 		$rtn['finalizeJs'] = file_get_contents($realpath.'/finalize.js');
 	}
 
+	$rtn['finalizePhp'] = '';
+	if( is_file($realpath.'/finalize.php') ){
+		$rtn['finalizePhp'] = file_get_contents($realpath.'/finalize.php');
+	}
+
 	$rtn['clipJson'] = '';
 	if( is_file($realpath.'/clip.json') ){
 		$rtn['clipJson'] = file_get_contents($realpath.'/clip.json');
