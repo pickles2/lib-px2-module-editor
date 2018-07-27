@@ -160,8 +160,17 @@ class main{
 	public function get_client_resources($realpath_dist = null){
 		$px2ce = new \pickles2\libs\contentsEditor\main();
 		$rtn = $px2ce->get_client_resources($realpath_dist);
-		array_push($rtn->js, realpath(__DIR__.'/../dist/pickles2-module-editor.min.js'));
-		array_push($rtn->css, realpath(__DIR__.'/../dist/pickles2-module-editor.min.css'));
+
+		// px2ce
+		if(is_string($realpath_dist) && is_dir($realpath_dist)){
+			$this->fs->copy_r(__DIR__.'/../dist/', $realpath_dist.'/px2me/');
+			array_push($rtn->js, 'px2me/pickles2-module-editor.min.js');
+			array_push($rtn->css, 'px2me/pickles2-module-editor.min.css');
+		}else{
+			array_push($rtn->js, realpath(__DIR__.'/../dist/pickles2-module-editor.min.js'));
+			array_push($rtn->css, realpath(__DIR__.'/../dist/pickles2-module-editor.min.css'));
+		}
+
 		return $rtn;
 	}
 
