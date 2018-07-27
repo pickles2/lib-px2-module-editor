@@ -158,7 +158,7 @@ class main{
 	 * @return object css および js ファイルの一覧
 	 */
 	public function get_client_resources($realpath_dist = null){
-		$px2ce = new \pickles2\libs\contentsEditor\main();
+		$px2ce = $this->createPickles2ContentsEditor();
 		$rtn = $px2ce->get_client_resources($realpath_dist);
 
 		// px2ce
