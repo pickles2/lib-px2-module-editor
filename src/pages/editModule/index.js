@@ -13,6 +13,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	var currentTab;
 
 	px2me.moduleId = options.moduleId;
+	var guiEngine;
+	try{
+		guiEngine = px2me.px2conf.plugins.px2dt.guiEngine;
+	}catch(e){}
 
 	new Promise(function(rlv){rlv();})
 		.then(function(){ return new Promise(function(rlv, rjt){
@@ -54,6 +58,12 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				$editModuleWindow.find('[name=finalizeJs]').val( moduleCode.finalizeJs );
 				$editModuleWindow.find('[name=finalizePhp]').val( moduleCode.finalizePhp );
 				$editModuleWindow.find('[name=clipJson]').val( moduleCode.clipJson );
+
+				if( guiEngine == 'broccoli-html-editor-php' ){
+					$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizejs]').hide();
+				}else{
+					$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizephp]').hide();
+				}
 
 				$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button').on('click', function(e){
 					// タブ切り替え
