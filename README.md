@@ -1,100 +1,65 @@
-# pickles2-module-editor
+# pickles2/lib-px2-module-editor
 
-Pickles 2 のコンテンツ編集インターフェイスを提供します。
+Pickles 2 のモジュール編集インターフェイスを提供します。
 
 ## Usage
 
-### Server Side
+### Server Side (PHP)
 
-```js
-
-var express = require('express'),
-	app = express();
-var server = require('http').Server(app);
-var Px2ME = require('pickles2-module-editor');
-
-app.use( '/your/api/path', function(req, res, next){
-
-	var px2me = new Px2ME();
-	px2me.init(
-		{
-			'appMode': 'web', // 'web' or 'desktop'. default to 'web'
-			'entryScript': require('path').resolve('/path/to/.px_execute.php'),
-			'log': function(msg){
-				// エラー発生時にコールされます。
-				// msg を受け取り、適切なファイルへ出力するように実装してください。
-				fs.writeFileSync('/path/to/error.log', {}, msg);
-			},
-			'commands'{
-				'php': {
-					// PHPコマンドのパスを表すオブジェクト
-					// または、 文字列で '/path/to/php' とすることも可 (この場合、 php.ini のパスは指定されない)
-					'bin': '/path/to/php',
-					'ini': '/path/to/php.ini'
-				}
-			}
-		},
-		function(){
-			px2me.gpi(JSON.parse(req.body.data), function(value){
-				res
-					.status(200)
-					.set('Content-Type', 'text/json')
-					.send( JSON.stringify(value) )
-					.end();
-			});
-		}
-	);
-
-	return;
-} );
-
-server.listen(8080);
-
-
-
-// Pickles2 preview server
-var expressPickles2 = require('express-pickles2');
-var appPx2 = express();
-appPx2.use( require('body-parser')() );
-
-appPx2.use( '/*', expressPickles2(
-	path.resolve('/path/to/.px_execute.php'),
-	{
-		'processor': function(bin, ext, callback){
-			if( ext == 'html' ){
-				bin += (function(){
-					var scriptSrc = fs.readFileSync('node_modules/pickles2-module-editor/dist/libs/broccoli-html-editor/client/dist/broccoli-preview-contents.js').toString('utf-8');
-					var fin = '';
-						fin += '<script data-broccoli-receive-message="yes">'+"\n";
-						fin += 'window.addEventListener(\'message\',(function() {'+"\n";
-						fin += 'return function f(event) {'+"\n";
-						fin += 'if(window.location.hostname!=\'127.0.0.1\'){alert(\'Unauthorized access.\');return;}'+"\n";
-						fin += 'if(!event.data.scriptUrl){return;}'+"\n";
-						fin += scriptSrc+';'+"\n";
-						fin += 'window.removeEventListener(\'message\', f, false);'+"\n";
-						fin += '}'+"\n";
-						fin += '})(),false);'+"\n";
-						fin += '</script>'+"\n";
-					return fin;
-				})();
-			}
-			callback(bin);
-			return;
+```php
+<?php
+/**
+ * api.php
+ */
+require_once('vendor/autoload.php');
+$px2ｍe = new pickles2\libs\moduleEditor\main();
+$px2ｍe->init(array(
+	'appMode' => 'web', // 'web' or 'desktop'. default to 'web'
+	'entryScript' => '/path/to/.px_execute.php',
+	'log' => function($msg){
+		// エラー発生時にコールされます。
+		// $msg を受け取り、適切なファイルへ出力するように実装してください。
+		error_log($msg, 3, '/path/to/error.log');
+	},
+	'commands'{
+		'php': {
+			// PHPコマンドのパスを表すオブジェクト
+			// または、 文字列で '/path/to/php' とすることも可 (この場合、 php.ini のパスは指定されない)
+			'bin': '/path/to/php',
+			'ini': '/path/to/php.ini'
 		}
 	}
-) );
-appPx2.listen(8081);
-
+));
+$value = $px2ｍe->gpi( json_decode( $_REQUEST['data'] ) );
+header('Content-type: text/json');
+echo json_encode($value);
+exit;
 ```
 
 ### Client Side
 
-```html
+```php
 <div id="canvas"></div>
 
-<!-- Pickles 2 Module Editor -->
-<link rel="stylesheet" href="/path/to/pickles2-module-editor.css" />
-<script src="/path/to/pickles2-module-editor.js"></script>
+<!--
+エディタが利用する CSS や JavaScript などのリソースファイルがあります。
+`$px2ce->get_client_resources()` からリソースの一覧を取得し、読み込んでください。
+-->
+
+<?php
+require_once('vendor/autoload.php');
+
+$px2me = new pickles2\libs\moduleEditor\main();
+$px2me->init( /* any options */ );
+
+$resources = $px2me->get_client_resources();
+foreach($resources->css as $css_file){
+	echo('<link rel="stylesheet" href="'.htmlspecialchars($css_file).'" />');
+}
+foreach($resources->js as $js_file){
+	echo('<script src="'.htmlspecialchars($js_file).'"></script>');
+}
+?>
 
 <script>
 var pickles2ModuleEditor = new Pickles2ModuleEditor();
@@ -186,7 +151,7 @@ $ npm run test
 
 ### pickles2-module-editor, pickles2/lib-px2-module-editor v0.2.1 (リリース日未定)
 
-- ??????????????????????????
+- PHP版で、`finalize.php` を編集できるようになった。
 
 ### pickles2-module-editor, pickles2/lib-px2-module-editor v0.2.0 (2018年7月11日)
 
