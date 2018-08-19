@@ -149,6 +149,10 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.2.2 (2018年8月20日)
+
+- PHP版で、プラグインからモジュールパッケージをインポートできない不具合を修正。
+
 ### pickles2/lib-px2-module-editor v0.2.1 (2018年7月27日)
 
 - PHP版で、`finalize.php` を編集できるようになった。

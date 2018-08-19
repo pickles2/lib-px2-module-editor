@@ -36,7 +36,7 @@ return function($px2me, $data){
 				$realpath
 			);
 		}elseif($fromDiv == 'modulePlugin'){
-			$pluginInfo = $px2me->packages->package_list->broccoliModules[$fromId];
+			$pluginInfo = $px2me->get_packages()->package_list->broccoliModules[$fromId];
 			$px2me->fs()->copy_r(
 				$pluginInfo->path,
 				$realpath
