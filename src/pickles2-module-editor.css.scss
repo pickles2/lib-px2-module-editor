@@ -185,4 +185,10 @@
 			overflow: visible;
 		}
 	}
+
+	// ライブラリとの競合回避
+	.px2-modal &__module-edit{
+		display: block;
+	}
+
 }
