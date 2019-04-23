@@ -25,7 +25,7 @@ return function($px2me, $data){
 		);
 	}
 	$realpath = $realpath.'/'.urlencode($data['data']['packageId']).'/';
-	if( is_dir($realpath) ){
+	if( is_dir($realpath) && !$data['data']['force'] ){
 		// 既に存在する
 		return array(
 			'result' => false,

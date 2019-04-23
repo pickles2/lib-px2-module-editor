@@ -34,7 +34,7 @@ module.exports = function(px2me, data, callback){
 			return;
 		}
 		realpath = realpath+'/'+encodeURIComponent(data.data.packageId)+'/';
-		if( utils79.is_dir(realpath) ){
+		if( utils79.is_dir(realpath) && !data.data.force ){
 			// 既に存在する
 			callback({
 				'result': false,
