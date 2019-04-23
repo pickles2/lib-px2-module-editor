@@ -17,20 +17,29 @@ module.exports = function(px2me, data, callback){
 		} catch (e) {
 		}
 		if( !utils79.is_dir(realpath) ){
-			callback(false);
+			callback({
+				'result': false,
+				'msg': 'テンプレートディレクトリが存在しません。',
+			});
 			return;
 		}
 
 		if( !px2me.isEditablePath( realpath ) ){
 			// 編集可能なパスかどうか評価
 			// 駄目なら上書いてはいけない。
-			callback(false);
+			callback({
+				'result': false,
+				'msg': 'テンプレートディレクトリが編集できないパスを指しています。',
+			});
 			return;
 		}
 		realpath = realpath+'/'+encodeURIComponent(data.data.packageId)+'/';
 		if( utils79.is_dir(realpath) ){
 			// 既に存在する
-			callback(false);
+			callback({
+				'result': false,
+				'msg': 'そのパッケージIDはすでに存在します。',
+			});
 			return;
 		}
 
@@ -70,7 +79,10 @@ module.exports = function(px2me, data, callback){
 			fs.writeFileSync(realpath+'/info.json', JSON.stringify(infoJson));
 		} catch (e) {}
 
-		callback(true);
+		callback({
+			'result': true,
+			'msg': 'OK',
+		});
 		return;
 	});
 	return;

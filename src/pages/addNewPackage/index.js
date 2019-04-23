@@ -76,6 +76,10 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
 
 						px2me.addNewPackage(data, function(result){
+							if( !result.result ){
+								alert(result.msg);
+								return;
+							}
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});

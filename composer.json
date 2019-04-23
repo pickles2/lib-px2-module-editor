@@ -20,6 +20,9 @@
             "php ./vendor/phpunit/phpunit/phpunit"
         ]
     } ,
+    "config": {
+        "process-timeout": 0
+    },
     "minimum-stability": "dev",
     "repositories": [
     ],
@@ -27,7 +30,7 @@
         "php": ">=5.4.0",
         "tomk79/langbank": "^0.0.3",
         "twig/twig": "^1.35",
-        "pickles2/lib-px2-contents-editor": "*"
+        "pickles2/lib-px2-contents-editor": "^2.0.5"
     },
     "require-dev": {
         "broccoli-html-editor/broccoli-module-fess": "dev-develop",

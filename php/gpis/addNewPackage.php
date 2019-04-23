@@ -10,18 +10,27 @@ return function($px2me, $data){
 
 	$realpath = $px2me->fs()->get_realpath($px2me->get_px2conf()->plugins->px2dt->path_module_templates_dir.'/', dirname($px2me->entry_script()));
 	if( !is_dir($realpath) ){
-		return false;
+		return array(
+			'result' => false,
+			'msg' => 'テンプレートディレクトリが存在しません。',
+		);
 	}
 
 	if( !$px2me->isEditablePath( $realpath ) ){
 		// 編集可能なパスかどうか評価
 		// 駄目なら上書いてはいけない。
-		return false;
+		return array(
+			'result' => false,
+			'msg' => 'テンプレートディレクトリが編集できないパスを指しています。',
+		);
 	}
 	$realpath = $realpath.'/'.urlencode($data['data']['packageId']).'/';
 	if( is_dir($realpath) ){
 		// 既に存在する
-		return false;
+		return array(
+			'result' => false,
+			'msg' => 'そのパッケージIDはすでに存在します。',
+		);
 	}
 
 	$px2me->fs()->mkdir_r($realpath);
@@ -52,5 +61,8 @@ return function($px2me, $data){
 	$infoJson->name = $data['data']['packageName'];
 	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson));
 
-	return true;
+	return array(
+		'result' => true,
+		'msg' => 'OK',
+	);
 };
