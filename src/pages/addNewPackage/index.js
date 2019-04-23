@@ -56,6 +56,23 @@ module.exports = function(px2me, $canvasContent, options, callback){
 
 			$canvasContent.find('[name=packageId]').val( '' );
 			$canvasContent.find('[name=packageName]').val( '' );
+			$canvasContent.find('input[type=radio][name=import_from]').on('change', function(){
+				var $checkedRadio = $canvasContent.find('input[type=radio][name=import_from]:checked');
+
+				var $inputId = $canvasContent.find('[name=packageId]');
+				var isInchangedId = $inputId.attr('placeholder') == $inputId.val();
+				$inputId.attr( {'placeholder':$checkedRadio.attr('data-package-id')} );
+				if((isInchangedId || !$inputId.val().length) && $checkedRadio.attr('data-package-id').length){
+					$inputId.val( $checkedRadio.attr('data-package-id') );
+				}
+
+				var $inputName = $canvasContent.find('[name=packageName]');
+				var isInchangedName = $inputName.attr('placeholder') == $inputName.val();
+				$inputName.attr( {'placeholder':$checkedRadio.attr('data-package-name')} );
+				if((isInchangedName || !$inputName.val().length) && $checkedRadio.attr('data-package-name').length){
+					$inputName.val( $checkedRadio.attr('data-package-name') );
+				}
+			});
 			rlv();
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
