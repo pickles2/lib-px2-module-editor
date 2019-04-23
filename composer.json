@@ -39,7 +39,7 @@
         "pickles2/px2-dec": "dev-master",
         "pickles2/px2-multitheme": "dev-develop",
         "pickles2/px2-path-resolver": "dev-develop",
-        "pickles2/px2-px2dthelper": "dev-develop",
+        "pickles2/px2-px2dthelper": "^2.0.7",
         "pickles2/px2-remove-attr": "dev-develop",
         "pickles2/px2-sitemapexcel": "dev-develop",
         "phpunit/phpunit": "^4.1.0"
