@@ -25,12 +25,16 @@ return function($px2me, $data){
 		);
 	}
 	$realpath = $realpath.'/'.urlencode($data['data']['packageId']).'/';
-	if( is_dir($realpath) && !$data['data']['force'] ){
+	if( is_dir($realpath) ){
 		// 既に存在する
-		return array(
-			'result' => false,
-			'msg' => 'そのパッケージIDはすでに存在します。',
-		);
+		if(!$data['data']['force']){
+			return array(
+				'result' => false,
+				'msg' => 'そのパッケージIDはすでに存在します。',
+			);
+		}
+		// 一旦削除
+		$px2me->fs()->rm($realpath);
 	}
 
 	$px2me->fs()->mkdir_r($realpath);

@@ -34,13 +34,17 @@ module.exports = function(px2me, data, callback){
 			return;
 		}
 		realpath = realpath+'/'+encodeURIComponent(data.data.packageId)+'/';
-		if( utils79.is_dir(realpath) && !data.data.force ){
+		if( utils79.is_dir(realpath) ){
 			// 既に存在する
-			callback({
-				'result': false,
-				'msg': 'そのパッケージIDはすでに存在します。',
-			});
-			return;
+			if(!data.data.force){
+				callback({
+					'result': false,
+					'msg': 'そのパッケージIDはすでに存在します。',
+				});
+				return;
+			}
+			// 一旦削除
+			fsx.removeSync(realpath);
 		}
 
 		fs.mkdirSync(realpath);
@@ -49,6 +53,7 @@ module.exports = function(px2me, data, callback){
 			data.data.importFrom.match(/^(moduleCollection|modulePlugin)\:([\S]+)$/);
 			var fromDiv = RegExp.$1;
 			var fromId = RegExp.$2;
+
 			if( fromDiv == 'moduleCollection' ){
 				fsx.copySync(
 					broccoli.paths_module_template[fromId],
@@ -62,6 +67,7 @@ module.exports = function(px2me, data, callback){
 						realpath
 					);
 				} catch (e) {
+					console.error(e);
 				}
 			}
 		}
@@ -76,7 +82,7 @@ module.exports = function(px2me, data, callback){
 		}
 		infoJson.name = data.data.packageName;
 		try {
-			fs.writeFileSync(realpath+'/info.json', JSON.stringify(infoJson));
+			fs.writeFileSync(realpath+'/info.json', JSON.stringify(infoJson, null, 4));
 		} catch (e) {}
 
 		callback({
