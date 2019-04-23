@@ -13,7 +13,7 @@
         "start": [
             "php -S 127.0.0.1:8088 -t ./"
         ],
-        "open-in-browser": [
+        "preview": [
             "open http://127.0.0.1:8088/tests/app/client_php/"
         ],
         "test": [

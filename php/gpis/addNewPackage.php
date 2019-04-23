@@ -27,7 +27,7 @@ return function($px2me, $data){
 	$realpath = $realpath.'/'.urlencode($data['data']['packageId']).'/';
 	if( is_dir($realpath) ){
 		// 既に存在する
-		if(!$data['data']['force']){
+		if(!array_key_exists('force', $data['data']) || !$data['data']['force']){
 			return array(
 				'result' => false,
 				'msg' => 'そのパッケージIDはすでに存在します。',
@@ -63,7 +63,7 @@ return function($px2me, $data){
 		$infoJson = @json_decode( file_get_contents( $realpath.'/info.json' ) );
 	}
 	$infoJson->name = $data['data']['packageName'];
-	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson));
+	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 
 	return array(
 		'result' => true,
