@@ -43,6 +43,14 @@ module.exports = function(px2me, data, callback){
 				});
 				return;
 			}
+			if( data.data.importFrom == 'moduleCollection:'+data.data.packageId ){
+				callback({
+					'result': false,
+					'msg': 'インポート先とインポート元が同一です。',
+				});
+				return;
+			}
+
 			// 一旦削除
 			fsx.removeSync(realpath);
 		}
@@ -69,6 +77,11 @@ module.exports = function(px2me, data, callback){
 				} catch (e) {
 					console.error(e);
 				}
+			}else{
+				callback({
+					'result': false,
+					'msg': '無効なコマンドです。',
+				});
 			}
 		}
 

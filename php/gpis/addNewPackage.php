@@ -33,6 +33,13 @@ return function($px2me, $data){
 				'msg' => 'そのパッケージIDはすでに存在します。',
 			);
 		}
+		if( $data['data']['importFrom'] == 'moduleCollection:'.$data['data']['packageId'] ){
+			return array(
+				'result' => false,
+				'msg' => 'インポート先とインポート元が同一です。',
+			);
+		}
+
 		// 一旦削除
 		$px2me->fs()->rm($realpath);
 	}
@@ -53,6 +60,11 @@ return function($px2me, $data){
 			$px2me->fs()->copy_r(
 				$pluginInfo->path,
 				$realpath
+			);
+		}else{
+			return array(
+				'result' => false,
+				'msg' => '無効なコマンドです。',
 			);
 		}
 	}
