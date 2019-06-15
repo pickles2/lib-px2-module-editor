@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.2.3 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.2.3 (2019年6月15日)
 
 - `broccoli.json` の `id` 属性に対応。
 - その他いくつかのUI改善。
