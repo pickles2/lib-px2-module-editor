@@ -1,15 +1,6 @@
-[submodule "submodules/broccoli-html-editor"]
-	path = submodules/broccoli-html-editor
-	url = https://github.com/broccoli-html-editor/broccoli-html-editor.git
-[submodule "submodules/node-utils79"]
-	path = submodules/node-utils79
-	url = https://github.com/tomk79/node-utils79.git
 [submodule "submodules/ace-builds"]
 	path = submodules/ace-builds
 	url = https://github.com/ajaxorg/ace-builds.git
-[submodule "submodules/node-pickles2-contents-editor"]
-	path = submodules/node-pickles2-contents-editor
-	url = https://github.com/pickles2/node-pickles2-contents-editor.git
 [submodule "submodules/px2style"]
 	path = submodules/px2style
 	url = https://github.com/pickles2/px2style.git
