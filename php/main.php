@@ -439,7 +439,10 @@ class main{
 		), $pipes);
 		$io = array();
 		foreach($pipes as $idx=>$pipe){
-			$io[$idx] = stream_get_contents($pipe);
+			$io[$idx] = null;
+			if( $idx >= 1 ){
+				$io[$idx] = stream_get_contents($pipe);
+			}
 			fclose($pipe);
 		}
 		$return_var = proc_close($proc);
