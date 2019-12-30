@@ -557,7 +557,7 @@
 		this.closeProgress = function( callback ){
 			callback = callback||function(){};
 			var $progress = $canvas.find('.pickles2-module-editor--progress');
-			if( !$progress.size() ){
+			if( !$progress.length ){
 				callback();
 				return;
 			}
