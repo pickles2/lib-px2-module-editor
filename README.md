@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.2.5 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.2.5 (2020年1月2日)
 
 - PHP 7.4 に対応した。
 - 内部コードの更新。
