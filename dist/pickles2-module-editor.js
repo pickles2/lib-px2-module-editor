@@ -2908,24 +2908,23 @@ exports.cache = {
 
 },{}],12:[function(require,module,exports){
 module.exports={
-  "_from": "ejs@2.7.4",
+  "_from": "ejs@^2.7.4",
   "_id": "ejs@2.7.4",
   "_inBundle": false,
   "_integrity": "sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.7.4",
+    "raw": "ejs@^2.7.4",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.7.4",
+    "rawSpec": "^2.7.4",
     "saveSpec": null,
-    "fetchSpec": "2.7.4"
+    "fetchSpec": "^2.7.4"
   },
   "_requiredBy": [
-    "#USER",
     "/",
     "/broccoli-html-editor",
     "/langbank",
@@ -2933,7 +2932,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.7.4.tgz",
   "_shasum": "48661287573dcc53e366c7a1ae52c3a120eec9ba",
-  "_spec": "ejs@2.7.4",
+  "_spec": "ejs@^2.7.4",
   "_where": "/Users/tomk79/mydoc_TomK/projs/pickles2/pickles2/node-pickles2-module-editor",
   "author": {
     "name": "Matthew Eernisse",
