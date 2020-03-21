@@ -46,22 +46,28 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.categoryId = $canvasContent.find('[name=categoryId]').val();
-						data.categoryName = $canvasContent.find('[name=categoryName]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.categoryId = $canvasContent.find('[name=categoryId]').val();
+							data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
-						px2me.addNewCategory(options.packageId, data, function(result){
+							px2me.addNewCategory(options.packageId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();

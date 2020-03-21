@@ -80,20 +80,25 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			px2me.modal({
 				"title": "モジュールを編集",
 				"body": $canvasContent,
+				"width": "calc(100% - 40px)",
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
 					$('<button class="px2-btn px2-btn--primary">')
-						.text('SAVE & CLOSE')
+						.text('保存')
 						.on('click', function(){
 							save(function(result){
 								$(window).off('resize.editModule');
 								px2me.loadPage('list', {}, function(){
 									px2me.closeModal();
 								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
 							});
 						})
 				]

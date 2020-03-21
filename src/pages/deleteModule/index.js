@@ -53,11 +53,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "モジュールを削除",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
 					$('<button class="px2-btn px2-btn--danger">')
 						.text('削除する')
 						.on('click', function(){
@@ -65,6 +60,15 @@ module.exports = function(px2me, $canvasContent, options, callback){
 								px2me.loadPage('list', {}, function(){
 									px2me.closeModal();
 								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
 							});
 						})
 				]

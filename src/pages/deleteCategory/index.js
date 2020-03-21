@@ -45,18 +45,24 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "カテゴリを削除",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						px2me.deleteCategory(options.categoryId, function(result){
+					$('<button class="px2-btn px2-btn--danger">')
+						.text('削除する')
+						.click(function(){
+							px2me.deleteCategory(options.categoryId, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							})
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();

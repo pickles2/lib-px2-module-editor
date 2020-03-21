@@ -81,28 +81,34 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規パッケージを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.packageId = $canvasContent.find('[name=packageId]').val();
-						data.packageName = $canvasContent.find('[name=packageName]').val();
-						data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
-						data.force = $canvasContent.find('[name=force]:checked').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.packageId = $canvasContent.find('[name=packageId]').val();
+							data.packageName = $canvasContent.find('[name=packageName]').val();
+							data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
+							data.force = $canvasContent.find('[name=force]:checked').val();
 
-						px2me.addNewPackage(data, function(result){
-							if( !result.result ){
-								alert(result.msg);
-								return;
-							}
+							px2me.addNewPackage(data, function(result){
+								if( !result.result ){
+									alert(result.msg);
+									return;
+								}
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();

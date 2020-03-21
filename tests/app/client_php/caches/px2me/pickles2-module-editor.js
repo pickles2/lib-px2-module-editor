@@ -18494,7 +18494,7 @@ module.exports = exports['default'];
 		*/
 		this.modal = function(options, callback){
 			callback = callback||function(){};
-			options.target = $canvasModal;
+			// options.target = $canvasModal;
 			$canvasModal.show();
 			return px2style.modal(options, function(){
 				callback();
@@ -18586,22 +18586,28 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規カテゴリを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.categoryId = $canvasContent.find('[name=categoryId]').val();
-						data.categoryName = $canvasContent.find('[name=categoryName]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.categoryId = $canvasContent.find('[name=categoryId]').val();
+							data.categoryName = $canvasContent.find('[name=categoryName]').val();
 
-						px2me.addNewCategory(options.packageId, data, function(result){
+							px2me.addNewCategory(options.packageId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
@@ -18678,22 +18684,28 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規モジュールを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.moduleId = $canvasContent.find('[name=moduleId]').val();
-						data.moduleName = $canvasContent.find('[name=moduleName]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.moduleId = $canvasContent.find('[name=moduleId]').val();
+							data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
-						px2me.addNewModule(options.categoryId, data, function(result){
+							px2me.addNewModule(options.categoryId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
@@ -18804,28 +18816,34 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規パッケージを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.packageId = $canvasContent.find('[name=packageId]').val();
-						data.packageName = $canvasContent.find('[name=packageName]').val();
-						data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
-						data.force = $canvasContent.find('[name=force]:checked').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.packageId = $canvasContent.find('[name=packageId]').val();
+							data.packageName = $canvasContent.find('[name=packageName]').val();
+							data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
+							data.force = $canvasContent.find('[name=force]:checked').val();
 
-						px2me.addNewPackage(data, function(result){
-							if( !result.result ){
-								alert(result.msg);
-								return;
-							}
+							px2me.addNewPackage(data, function(result){
+								if( !result.result ){
+									alert(result.msg);
+									return;
+								}
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
@@ -18900,18 +18918,24 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "カテゴリを削除",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						px2me.deleteCategory(options.categoryId, function(result){
+					$('<button class="px2-btn px2-btn--danger">')
+						.text('削除する')
+						.click(function(){
+							px2me.deleteCategory(options.categoryId, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							})
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
@@ -18994,11 +19018,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "モジュールを削除",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
 					$('<button class="px2-btn px2-btn--danger">')
 						.text('削除する')
 						.on('click', function(){
@@ -19006,6 +19025,15 @@ module.exports = function(px2me, $canvasContent, options, callback){
 								px2me.loadPage('list', {}, function(){
 									px2me.closeModal();
 								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
 							});
 						})
 				]
@@ -19080,19 +19108,25 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "パッケージを削除する",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--danger">').text('削除する').click(function(){
-						px2me.deletePackage(options.packageId, function(result){
+					$('<button class="px2-btn px2-btn--danger">')
+						.text('削除する')
+						.click(function(){
+							px2me.deletePackage(options.packageId, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							})
+
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-
-					})
 				]
 			});
 			rlv();
@@ -19167,21 +19201,27 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "カテゴリを編集",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.infoJson = $canvasContent.find('[name=infoJson]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
-						px2me.saveCategoryCode(options.categoryId, data, function(result){
+							px2me.saveCategoryCode(options.categoryId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							})
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
@@ -19291,20 +19331,25 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			px2me.modal({
 				"title": "モジュールを編集",
 				"body": $canvasContent,
+				"width": "calc(100% - 40px)",
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
 					$('<button class="px2-btn px2-btn--primary">')
-						.text('SAVE & CLOSE')
+						.text('保存')
 						.on('click', function(){
 							save(function(result){
 								$(window).off('resize.editModule');
 								px2me.loadPage('list', {}, function(){
 									px2me.closeModal();
 								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
+							px2me.loadPage('list', {}, function(){
+								px2me.closeModal();
 							});
 						})
 				]
@@ -19530,22 +19575,28 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "パッケージを編集する",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.infoJson = $canvasContent.find('[name=infoJson]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
-						px2me.savePackageCode(options.packageId, data, function(result){
+							px2me.savePackageCode(options.packageId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							})
+
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-
-					})
 				]
 			});
 			rlv();

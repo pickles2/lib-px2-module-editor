@@ -599,7 +599,7 @@
 		*/
 		this.modal = function(options, callback){
 			callback = callback||function(){};
-			options.target = $canvasModal;
+			// options.target = $canvasModal;
 			$canvasModal.show();
 			return px2style.modal(options, function(){
 				callback();

@@ -47,22 +47,28 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"title": "新規モジュールを追加",
 				"body": $canvasContent,
 				"buttons": [
-					$('<button class="px2-btn">').text('キャンセル').click(function(){
-						px2me.loadPage('list', {}, function(){
-							px2me.closeModal();
-						});
-					}),
-					$('<button class="px2-btn px2-btn--primary">').text('OK').click(function(){
-						var data = {};
-						data.moduleId = $canvasContent.find('[name=moduleId]').val();
-						data.moduleName = $canvasContent.find('[name=moduleName]').val();
+					$('<button class="px2-btn px2-btn--primary">')
+						.text('OK')
+						.click(function(){
+							var data = {};
+							data.moduleId = $canvasContent.find('[name=moduleId]').val();
+							data.moduleName = $canvasContent.find('[name=moduleName]').val();
 
-						px2me.addNewModule(options.categoryId, data, function(result){
+							px2me.addNewModule(options.categoryId, data, function(result){
+								px2me.loadPage('list', {}, function(){
+									px2me.closeModal();
+								});
+							});
+						})
+				],
+				"buttonsSecondary": [
+					$('<button class="px2-btn">')
+						.text('キャンセル')
+						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
 						})
-					})
 				]
 			});
 			rlv();
