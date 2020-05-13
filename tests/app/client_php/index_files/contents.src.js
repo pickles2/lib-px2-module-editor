@@ -1,6 +1,6 @@
 var it79 = require('iterate79');
 
-$(window).load(function(){
+$(window).on('load', function(){
 	var conf = require('../../../../config/default.json');
 	// console.log(conf);
 	var params = parseUriParam(window.location.href);

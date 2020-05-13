@@ -7,7 +7,7 @@ module.exports={
 }
 
 },{}],2:[function(require,module,exports){
-$(window).load(function(){
+$(window).on('load', function(){
 	var conf = require('../../../../config/default.json');
 	// console.log(conf);
 	var $canvas = $('#canvas');

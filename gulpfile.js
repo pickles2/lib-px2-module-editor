@@ -1,36 +1,27 @@
-var conf = require('config');
+let conf = require('config');
 // console.log(conf);
-var path = require('path');
-var gulp = require('gulp');
-var sass = require('gulp-sass');//CSSコンパイラ
-var minifyCss = require('gulp-minify-css');//CSSファイルの圧縮ツール
-var autoprefixer = require("gulp-autoprefixer");//CSSにベンダープレフィックスを付与してくれる
-var uglify = require("gulp-uglify");//JavaScriptファイルの圧縮ツール
-var concat = require('gulp-concat');//ファイルの結合ツール
-var plumber = require("gulp-plumber");//コンパイルエラーが起きても watch を抜けないようになる
-var rename = require("gulp-rename");//ファイル名の置き換えを行う
-var twig = require("gulp-twig");//Twigテンプレートエンジン
-var browserify = require("gulp-browserify");//NodeJSのコードをブラウザ向けコードに変換
-var packageJson = require(__dirname+'/package.json');
-var _tasks = [
-	'.html',
-	'.html.twig',
-	'.css',
-	'.css.scss',
-	'test/contents.js',
-	'.js',
-	'pickles2-module-editor.js',
-	'client-libs'
-];
+let path = require('path');
+let gulp = require('gulp');
+let sass = require('gulp-sass');//CSSコンパイラ
+let minifyCss = require('gulp-minify-css');//CSSファイルの圧縮ツール
+let autoprefixer = require("gulp-autoprefixer");//CSSにベンダープレフィックスを付与してくれる
+let uglify = require("gulp-uglify");//JavaScriptファイルの圧縮ツール
+let concat = require('gulp-concat');//ファイルの結合ツール
+let plumber = require("gulp-plumber");//コンパイルエラーが起きても watch を抜けないようになる
+let rename = require("gulp-rename");//ファイル名の置き換えを行う
+let twig = require("gulp-twig");//Twigテンプレートエンジン
+let browserify = require("gulp-browserify");//NodeJSのコードをブラウザ向けコードに変換
+let packageJson = require(__dirname+'/package.json');
 
 
 // client-libs (frontend) を処理
-gulp.task("client-libs", function() {
+gulp.task("client-libs", function(cb) {
+	cb();
 });
 
 // src 中の *.css を処理
 gulp.task('.css', function(){
-	gulp.src("src/**/*.css")
+	return gulp.src("src/**/*.css")
 		.pipe(plumber())
 		.pipe(gulp.dest( './dist/' ))
 	;
@@ -38,7 +29,7 @@ gulp.task('.css', function(){
 
 // src 中の *.css.scss を処理
 gulp.task('.css.scss', function(){
-	gulp.src("src/**/*.css.scss")
+	return gulp.src("src/**/*.css.scss")
 		.pipe(plumber())
 		.pipe(sass({
 			"sourceComments": false
@@ -61,7 +52,7 @@ gulp.task('.css.scss', function(){
 
 // pickles2-module-editor.js を処理
 gulp.task("pickles2-module-editor.js", function() {
-	gulp.src(["src/pickles2-module-editor.js"])
+	return gulp.src(["src/pickles2-module-editor.js"])
 		.pipe(plumber())
 		.pipe(browserify({
 		}))
@@ -78,7 +69,7 @@ gulp.task("pickles2-module-editor.js", function() {
 
 // *.js を処理
 gulp.task(".js", function() {
-	gulp.src(["src/**/*.js","!src/pickles2-module-editor.js","!src/**/_*.js","!src/pages/**/*.js"])
+	return gulp.src(["src/**/*.js","!src/pickles2-module-editor.js","!src/**/_*.js","!src/pages/**/*.js"])
 		.pipe(plumber())
 		.pipe(browserify({
 		}))
@@ -88,7 +79,7 @@ gulp.task(".js", function() {
 
 // *.html を処理
 gulp.task(".html", function() {
-	gulp.src(["src/**/*.html", "src/**/*.htm"])
+	return gulp.src(["src/**/*.html", "src/**/*.htm"])
 		.pipe(plumber())
 		.pipe(gulp.dest( './dist/' ))
 	;
@@ -96,7 +87,7 @@ gulp.task(".html", function() {
 
 // *.html.twig を処理
 gulp.task(".html.twig", function() {
-	gulp.src(["src/**/*.html.twig"])
+	return gulp.src(["src/**/*.html.twig"])
 		.pipe(plumber())
 		.pipe(twig({
 			data: {
@@ -109,8 +100,8 @@ gulp.task(".html.twig", function() {
 });
 
 // contents.js を処理
-gulp.task("test/contents.js", function() {
-	gulp.src(["tests/app/client/index_files/contents.src.js"])
+gulp.task("test/contents.js:node", function() {
+	return gulp.src(["tests/app/client/index_files/contents.src.js"])
 		.pipe(plumber())
 		.pipe(browserify({
 		}))
@@ -118,7 +109,10 @@ gulp.task("test/contents.js", function() {
 		.pipe(concat('contents.js'))
 		.pipe(gulp.dest( 'tests/app/client/index_files/' ))
 	;
-	gulp.src(["tests/app/client_php/index_files/contents.src.js"])
+});
+// contents.js を処理
+gulp.task("test/contents.js:php", function() {
+	return gulp.src(["tests/app/client_php/index_files/contents.src.js"])
 		.pipe(plumber())
 		.pipe(browserify({
 		}))
@@ -128,14 +122,31 @@ gulp.task("test/contents.js", function() {
 	;
 });
 
-// src 中のすべての拡張子を監視して処理
-gulp.task("watch", function() {
-	gulp.watch(["src/**/*"], _tasks);
-});
-
 // ブラウザを立ち上げてプレビューする
 gulp.task("preview", function() {
 	require('child_process').spawn('open',[conf.origin+'/']);
+});
+
+
+let _tasks = gulp.parallel(
+	'.html',
+	'.html.twig',
+	'.css',
+	'.css.scss',
+	'test/contents.js:node',
+	'test/contents.js:php',
+	'.js',
+	'pickles2-module-editor.js',
+	'client-libs'
+);
+
+// src 中のすべての拡張子を監視して処理
+gulp.task("watch", function() {
+	return gulp.watch([
+		"src/**/*",
+		"tests/app/client/index_files/**/*.src.js",
+		"tests/app/client_php/index_files/**/*.src.js"
+	], _tasks);
 });
 
 // src 中のすべての拡張子を処理(default)
