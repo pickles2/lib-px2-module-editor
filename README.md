@@ -149,9 +149,9 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.2.7 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.2.7 (2020年8月12日)
 
-- その他の細かいUIや不具合の改善。
+- 細かいUIの改善と不具合の修正。
 
 ### pickles2/lib-px2-module-editor v0.2.6 (2020年1月14日)
 
