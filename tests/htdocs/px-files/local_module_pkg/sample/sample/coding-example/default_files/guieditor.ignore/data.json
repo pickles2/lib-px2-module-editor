@@ -1,24 +1,37 @@
 {
- "bowl": {
-  "main": {
-   "modId": "_sys/root",
-   "fields": {
-    "main": [
-     {
-      "modId": "local:sample/sample",
-      "fields": {
-       "main": {
-        "src": "## preview\n\nContents Sample.",
-        "editor": "markdown"
-       }
-      },
-      "anchor": "",
-      "dec": ""
-     }
-    ]
-   },
-   "anchor": "",
-   "dec": ""
-  }
- }
+    "bowl": {
+        "main": {
+            "modId": "_sys/root",
+            "fields": {
+                "main": [
+                    {
+                        "modId": "local:sample/sample",
+                        "fields": {
+                            "main": {
+                                "src": "## preview\n\nContents Sample.",
+                                "editor": "markdown"
+                            }
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    },
+                    {
+                        "modId": "FESS:parts/table_def",
+                        "fields": {
+                            "table": {
+                                "resKey": "",
+                                "output": "",
+                                "header_row": 0,
+                                "header_col": 0,
+                                "cell_renderer": "text",
+                                "renderer": "simplify"
+                            }
+                        }
+                    }
+                ]
+            },
+            "anchor": "",
+            "dec": ""
+        }
+    }
 }
