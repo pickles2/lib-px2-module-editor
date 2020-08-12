@@ -29,7 +29,7 @@
     "require": {
         "php": ">=5.4.0",
         "tomk79/langbank": "^0.0.4",
-        "pickles2/lib-px2-contents-editor": "^2.0.5"
+        "pickles2/lib-px2-contents-editor": "^2.0"
     },
     "require-dev": {
         "broccoli-html-editor/broccoli-module-fess": "dev-develop",
