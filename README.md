@@ -149,6 +149,11 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.2.8 (2021年2月21日)
+
+- Firefox で初期化が完了できない問題に対する修正。
+- 依存ライブラリを更新。
+
 ### pickles2/lib-px2-module-editor v0.2.7 (2020年8月12日)
 
 - 細かいUIの改善と不具合の修正。
