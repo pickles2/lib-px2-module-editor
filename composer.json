@@ -28,20 +28,20 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "tomk79/langbank": "^0.0.4",
-        "pickles2/lib-px2-contents-editor": "^2.0"
+        "tomk79/langbank": "~0.0.4",
+        "pickles2/lib-px2-contents-editor": "~2.0"
     },
     "require-dev": {
-        "broccoli-html-editor/broccoli-module-fess": "dev-develop",
-        "broccoli-html-editor/broccoli-module-plain-html-elements": "dev-develop",
-        "pickles2/px-fw-2.x": "^2.0",
-        "pickles2/px2-dec": "^2.0",
-        "pickles2/px2-multitheme": "^2.0",
-        "pickles2/px2-path-resolver": "^2.0",
-        "pickles2/px2-px2dthelper": "^2.0.7",
-        "pickles2/px2-remove-attr": "^2.0",
-        "pickles2/px2-sitemapexcel": "^2.0||^2.1",
-        "phpunit/phpunit": "^4.8.0"
+        "broccoli-html-editor/broccoli-module-fess": "*",
+        "broccoli-html-editor/broccoli-module-plain-html-elements": "*",
+        "pickles2/px-fw-2.x": "~2.0",
+        "pickles2/px2-dec": "~2.0",
+        "pickles2/px2-multitheme": "~2.0",
+        "pickles2/px2-path-resolver": "~2.0",
+        "pickles2/px2-px2dthelper": "~2.0.16",
+        "pickles2/px2-remove-attr": "~2.0",
+        "pickles2/px2-sitemapexcel": "~2.0||~2.1",
+        "phpunit/phpunit": "~4.8.0"
     },
     "autoload": {
         "files": [
