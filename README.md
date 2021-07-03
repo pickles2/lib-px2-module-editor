@@ -149,6 +149,10 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.2.9 (リリース日未定)
+
+- Broccoliの必須オプションが渡らない場合がある問題を修正。
+
 ### pickles2/lib-px2-module-editor v0.2.8 (2021年2月21日)
 
 - Firefox で初期化が完了できない問題に対する修正。

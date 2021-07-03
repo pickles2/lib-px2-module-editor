@@ -293,6 +293,16 @@ class main{
 			$broccoliInitOptions['pathResourceDir'] = $this->fs->get_realpath('/'.$previewContentName.'_files/resources/');
 			$broccoliInitOptions['realpathDataDir'] = $broccoliInitOptions['documentRoot'].$previewContentName.'_files/guieditor.ignore/';
 		}
+		if( !$broccoliInitOptions['pathHtml'] ){
+			$broccoliInitOptions['pathHtml'] = $this->fs->get_realpath('/'.$previewContentName.'.html');
+		}
+		if( !$broccoliInitOptions['pathResourceDir'] ){
+			$broccoliInitOptions['pathResourceDir'] = $this->fs->get_realpath('/'.$previewContentName.'_files/resources/');
+		}
+		if( !$broccoliInitOptions['realpathDataDir'] ){
+			$broccoliInitOptions['realpathDataDir'] = $broccoliInitOptions['documentRoot'].$previewContentName.'_files/guieditor.ignore/';
+		}
+
 		// var_dump($broccoliInitOptions);
 		$this->initPreviewContent(@$options['moduleId'], $broccoliInitOptions);
 
