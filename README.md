@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.2.9 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.2.9 (2021年7月10日)
 
 - Broccoliの必須オプションが渡らない場合がある問題を修正。
 
