@@ -9,7 +9,10 @@ namespace pickles2\libs\moduleEditor;
  *
  * @author Tomoya Koyanagi <tomk79@gmail.com>
  */
-class main{
+class main {
+
+	/** Pickles 2 オブジェクト */
+	private $px;
 
 	/** Filesystem Utility */
 	private $fs;
@@ -42,8 +45,11 @@ class main{
 
 	/**
 	 * Constructor
+	 *
+	 * @param object $px Pickles 2 オブジェクト
 	 */
-	public function __construct(){
+	public function __construct( $px = null ){
+		$this->px = $px;
 		$this->fs = new \tomk79\filesystem();
 	}
 
@@ -315,7 +321,7 @@ class main{
 	 * create pickles2-contents-editor object
 	 */
 	public function createPickles2ContentsEditor(){
-		$px2ce = new \pickles2\libs\contentsEditor\main();
+		$px2ce = new \pickles2\libs\contentsEditor\main( $this->px );
 
 		$px2ce->init(
 			array(

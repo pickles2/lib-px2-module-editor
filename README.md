@@ -12,7 +12,7 @@ Pickles 2 のモジュール編集インターフェイスを提供します。
  * api.php
  */
 require_once('vendor/autoload.php');
-$px2ｍe = new pickles2\libs\moduleEditor\main();
+$px2ｍe = new pickles2\libs\moduleEditor\main( $px );
 $px2ｍe->init(array(
 	'appMode' => 'web', // 'web' or 'desktop'. default to 'web'
 	'entryScript' => '/path/to/.px_execute.php',
@@ -49,7 +49,7 @@ exit;
 <?php
 require_once('vendor/autoload.php');
 
-$px2me = new pickles2\libs\moduleEditor\main();
+$px2me = new pickles2\libs\moduleEditor\main( $px );
 $px2me->init( /* any options */ );
 
 $resources = $px2me->get_client_resources();
@@ -148,6 +148,10 @@ $ npm run test
 
 
 ## 更新履歴 - Change log
+
+### pickles2/lib-px2-module-editor v0.2.10 (リリース日未定)
+
+- パフォーマンスに関する改善。
 
 ### pickles2/lib-px2-module-editor v0.2.9 (2021年7月10日)
 
