@@ -323,16 +323,21 @@ class main {
 	public function createPickles2ContentsEditor(){
 		$px2ce = new \pickles2\libs\contentsEditor\main( $this->px );
 
-		$px2ce->init(
-			array(
-				'page_path' => '/px2me-dummy.html', // <- 編集対象ページのパス
-				'appMode' => $this->getAppMode(), // 'web' or 'desktop'. default to 'web'
-				'entryScript' => $this->entryScript,
-				'customFields' => array() ,
-				'log' => function($msg){},
-				'commands' => @$this->options['commands'],
-			)
+		$px2ce_options = array(
+			'page_path' => '/px2me-dummy.html', // <- 編集対象ページのパス
+			'appMode' => $this->getAppMode(), // 'web' or 'desktop'. default to 'web'
+			'entryScript' => $this->entryScript,
+			'customFields' => array() ,
+			'log' => function($msg){},
 		);
+		if( isset($this->options['commands']['php']['bin']) ){
+			$px2ce_options['php'] = $this->options['commands']['php']['bin'];
+		}
+		if( isset($this->options['commands']['php']['ini']) ){
+			$px2ce_options['php_ini'] = $this->options['commands']['php']['ini'];
+		}
+
+		$px2ce->init( $px2ce_options );
 
 		return $px2ce;
 	}
