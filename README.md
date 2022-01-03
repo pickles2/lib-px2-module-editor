@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.2.10 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.2.10 (2022年1月4日)
 
 - Pickles 2 Contents Editor の初期化に関する不具合を修正。
 - パフォーマンスに関する改善。

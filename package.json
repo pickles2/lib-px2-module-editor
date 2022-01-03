@@ -1,6 +1,6 @@
 {
   "name": "pickles2-module-editor",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Pickles 2 module editor library.",
   "private": false,
   "main": "libs/main.js",
