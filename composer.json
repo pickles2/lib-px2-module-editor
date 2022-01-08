@@ -28,7 +28,7 @@
     "repositories": [
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.3.0",
         "tomk79/langbank": "~0.0.4",
         "pickles2/lib-px2-contents-editor": "~2.0"
     },
@@ -42,7 +42,7 @@
         "pickles2/px2-px2dthelper": "~2.0.16",
         "pickles2/px2-remove-attr": "~2.0",
         "pickles2/px2-sitemapexcel": "~2.0||~2.1",
-        "phpunit/phpunit": "~4.8.0"
+        "phpunit/phpunit": "~9.5"
     },
     "autoload": {
         "files": [

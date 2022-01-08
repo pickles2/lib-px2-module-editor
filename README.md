@@ -149,6 +149,11 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.3.0 (リリース日未定)
+
+- サポートするPHPのバージョンを `>=7.3.0` に変更。
+- PHP 8.1 に対応した。
+
 ### pickles2/lib-px2-module-editor v0.2.10 (2022年1月4日)
 
 - Pickles 2 Contents Editor の初期化に関する不具合を修正。

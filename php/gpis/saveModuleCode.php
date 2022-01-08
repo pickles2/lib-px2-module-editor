@@ -19,7 +19,7 @@ return function($px2me, $data){
 
 	$px2me->fs()->rm($realpath.'/template.html');
 	$px2me->fs()->rm($realpath.'/template.html.twig');
-	if( strlen( $data['data']['clipJson'] ) && !strlen($data['data']['template']) ){
+	if( strlen( ''.$data['data']['clipJson'] ) && !strlen(''.$data['data']['template']) ){
 		// clip に値があって、 template に値がない場合、
 		// クリップモジュールとみなしてテンプレートファイルの生成は行わない。
 	}else{
@@ -31,27 +31,27 @@ return function($px2me, $data){
 	$px2me->fs()->rm($realpath.'/module.css');
 	$px2me->fs()->rm($realpath.'/module.css.scss');
 
-	if( strlen( $data['data']['css'] ) ){
+	if( strlen( ''.$data['data']['css'] ) ){
 		$px2me->fs()->save_file($realpath.'/module.'.$data['data']['cssExt'], $data['data']['css']);
 	}
 
 	$px2me->fs()->rm($realpath.'/module.js');
-	if( strlen( $data['data']['js'] ) ){
+	if( strlen( ''.$data['data']['js'] ) ){
 		$px2me->fs()->save_file($realpath.'/module.'.$data['data']['jsExt'], $data['data']['js']);
 	}
 
 	$px2me->fs()->rm($realpath.'/finalize.js');
-	if( strlen( $data['data']['finalizeJs'] ) ){
+	if( strlen( ''.$data['data']['finalizeJs'] ) ){
 		$px2me->fs()->save_file($realpath.'/finalize.js', $data['data']['finalizeJs']);
 	}
 
 	$px2me->fs()->rm($realpath.'/finalize.php');
-	if( strlen( $data['data']['finalizePhp'] ) ){
+	if( strlen( ''.$data['data']['finalizePhp'] ) ){
 		$px2me->fs()->save_file($realpath.'/finalize.php', $data['data']['finalizePhp']);
 	}
 
 	$px2me->fs()->rm($realpath.'/clip.json');
-	if( strlen( $data['data']['clipJson'] ) ){
+	if( strlen( ''.$data['data']['clipJson'] ) ){
 		$px2me->fs()->save_file($realpath.'/clip.json', json_encode(json_decode($data['data']['clipJson']), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 	}
 

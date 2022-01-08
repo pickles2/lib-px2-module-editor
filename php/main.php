@@ -84,7 +84,7 @@ class main {
 			'php_ini' => @$options['commands']['php']['ini'],
 			'php_extension_dir' => @$options['commands']['php']['php_extension_dir'],
 		);
-		if( !strlen($this->php_command['php']) ){
+		if( !strlen(''.$this->php_command['php']) ){
 			$this->php_command['php'] = 'php';
 		}
 
@@ -108,10 +108,16 @@ class main {
 		$this->pathResourceDir = $pjInfo->pathResourceDir;
 
 		// configを初期化
-		$this->px2conf->plugins = $this->px2conf->plugins;
-		$this->px2conf->plugins->px2dt = $this->px2conf->plugins->px2dt;
-		$this->px2conf->plugins->px2dt->paths_module_template = $this->px2conf->plugins->px2dt->paths_module_template;
-		$this->px2conf->plugins->px2dt->path_module_templates_dir = $this->px2conf->plugins->px2dt->path_module_templates_dir;
+		if( is_object($this->px2conf) ){
+			$this->px2conf->plugins = new \stdClass();
+			$this->px2conf->plugins->px2dt = new \stdClass();
+			if( isset($this->px2conf->plugins) && is_object($this->px2conf->plugins) ){
+				$this->px2conf->plugins = $this->px2conf->plugins;
+				$this->px2conf->plugins->px2dt = $this->px2conf->plugins->px2dt;
+				$this->px2conf->plugins->px2dt->paths_module_template = $this->px2conf->plugins->px2dt->paths_module_template;
+				$this->px2conf->plugins->px2dt->path_module_templates_dir = $this->px2conf->plugins->px2dt->path_module_templates_dir;
+			}
+		}
 
 		return;
 	}
@@ -223,7 +229,18 @@ class main {
 	 * プロジェクト情報をまとめて取得する
 	 */
 	public function getProjectInfo(){
-		$pjInfo = json_decode('{}');
+		$pjInfo = new \stdClass();
+		$pjInfo->conf = null;
+		$pjInfo->pageInfo = null;
+		$pjInfo->contRoot = null;
+		$pjInfo->documentRoot = null;
+		$pjInfo->realpathFiles = null;
+		$pjInfo->pathFiles = null;
+		$pjInfo->realpathDataDir = null;
+		$pjInfo->pathResourceDir = null;
+		$pjInfo->realpath_homedir = null;
+		$pjInfo->packages = null;
+
 		$page_info = $this->page_path;
 		if(!$page_info){
 			$page_info = '/px2me-dummy.html';
@@ -415,13 +432,13 @@ class main {
 			// $this->error('Invalid argument supplied for 1st option $request_path in $px->internal_sub_request(). It required String value.');
 			return false;
 		}
-		if(!strlen($request_path)){ $request_path = '/'; }
+		if(!strlen(''.$request_path)){ $request_path = '/'; }
 		if(is_null($options)){ $options = array(); }
 		$php_command = array();
 		array_push( $php_command, addslashes($this->php_command['php']) );
 			// ↑ Windows でこれを `escapeshellarg()` でエスケープすると、なぜかエラーに。
 
-		if( strlen(@$this->php_command['php_ini']) ){
+		if( strlen(''.@$this->php_command['php_ini']) ){
 			$php_command = array_merge(
 				$php_command,
 				array(
@@ -429,7 +446,7 @@ class main {
 				)
 			);
 		}
-		if( strlen(@$this->php_command['php_extension_dir']) ){
+		if( strlen(''.@$this->php_command['php_extension_dir']) ){
 			$php_command = array_merge(
 				$php_command,
 				array(
@@ -442,7 +459,7 @@ class main {
 			array_push($php_command, '-o');
 			array_push($php_command, 'json');
 		}
-		if( @strlen($options['user_agent']) ){
+		if( @strlen(''.$options['user_agent']) ){
 			array_push($php_command, '-u');
 			array_push($php_command, escapeshellarg($options['user_agent']));
 		}
@@ -470,7 +487,7 @@ class main {
 		ob_get_clean();
 
 		$bin = $io[1]; // stdout
-		if( strlen( $io[2] ) ){
+		if( strlen( ''.$io[2] ) ){
 			// $this->error($io[2]); // stderr
 		}
 

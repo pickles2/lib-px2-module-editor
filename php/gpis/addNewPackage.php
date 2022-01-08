@@ -46,7 +46,7 @@ return function($px2me, $data){
 
 	$px2me->fs()->mkdir_r($realpath);
 
-	if( strlen($data['data']['importFrom']) ){
+	if( strlen(''.$data['data']['importFrom']) ){
 		preg_match('/^(moduleCollection|modulePlugin)\:([\S]+)$/s', $data['data']['importFrom'], $matched);
 		$fromDiv = $matched[1];
 		$fromId = $matched[2];
