@@ -225,6 +225,9 @@ return call_user_func( function(){
 		"PlainHTMLElements" => "../../vendor/broccoli-html-editor/broccoli-module-plain-html-elements/modules/",
 		"FESS" => "../../vendor/broccoli-html-editor/broccoli-module-fess/modules/"
 	);
+
+	$conf->plugins->px2dt->guieditor = new stdClass;
+
 	if($conf->plugins->px2dt->guiEngine == 'broccoli-html-editor-php'){
 		@$conf->plugins->px2dt->guieditor->custom_fields = array( // broccoli-html-editor のフィールド拡張
 			'projectCustom1'=>array(

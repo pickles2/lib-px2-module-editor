@@ -114,8 +114,12 @@ class main {
 			if( isset($this->px2conf->plugins) && is_object($this->px2conf->plugins) ){
 				$this->px2conf->plugins = $this->px2conf->plugins;
 				$this->px2conf->plugins->px2dt = $this->px2conf->plugins->px2dt;
-				$this->px2conf->plugins->px2dt->paths_module_template = $this->px2conf->plugins->px2dt->paths_module_template;
-				$this->px2conf->plugins->px2dt->path_module_templates_dir = $this->px2conf->plugins->px2dt->path_module_templates_dir;
+				if( isset($this->px2conf->plugins->px2dt->paths_module_template) ){
+					$this->px2conf->plugins->px2dt->paths_module_template = $this->px2conf->plugins->px2dt->paths_module_template;
+				}
+				if( isset($this->px2conf->plugins->px2dt->path_module_templates_dir) ){
+					$this->px2conf->plugins->px2dt->path_module_templates_dir = $this->px2conf->plugins->px2dt->path_module_templates_dir;
+				}
 			}
 		}
 
@@ -176,11 +180,11 @@ class main {
 		// px2ce
 		if(is_string($realpath_dist) && is_dir($realpath_dist)){
 			$this->fs->copy_r(__DIR__.'/../dist/', $realpath_dist.'/px2me/');
-			array_push($rtn->js, 'px2me/pickles2-module-editor.min.js');
-			array_push($rtn->css, 'px2me/pickles2-module-editor.min.css');
+			array_push($rtn->js, 'px2me/pickles2-module-editor.js');
+			array_push($rtn->css, 'px2me/pickles2-module-editor.css');
 		}else{
-			array_push($rtn->js, realpath(__DIR__.'/../dist/pickles2-module-editor.min.js'));
-			array_push($rtn->css, realpath(__DIR__.'/../dist/pickles2-module-editor.min.css'));
+			array_push($rtn->js, realpath(__DIR__.'/../dist/pickles2-module-editor.js'));
+			array_push($rtn->css, realpath(__DIR__.'/../dist/pickles2-module-editor.css'));
 		}
 
 		return $rtn;
