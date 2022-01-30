@@ -127,6 +127,12 @@
 					_this.getPickles2Config( function(conf){
 						px2conf = conf;
 						_this.px2conf = px2conf;
+
+						_this.px2conf = _this.px2conf || {};
+						_this.px2conf.plugins = _this.px2conf.plugins || {};
+						_this.px2conf.plugins.px2dt = _this.px2conf.plugins.px2dt || {};
+						_this.px2conf.plugins.px2dt.paths_module_template = _this.px2conf.plugins.px2dt.paths_module_template || {};
+
 						// console.log(px2conf);
 						rlv();
 					} );

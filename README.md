@@ -149,6 +149,10 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.3.1 (リリース日未定)
+
+- `$conf->plugins->px2dt->paths_module_template` が設定されていない場合に画面が表示されなくなる問題を修正。
+
 ### pickles2/lib-px2-module-editor v0.3.0 (2022年1月8日)
 
 - サポートするPHPのバージョンを `>=7.3.0` に変更。
