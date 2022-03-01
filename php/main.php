@@ -109,8 +109,12 @@ class main {
 
 		// configを初期化
 		if( is_object($this->px2conf) ){
-			$this->px2conf->plugins = new \stdClass();
-			$this->px2conf->plugins->px2dt = new \stdClass();
+			if( !isset($this->px2conf->plugins) || !is_object($this->px2conf->plugins) ){
+				$this->px2conf->plugins = new \stdClass();
+			}
+			if( !isset($this->px2conf->plugins->px2dt) || !is_object($this->px2conf->plugins->px2dt) ){
+				$this->px2conf->plugins->px2dt = new \stdClass();
+			}
 			if( isset($this->px2conf->plugins) && is_object($this->px2conf->plugins) ){
 				$this->px2conf->plugins = $this->px2conf->plugins;
 				$this->px2conf->plugins->px2dt = $this->px2conf->plugins->px2dt;
