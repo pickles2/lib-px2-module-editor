@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "desktop-utils": "^0.1.0",
-    "ejs": "^2.7.4",
+    "ejs": "^3.1.7",
     "es6-promise": "^3.1.2",
     "fs-extra": "^0.26.6",
     "jquery": "^3.5.1",
