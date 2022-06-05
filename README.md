@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.3.1 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.3.1 (2022年6月5日)
 
 - `$conf->plugins` 設定が正しく読み込まれない問題を修正。
 
