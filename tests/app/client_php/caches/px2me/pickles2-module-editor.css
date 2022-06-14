@@ -1,13 +1,15 @@
 .pickles2-module-editor {
-  overflow: hidden;
+  overflow: auto;
   position: relative; }
   .pickles2-module-editor__content {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
-    width: 100%;
+    width: calc(100% - 20px);
+    max-width: 1024px;
     height: 100%;
-    overflow: auto; }
+    overflow: visible;
+    margin: 0 auto; }
   .pickles2-module-editor__title {
     display: block;
     margin: 0;
