@@ -214,7 +214,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		$frame.html('');
 
 		broccoli = undefined;
-		delete(broccoli);
+		// delete(broccoli);
 		callback();
 
 		return;

@@ -14,19 +14,6 @@ let browserify = require("gulp-browserify");//NodeJSのコードをブラウザ�
 let packageJson = require(__dirname+'/package.json');
 
 
-// client-libs (frontend) を処理
-gulp.task("client-libs", function(cb) {
-	cb();
-});
-
-// src 中の *.css を処理
-gulp.task('.css', function(){
-	return gulp.src("src/**/*.css")
-		.pipe(plumber())
-		.pipe(gulp.dest( './dist/' ))
-	;
-});
-
 // src 中の *.css.scss を処理
 gulp.task('.css.scss', function(){
 	return gulp.src("src/**/*.css.scss")
@@ -85,20 +72,6 @@ gulp.task(".html", function() {
 	;
 });
 
-// *.html.twig を処理
-gulp.task(".html.twig", function() {
-	return gulp.src(["src/**/*.html.twig"])
-		.pipe(plumber())
-		.pipe(twig({
-			data: {
-				packageJson: packageJson
-			}
-		}))
-		.pipe(rename({extname: ''}))
-		.pipe(gulp.dest( './dist/' ))
-	;
-});
-
 // contents.js を処理
 gulp.task("test/contents.js:node", function() {
 	return gulp.src(["tests/app/client/index_files/contents.src.js"])
@@ -130,14 +103,11 @@ gulp.task("preview", function() {
 
 let _tasks = gulp.parallel(
 	'.html',
-	'.html.twig',
-	'.css',
 	'.css.scss',
 	'test/contents.js:node',
 	'test/contents.js:php',
 	'.js',
-	'pickles2-module-editor.js',
-	'client-libs'
+	'pickles2-module-editor.js'
 );
 
 // src 中のすべての拡張子を監視して処理

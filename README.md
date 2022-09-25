@@ -151,7 +151,7 @@ $ npm run test
 
 ### pickles2/lib-px2-module-editor v0.3.2 (リリース日未定)
 
-- その他の細かいUI改善など。
+- その他の細かいUI改善、内部コード改善など。
 
 ### pickles2/lib-px2-module-editor v0.3.1 (2022年6月5日)
 
