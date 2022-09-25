@@ -9,7 +9,6 @@
     "start": "node ./tests/app/server/server.js;",
     "up": "node ./tests/app/server/server.js;",
     "preview": "gulp preview;",
-    "submodules-update": "npm install file:submodules/px2style; npm install file:submodules/ace-builds; gulp;",
     "test": "gulp; mocha --ui tdd ./tests/"
   },
   "author": "Tomoya Koyanagi",
@@ -26,7 +25,7 @@
     "utils79": "^0.0.5"
   },
   "devDependencies": {
-    "ace-builds": "file:submodules/ace-builds",
+    "ace-builds": "github:ajaxorg/ace-builds",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "broccoli-html-editor": "^0.3.11",
