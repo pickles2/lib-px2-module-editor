@@ -16,7 +16,7 @@
 
 	window.Pickles2ModuleEditor = function(){
 		var $ = require('jquery');
-		require('px2style/px2style/px2style.js');
+		var px2style = window.px2style;
 		var Promise = require('es6-promise').Promise;
 		var $canvas,
 			$canvasContent;

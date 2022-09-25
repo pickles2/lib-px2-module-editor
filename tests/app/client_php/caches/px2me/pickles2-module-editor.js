@@ -1,253 +1,2416 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
-;(function (exports) {
-	'use strict';
+/***/ "./src/pages/addNewCategory/index.js":
+/*!*******************************************!*\
+  !*** ./src/pages/addNewCategory/index.js ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-  var Arr = (typeof Uint8Array !== 'undefined')
-    ? Uint8Array
-    : Array
+/**
+ * pages/addNewCategory/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
 
-	var PLUS   = '+'.charCodeAt(0)
-	var SLASH  = '/'.charCodeAt(0)
-	var NUMBER = '0'.charCodeAt(0)
-	var LOWER  = 'a'.charCodeAt(0)
-	var UPPER  = 'A'.charCodeAt(0)
-	var PLUS_URL_SAFE = '-'.charCodeAt(0)
-	var SLASH_URL_SAFE = '_'.charCodeAt(0)
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-	function decode (elt) {
-		var code = elt.charCodeAt(0)
-		if (code === PLUS ||
-		    code === PLUS_URL_SAFE)
-			return 62 // '+'
-		if (code === SLASH ||
-		    code === SLASH_URL_SAFE)
-			return 63 // '/'
-		if (code < NUMBER)
-			return -1 //no match
-		if (code < NUMBER + 10)
-			return code - NUMBER + 26 + 26
-		if (code < UPPER + 26)
-			return code - UPPER
-		if (code < LOWER + 26)
-			return code - LOWER + 26
-	}
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
 
-	function b64ToByteArray (b64) {
-		var i, j, l, tmp, placeHolders, arr
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
 
-		if (b64.length % 4 > 0) {
-			throw new Error('Invalid string. Length must be a multiple of 4')
-		}
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading addNewCategory page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getPackageCode(options.packageId, function (packageCode) {
+        // console.log(packageCode);
+        if (!packageCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
 
-		// the number of equal signs (place holders)
-		// if there are two placeholders, than the two characters before it
-		// represent one byte
-		// if there is only one, then the three characters before it represent 2 bytes
-		// this is just a cheap hack to not do indexOf twice
-		var len = b64.length
-		placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
+        var html = px2me.bindEjs(px2me.getTemplates('addNewCategory'), {
+          'packageId': options.packageId,
+          'packageCode': packageCode
+        });
+        $canvasContent.html('').append(html);
+        $canvasContent.find('[name=categoryId]').val('');
+        $canvasContent.find('[name=categoryName]').val('');
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "新規カテゴリを追加",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('OK').click(function () {
+          var data = {};
+          data.categoryId = $canvasContent.find('[name=categoryId]').val();
+          data.categoryName = $canvasContent.find('[name=categoryName]').val();
+          px2me.addNewCategory(options.packageId, data, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
 
-		// base64 is 4/3 + up to two characters of the original data
-		arr = new Arr(b64.length * 3 / 4 - placeHolders)
+/***/ }),
 
-		// if there are placeholders, only get up to the last complete 4 chars
-		l = placeHolders > 0 ? b64.length - 4 : b64.length
+/***/ "./src/pages/addNewModule/index.js":
+/*!*****************************************!*\
+  !*** ./src/pages/addNewModule/index.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-		var L = 0
+/**
+ * pages/addNewModule/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
 
-		function push (v) {
-			arr[L++] = v
-		}
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-		for (i = 0, j = 0; i < l; i += 4, j += 3) {
-			tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
-			push((tmp & 0xFF0000) >> 16)
-			push((tmp & 0xFF00) >> 8)
-			push(tmp & 0xFF)
-		}
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
 
-		if (placeHolders === 2) {
-			tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
-			push(tmp & 0xFF)
-		} else if (placeHolders === 1) {
-			tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
-			push((tmp >> 8) & 0xFF)
-			push(tmp & 0xFF)
-		}
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
 
-		return arr
-	}
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading addNewModule page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getCategoryCode(options.categoryId, function (categoryCode) {
+        // console.log(categoryCode);
+        if (!categoryCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
 
-	function uint8ToBase64 (uint8) {
-		var i,
-			extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
-			output = "",
-			temp, length
+        var html = px2me.bindEjs(px2me.getTemplates('addNewModule'), {
+          'categoryId': options.categoryId,
+          'categoryCode': categoryCode
+        });
+        $canvasContent.html('').append(html);
+        $canvasContent.find('[name=moduleId]').val('');
+        $canvasContent.find('[name=moduleName]').val('');
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "新規モジュールを追加",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('OK').click(function () {
+          var data = {};
+          data.moduleId = $canvasContent.find('[name=moduleId]').val();
+          data.moduleName = $canvasContent.find('[name=moduleName]').val();
+          px2me.addNewModule(options.categoryId, data, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
 
-		function encode (num) {
-			return lookup.charAt(num)
-		}
+/***/ }),
 
-		function tripletToBase64 (num) {
-			return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
-		}
+/***/ "./src/pages/addNewPackage/index.js":
+/*!******************************************!*\
+  !*** ./src/pages/addNewPackage/index.js ***!
+  \******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-		// go through the array every three bytes, we'll deal with trailing stuff later
-		for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
-			temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-			output += tripletToBase64(temp)
-		}
+/**
+ * pages/addNewPackage/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
 
-		// pad the end with zeros, but make sure to not forget the extra bytes
-		switch (extraBytes) {
-			case 1:
-				temp = uint8[uint8.length - 1]
-				output += encode(temp >> 2)
-				output += encode((temp << 4) & 0x3F)
-				output += '=='
-				break
-			case 2:
-				temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
-				output += encode(temp >> 10)
-				output += encode((temp >> 4) & 0x3F)
-				output += encode((temp << 2) & 0x3F)
-				output += '='
-				break
-		}
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-		return output
-	}
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
 
-	exports.toByteArray = b64ToByteArray
-	exports.fromByteArray = uint8ToBase64
-}(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
 
-},{}],2:[function(require,module,exports){
+  var pluginPackages = [],
+      broccoliPackages = [];
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading addNewPackage page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // インポート元の一覧を取得 - プラグインパッケージより
+      px2me.gpiBridge({
+        'api': 'getPluginPackage'
+      }, function (packages) {
+        try {
+          pluginPackages = packages.package_list.broccoliModules;
+        } catch (e) {} // console.log(pluginPackages);
 
-},{}],3:[function(require,module,exports){
+
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // インポート元の一覧を取得 - broccoliより
+      px2me.getPackageList(function (packageList) {
+        try {
+          broccoliPackages = packageList;
+        } catch (e) {} // console.log(broccoliPackages);
+
+
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      var html = px2me.bindEjs(px2me.getTemplates('addNewPackage'), {
+        'pluginPackages': pluginPackages,
+        'broccoliPackages': broccoliPackages
+      });
+      $canvasContent.html('').append(html);
+      $canvasContent.find('[name=packageId]').val('');
+      $canvasContent.find('[name=packageName]').val('');
+      $canvasContent.find('input[type=radio][name=import_from]').on('change', function () {
+        var $checkedRadio = $canvasContent.find('input[type=radio][name=import_from]:checked');
+        var $inputId = $canvasContent.find('[name=packageId]');
+        var isInchangedId = $inputId.attr('placeholder') == $inputId.val();
+        $inputId.attr({
+          'placeholder': $checkedRadio.attr('data-package-id')
+        });
+
+        if ((isInchangedId || !$inputId.val().length) && $checkedRadio.attr('data-package-id').length) {
+          $inputId.val($checkedRadio.attr('data-package-id'));
+        }
+
+        var $inputName = $canvasContent.find('[name=packageName]');
+        var isInchangedName = $inputName.attr('placeholder') == $inputName.val();
+        $inputName.attr({
+          'placeholder': $checkedRadio.attr('data-package-name')
+        });
+
+        if ((isInchangedName || !$inputName.val().length) && $checkedRadio.attr('data-package-name').length) {
+          $inputName.val($checkedRadio.attr('data-package-name'));
+        }
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "新規パッケージを追加",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('OK').click(function () {
+          var data = {};
+          data.packageId = $canvasContent.find('[name=packageId]').val();
+          data.packageName = $canvasContent.find('[name=packageName]').val();
+          data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
+          data.force = $canvasContent.find('[name=force]:checked').val();
+          px2me.addNewPackage(data, function (result) {
+            if (!result.result) {
+              alert(result.msg);
+              return;
+            }
+
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/deleteCategory/index.js":
+/*!*******************************************!*\
+  !*** ./src/pages/deleteCategory/index.js ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/deleteCategory/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading deleteCategory page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getCategoryCode(options.categoryId, function (categoryCode) {
+        // console.log(categoryCode);
+        if (!categoryCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('deleteCategory'), {
+          'categoryId': options.categoryId,
+          'categoryCode': categoryCode
+        });
+        $canvasContent.html('').append(html);
+        $canvasContent.find('[name=infoJson]').val(categoryCode.infoJson);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "カテゴリを削除",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--danger">').text('削除する').click(function () {
+          px2me.deleteCategory(options.categoryId, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/deleteModule/index.js":
+/*!*****************************************!*\
+  !*** ./src/pages/deleteModule/index.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/deleteModule/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  var $deleteModuleWindow, $previewWin, $previewEditorWin;
+  var broccoli;
+  var currentTab;
+  px2me.moduleId = options.moduleId;
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading deleteModule page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      console.log('module ID:', options.moduleId);
+      px2me.getModuleCode(options.moduleId, function (moduleCode) {
+        // console.log(moduleCode);
+        if (!moduleCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('deleteModule'), {
+          'moduleId': options.moduleId,
+          'moduleCode': moduleCode
+        });
+        $deleteModuleWindow = $(html);
+        $canvasContent.html('').append($deleteModuleWindow);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "モジュールを削除",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--danger">').text('削除する').on('click', function () {
+          px2me.deleteModule(options.moduleId, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/deletePackage/index.js":
+/*!******************************************!*\
+  !*** ./src/pages/deletePackage/index.js ***!
+  \******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/deletePackage/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading deletePackage page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getPackageCode(options.packageId, function (packageCode) {
+        // console.log(packageCode);
+        if (!packageCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('deletePackage'), {
+          'packageId': options.packageId,
+          'packageCode': packageCode
+        });
+        $canvasContent.html('').append(html);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "パッケージを削除する",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--danger">').text('削除する').click(function () {
+          px2me.deletePackage(options.packageId, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/editCategory/index.js":
+/*!*****************************************!*\
+  !*** ./src/pages/editCategory/index.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/editCategory/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading editCategory page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getCategoryCode(options.categoryId, function (categoryCode) {
+        // console.log(categoryCode);
+        if (!categoryCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('editCategory'), {
+          'categoryId': options.categoryId,
+          'categoryCode': categoryCode
+        });
+        $canvasContent.html('').append(html);
+        $canvasContent.find('[name=infoJson]').val(categoryCode.infoJson);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "カテゴリを編集",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('OK').click(function () {
+          var data = {};
+          data.infoJson = $canvasContent.find('[name=infoJson]').val();
+          px2me.saveCategoryCode(options.categoryId, data, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/editModule/index.js":
+/*!***************************************!*\
+  !*** ./src/pages/editModule/index.js ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/editModule/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  var $editModuleWindow, $previewWin, $previewEditorWin;
+  var broccoli;
+  var currentTab;
+  px2me.moduleId = options.moduleId;
+  var guiEngine;
+
+  try {
+    guiEngine = px2me.px2conf.plugins.px2dt.guiEngine;
+  } catch (e) {}
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading editModule page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      console.log('module ID:', options.moduleId);
+      px2me.getModuleCode(options.moduleId, function (moduleCode) {
+        // console.log(moduleCode);
+        if (!moduleCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('editModule'), {
+          'moduleId': options.moduleId,
+          'moduleCode': moduleCode
+        });
+        $editModuleWindow = $(html);
+        $canvasContent.html('').append($editModuleWindow);
+        $editModuleWindow.find('[name=infoJson]').val(moduleCode.infoJson);
+        $editModuleWindow.find('[name=template]').val(moduleCode.template);
+        $editModuleWindow.find('[name=templateExt]').val(moduleCode.templateExt);
+        $editModuleWindow.find('[name=css]').val(moduleCode.css);
+        $editModuleWindow.find('[name=cssExt]').val(moduleCode.cssExt);
+        $editModuleWindow.find('[name=js]').val(moduleCode.js);
+        $editModuleWindow.find('[name=jsExt]').val(moduleCode.jsExt);
+        $editModuleWindow.find('[name=finalizeJs]').val(moduleCode.finalizeJs);
+        $editModuleWindow.find('[name=finalizePhp]').val(moduleCode.finalizePhp);
+        $editModuleWindow.find('[name=clipJson]').val(moduleCode.clipJson);
+
+        if (guiEngine == 'broccoli-html-editor-php') {
+          $editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizejs]').hide();
+        } else {
+          $editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizephp]').hide();
+        }
+
+        $editModuleWindow.find('.pickles2-module-editor__module-edit__tab button').on('click', function (e) {
+          // タブ切り替え
+          var $this = $(this);
+          var target = $this.attr('data-pickles2-module-editor-target');
+          changeTabTo(target);
+        });
+        windowResizedEvent();
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "モジュールを編集",
+        "body": $canvasContent,
+        "width": "calc(100% - 40px)",
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('保存').on('click', function () {
+          save(function (result) {
+            $(window).off('resize.editModule');
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 画面の調整
+      windowResizedEvent();
+      $(window).on('resize.editModule', function () {
+        windowResizedEvent();
+      });
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    windowResizedEvent();
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+
+  function save(callback) {
+    callback = callback || function () {};
+
+    var data = {};
+    data.infoJson = $canvasContent.find('[name=infoJson]').val();
+    data.template = $canvasContent.find('[name=template]').val();
+    data.templateExt = $canvasContent.find('[name=templateExt]').val();
+    data.css = $canvasContent.find('[name=css]').val();
+    data.cssExt = $canvasContent.find('[name=cssExt]').val();
+    data.js = $canvasContent.find('[name=js]').val();
+    data.jsExt = $canvasContent.find('[name=jsExt]').val();
+    data.finalizeJs = $canvasContent.find('[name=finalizeJs]').val();
+    data.finalizePhp = $canvasContent.find('[name=finalizePhp]').val();
+    data.clipJson = $canvasContent.find('[name=clipJson]').val(); // console.log('data =',data);
+
+    px2me.saveModuleCode(options.moduleId, data, function (result) {
+      callback(result);
+    });
+    return;
+  }
+  /**
+   * broccoli-html-editorをロードしてプレビュー画面を生成する
+   */
+
+
+  function loadBroccoli(callback) {
+    callback = callback || function () {};
+
+    px2me.gpiBridge({
+      'api': 'download',
+      'target': 'css'
+    }, function (cssBin) {
+      px2me.gpiBridge({
+        'api': 'download',
+        'target': 'js'
+      }, function (jsBin) {
+        var $frame = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
+        var $canvas = $('<div>');
+        var $palette = $('<div>');
+        $frame.html('').append($canvas).append($palette);
+        $canvas.attr({
+          "data-broccoli-preview": px2me.__dirname + '/html/preview.html' + '?css=' + encodeURIComponent(utils79.base64_encode(cssBin)) + '&js=' + encodeURIComponent(utils79.base64_encode(jsBin))
+        });
+        px2me.createBroccoli({
+          'elmCanvas': $canvas.get(0),
+          'elmModulePalette': $palette.get(0)
+        }, function (b) {
+          broccoli = b;
+          callback();
+        });
+      });
+    });
+    return;
+  } // loadBroccoli();
+
+  /**
+   * broccoli-html-editorをアンロードする
+   */
+
+
+  function unloadBroccoli(callback) {
+    callback = callback || function () {};
+
+    var $frame = $canvasContent.find('.pickles2-module-editor__module-edit__preview');
+    $frame.html('');
+    broccoli = undefined; // delete(broccoli);
+
+    callback();
+    return;
+  } // unloadBroccoli();
+
+
+  function changeTabTo(target) {
+    if (target) {
+      currentTab = target;
+    }
+
+    if (!target) {
+      currentTab = 'html'; // デフォルトのタブ
+    }
+
+    $editModuleWindow.find('.pickles2-module-editor__module-edit__tab *').removeAttr('disabled');
+    $editModuleWindow.find('.pickles2-module-editor__module-edit__tab *[data-pickles2-module-editor-target=' + currentTab + ']').attr({
+      'disabled': 'disabled'
+    });
+    $editModuleWindow.find('.pickles2-module-editor__module-edit__layout__content').hide();
+    var $targetTab = $editModuleWindow.find('.pickles2-module-editor__module-edit__layout__content--' + currentTab).show();
+    $targetTab.show();
+    var height_h2 = $targetTab.find('h2').outerHeight();
+    var height_select = $targetTab.find('select').outerHeight();
+    $targetTab.find('textarea').css({
+      'height': $editModuleWindow.innerHeight() - 60 - height_h2 - height_select
+    });
+    new Promise(function (rlv) {
+      rlv();
+    }).then(function () {
+      return new Promise(function (rlv, rjt) {
+        if (currentTab == 'preview') {
+          px2me.progress(function () {
+            save(function (result) {
+              loadBroccoli(function () {
+                px2me.closeProgress(function () {
+                  rlv();
+                });
+              });
+            });
+          });
+        } else {
+          unloadBroccoli(function () {
+            rlv();
+          });
+        }
+      });
+    });
+  }
+
+  function windowResizedEvent() {
+    console.log('--- window resized.');
+    $editModuleWindow.css({
+      'height': function height() {
+        return $(window).innerHeight() - 200;
+      }
+    });
+    changeTabTo();
+
+    if (broccoli) {
+      broccoli.redraw();
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./src/pages/editPackage/index.js":
+/*!****************************************!*\
+  !*** ./src/pages/editPackage/index.js ***!
+  \****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/editPackage/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading editPackage page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 編集画面を描画
+      // console.log(options);
+      px2me.getPackageCode(options.packageId, function (packageCode) {
+        // console.log(packageCode);
+        if (!packageCode.editable) {
+          alert('このモジュールは編集許可されていないパスにあります。');
+          rjt();
+          return;
+        }
+
+        var html = px2me.bindEjs(px2me.getTemplates('editPackage'), {
+          'packageId': options.packageId,
+          'packageCode': packageCode
+        });
+        $canvasContent.html('').append(html);
+        $canvasContent.find('[name=infoJson]').val(packageCode.infoJson);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // モーダルダイアログを開く
+      px2me.modal({
+        "title": "パッケージを編集する",
+        "body": $canvasContent,
+        "buttons": [$('<button class="px2-btn px2-btn--primary">').text('OK').click(function () {
+          var data = {};
+          data.infoJson = $canvasContent.find('[name=infoJson]').val();
+          px2me.savePackageCode(options.packageId, data, function (result) {
+            px2me.loadPage('list', {}, function () {
+              px2me.closeModal();
+            });
+          });
+        })],
+        "buttonsSecondary": [$('<button class="px2-btn">').text('キャンセル').click(function () {
+          px2me.loadPage('list', {}, function () {
+            px2me.closeModal();
+          });
+        })]
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  })["catch"](function () {
+    px2me.closeProgress(function () {
+      px2me.loadPage('list', {}, function () {
+        px2me.closeModal(function () {
+          callback();
+        });
+      });
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pages/list/index.js":
+/*!*********************************!*\
+  !*** ./src/pages/list/index.js ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * pages/list/index.js
+ */
+module.exports = function (px2me, $canvasContent, options, callback) {
+  callback = callback || function () {};
+
+  var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  var utils79 = __webpack_require__(/*! utils79 */ "./node_modules/utils79/index.js");
+
+  var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+  new Promise(function (rlv) {
+    rlv();
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      console.log('loading list page...');
+      px2me.progress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // 一覧を描画
+      px2me.getPackageList(function (packageList) {
+        // console.log(packageList);
+        var html = px2me.bindEjs(px2me.getTemplates('list'), {
+          'packageList': packageList,
+          'px2conf': px2me.px2conf
+        });
+        $canvasContent.html('').append(html);
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      // イベントをセット
+      $canvasContent.find('button').on('click', function (e) {
+        var $this = $(this);
+        var act = $this.attr('data-pickles2-module-editor--action');
+        var target = $this.attr('data-pickles2-module-editor--target'); // console.log(this);
+
+        switch (act) {
+          case 'download':
+            px2me.gpiBridge({
+              'api': 'download',
+              'target': target
+            }, function (bin) {
+              px2me.download(bin, 'content.' + target);
+            });
+            break;
+
+          case 'addNewPackage':
+            px2me.loadPage('addNewPackage', {}, function () {});
+            break;
+
+          case 'editPackage':
+            px2me.loadPage('editPackage', {
+              'packageId': target
+            }, function () {});
+            break;
+
+          case 'deletePackage':
+            px2me.loadPage('deletePackage', {
+              'packageId': target
+            }, function () {});
+            break;
+
+          case 'addNewCategory':
+            px2me.loadPage('addNewCategory', {
+              'packageId': target
+            }, function () {});
+            break;
+
+          case 'editCategory':
+            px2me.loadPage('editCategory', {
+              'categoryId': target
+            }, function () {});
+            break;
+
+          case 'deleteCategory':
+            px2me.loadPage('deleteCategory', {
+              'categoryId': target
+            }, function () {});
+            break;
+
+          case 'addNewModule':
+            px2me.loadPage('addNewModule', {
+              'categoryId': target
+            }, function () {});
+            break;
+
+          case 'editModule':
+            px2me.loadPage('editModule', {
+              'moduleId': target
+            }, function () {});
+            break;
+
+          case 'deleteModule':
+            px2me.loadPage('deleteModule', {
+              'moduleId': target
+            }, function () {});
+            break;
+
+          default:
+            alert('ERROR: unknown action. - ' + act);
+            break;
+        }
+
+        return false;
+      });
+      rlv();
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      px2me.closeProgress(function () {
+        rlv();
+      });
+    });
+  }).then(function () {
+    return new Promise(function (rlv, rjt) {
+      callback();
+      rlv();
+    });
+  });
+};
+
+/***/ }),
+
+/***/ "./src/pickles2-module-editor.js":
+/*!***************************************!*\
+  !*** ./src/pickles2-module-editor.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * Pickles2ModuleEditor
+ */
+(function () {
+  var __dirname = function () {
+    if (document.currentScript) {
+      return document.currentScript.src;
+    } else {
+      var scripts = document.getElementsByTagName('script'),
+          script = scripts[scripts.length - 1];
+
+      if (script.src) {
+        return script.src;
+      }
+    }
+  }().replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
+
+  window.Pickles2ModuleEditor = function () {
+    var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+    var px2style = window.px2style;
+
+    var Promise = (__webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise);
+
+    var $canvas, $canvasContent;
+
+    var _this = this;
+
+    this.__dirname = __dirname;
+    this.options = {};
+    this.moduleId;
+    var px2meConf, px2conf, templates;
+    var pages = {
+      'list': __webpack_require__(/*! ./pages/list/index.js */ "./src/pages/list/index.js"),
+      'editModule': __webpack_require__(/*! ./pages/editModule/index.js */ "./src/pages/editModule/index.js"),
+      'editCategory': __webpack_require__(/*! ./pages/editCategory/index.js */ "./src/pages/editCategory/index.js"),
+      'editPackage': __webpack_require__(/*! ./pages/editPackage/index.js */ "./src/pages/editPackage/index.js"),
+      'addNewPackage': __webpack_require__(/*! ./pages/addNewPackage/index.js */ "./src/pages/addNewPackage/index.js"),
+      'addNewCategory': __webpack_require__(/*! ./pages/addNewCategory/index.js */ "./src/pages/addNewCategory/index.js"),
+      'addNewModule': __webpack_require__(/*! ./pages/addNewModule/index.js */ "./src/pages/addNewModule/index.js"),
+      'deletePackage': __webpack_require__(/*! ./pages/deletePackage/index.js */ "./src/pages/deletePackage/index.js"),
+      'deleteCategory': __webpack_require__(/*! ./pages/deleteCategory/index.js */ "./src/pages/deleteCategory/index.js"),
+      'deleteModule': __webpack_require__(/*! ./pages/deleteModule/index.js */ "./src/pages/deleteModule/index.js")
+    };
+    var px2ce;
+    /**
+    * initialize
+    */
+
+    this.init = function (options, callback) {
+      console.info('initialize pickles2-module-editor...');
+
+      callback = callback || function () {}; // console.log(options);
+
+
+      this.options = options;
+
+      this.options.gpiBridge = this.options.gpiBridge || function () {
+        alert('gpiBridge required.');
+      };
+
+      this.options.complete = this.options.complete || function () {
+        alert('finished.');
+      };
+
+      this.options.onMessage = this.options.onMessage || function (message) {
+        alert('onMessage: ' + message);
+      };
+
+      this.options.preview = this.options.preview || {};
+      this.options.lang = this.options.lang || 'en';
+      $canvas = $(options.elmCanvas);
+      $canvas.addClass('pickles2-module-editor');
+      $canvasContent = $('<div class="pickles2-module-editor__content">');
+      $canvas.html('').append($canvasContent);
+      new Promise(function (rlv) {
+        rlv();
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          _this.progress(function () {
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          px2ce = new window.Pickles2ContentsEditor();
+          px2ce.init({
+            'page_path': '/px2me-dummy.html',
+            // <- 編集対象ページのパス
+            'elmCanvas': document.createElement('div'),
+            // <- 編集画面を描画するための器となる要素
+            'lang': _this.options.lang,
+            // language
+            'preview': {
+              // プレビュー用サーバーの情報を設定します。
+              'origin': window.location.origin
+            },
+            'customFields': {},
+            'gpiBridge': function gpiBridge(input, callback) {
+              // GPI(General Purpose Interface) Bridge
+              // broccoliは、バックグラウンドで様々なデータ通信を行います。
+              // GPIは、これらのデータ通信を行うための汎用的なAPIです。
+              _this.gpiBridge({
+                'api': 'px2ceBridge',
+                'forPx2CE': input
+              }, function (result) {
+                callback(result);
+              });
+
+              return;
+            },
+            'complete': function complete() {
+              alert('完了しました。');
+            },
+            'onClickContentsLink': function onClickContentsLink(uri, data) {
+              alert('編集: ' + uri);
+            },
+            'onMessage': function onMessage(message) {
+              // ユーザーへ知らせるメッセージを表示する
+              console.info('message: ' + message);
+            }
+          }, function () {
+            // スタンバイ完了したら呼び出されるコールバックメソッドです。
+            console.info('pickles2-contents-editor standby!!');
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          _this.getConfig(function (conf) {
+            px2meConf = conf;
+            _this.px2meConf = px2meConf; // console.log(px2meConf);
+
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          _this.getPickles2Config(function (conf) {
+            px2conf = conf;
+            _this.px2conf = px2conf;
+            _this.px2conf = _this.px2conf || {};
+            _this.px2conf.plugins = _this.px2conf.plugins || {};
+            _this.px2conf.plugins.px2dt = _this.px2conf.plugins.px2dt || {};
+            _this.px2conf.plugins.px2dt.paths_module_template = _this.px2conf.plugins.px2dt.paths_module_template || {}; // console.log(px2conf);
+
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          // テンプレートをロードする
+          _this.gpiBridge({
+            'api': 'getTemplates'
+          }, function (tpls) {
+            // console.log(tpls);
+            templates = tpls;
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          _this.closeProgress(function () {
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          // 一覧ページを表示する。
+          _this.loadPage('list', {}, function () {
+            rlv();
+          });
+        });
+      }).then(function () {
+        return new Promise(function (rlv, rjt) {
+          callback();
+          rlv();
+        });
+      });
+    }; // init()
+
+    /**
+     * ページを表示する
+     */
+
+
+    this.loadPage = function (pageName, options, callback) {
+      if (pageName == 'list') {
+        pages[pageName](_this, $canvasContent, options, function () {
+          callback();
+        });
+      } else {
+        var $cont = $('<div>');
+        pages[pageName](_this, $cont, options, function () {
+          callback();
+        });
+      }
+
+      return;
+    };
+    /**
+    * canvas要素を取得する
+    */
+
+
+    this.getElmCanvas = function () {
+      return $canvas;
+    };
+    /**
+    * ユーザーへのメッセージを表示する
+    */
+
+
+    this.message = function (message, callback) {
+      callback = callback || function () {}; // console.info(message);
+
+
+      this.options.onMessage(message);
+      callback();
+      return this;
+    };
+    /**
+     * Pickles 2 Module Editor のコンフィグ情報を取得する
+     */
+
+
+    this.getConfig = function (callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getConfig'
+      }, function (conf) {
+        callback(conf);
+      });
+      return;
+    };
+    /**
+     * Pickles 2 のコンフィグ情報を取得する
+     */
+
+
+    this.getPickles2Config = function (callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getPickles2Config'
+      }, function (conf) {
+        callback(conf);
+      });
+      return;
+    };
+    /**
+     * テンプレートを取得する
+     */
+
+
+    this.getTemplates = function (tplName) {
+      return templates[tplName];
+    };
+    /**
+     * ejs テンプレートにデータをバインドする
+     */
+
+
+    this.bindEjs = function (tpl, data, options) {
+      var ejs = __webpack_require__(/*! ejs */ "./node_modules/ejs/lib/ejs.js");
+
+      var rtn = '';
+
+      try {
+        var template = ejs.compile(tpl.toString(), options);
+        rtn = template(data);
+      } catch (e) {
+        var errorMessage = 'TemplateEngine "EJS" Rendering ERROR.';
+        console.log(errorMessage);
+        rtn = errorMessage;
+      }
+
+      return rtn;
+    };
+    /**
+     * broccoli モジュールのパッケージ一覧を取得する
+     */
+
+
+    this.getPackageList = function (callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getPackageList'
+      }, function (packageList) {
+        callback(packageList);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールのコードをすべて取得する
+     */
+
+
+    this.getModuleCode = function (moduleId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getModuleCode',
+        'moduleId': moduleId
+      }, function (moduleCode) {
+        callback(moduleCode);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールのコードの変更をすべて保存する
+     */
+
+
+    this.saveModuleCode = function (moduleId, data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'saveModuleCode',
+        'moduleId': moduleId,
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールカテゴリのコードをすべて取得する
+     */
+
+
+    this.getCategoryCode = function (categoryId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getCategoryCode',
+        'categoryId': categoryId
+      }, function (categoryCode) {
+        callback(categoryCode);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールカテゴリのコードの変更をすべて保存する
+     */
+
+
+    this.saveCategoryCode = function (categoryId, data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'saveCategoryCode',
+        'categoryId': categoryId,
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli パッケージのコードをすべて取得する
+     */
+
+
+    this.getPackageCode = function (packageId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'getPackageCode',
+        'packageId': packageId
+      }, function (packageCode) {
+        callback(packageCode);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールパッケージのコードの変更をすべて保存する
+     */
+
+
+    this.savePackageCode = function (packageId, data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'savePackageCode',
+        'packageId': packageId,
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールパッケージを新規追加
+     */
+
+
+    this.addNewPackage = function (data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'addNewPackage',
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールパッケージを削除
+     */
+
+
+    this.deletePackage = function (packageId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'deletePackage',
+        'packageId': packageId,
+        'data': {}
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールカテゴリを新規追加
+     */
+
+
+    this.addNewCategory = function (packageId, data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'addNewCategory',
+        'packageId': packageId,
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールカテゴリを削除
+     */
+
+
+    this.deleteCategory = function (categoryId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'deleteCategory',
+        'categoryId': categoryId,
+        'data': {}
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールを新規追加する
+     */
+
+
+    this.addNewModule = function (categoryId, data, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'addNewModule',
+        'categoryId': categoryId,
+        'data': data
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli モジュールを削除する
+     */
+
+
+    this.deleteModule = function (moduleId, callback) {
+      callback = callback || function () {};
+
+      this.gpiBridge({
+        'api': 'deleteModule',
+        'moduleId': moduleId,
+        'data': {}
+      }, function (result) {
+        callback(result);
+      });
+      return;
+    };
+    /**
+     * broccoli インスタンスを生成する
+     */
+
+
+    this.createBroccoli = function (options, callback) {
+      options = options || {};
+
+      callback = callback || function () {};
+
+      var broccoli = new Broccoli();
+      px2ce.createBroccoliInitOptions(function (broccoliInitOptions) {
+        for (var key in options) {
+          broccoliInitOptions[key] = options[key];
+        }
+
+        broccoliInitOptions.contents_area_selector = "[data-contents-area]";
+        broccoliInitOptions.contents_bowl_name_by = "data-contents-area";
+
+        broccoliInitOptions.gpiBridge = function (api, options, callback) {
+          // GPI(General Purpose Interface) Bridge
+          // broccoliは、バックグラウンドで様々なデータ通信を行います。
+          // GPIは、これらのデータ通信を行うための汎用的なAPIです。
+          // console.log(api, options);
+          _this.gpiBridge({
+            'api': 'broccoliBridge',
+            'forBroccoli': {
+              'api': JSON.stringify(api),
+              'options': JSON.stringify(options)
+            }
+          }, function (rtn) {
+            // console.log(rtn);
+            callback(rtn);
+          });
+
+          return;
+        }; // console.log(broccoliInitOptions);
+
+
+        broccoli.init(broccoliInitOptions, function () {
+          // console.log(broccoli);
+          callback(broccoli);
+        });
+      });
+      return;
+    };
+    /**
+     * プログレスを表示する
+     */
+
+
+    this.progress = function (callback) {
+      callback = callback || function () {};
+
+      $canvas.find('.pickles2-module-editor--progress').remove(); //一旦削除
+
+      $canvas.append($('<div class="pickles2-module-editor pickles2-module-editor--progress">').append($('<div class="pickles2-module-editor--progress-inner">').append($('<div class="pickles2-module-editor--progress-inner2">').append($('<div class="px2-loading">')))));
+      var dom = $canvas.find('.px2-loading').get(0);
+      callback(dom);
+      return;
+    };
+    /**
+     * プログレスを閉じる
+     */
+
+
+    this.closeProgress = function (callback) {
+      callback = callback || function () {};
+
+      var $progress = $canvas.find('.pickles2-module-editor--progress');
+
+      if (!$progress.length) {
+        callback();
+        return;
+      }
+
+      $progress.fadeOut('fast', function () {
+        $(this).remove();
+        callback();
+      });
+      return;
+    };
+    /**
+     * ファイルをダウンロードする
+     */
+
+
+    this.download = function (content, filename) {
+      var blob = new Blob([content], {
+        "type": "application/octet-stream"
+      });
+
+      if (window.navigator.msSaveBlob) {
+        window.navigator.msSaveBlob(blob, filename); // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+
+        window.navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        var $a = $('<a>');
+        $a.attr({
+          'href': window.URL.createObjectURL(blob),
+          'download': filename
+        }).get(0).click();
+      }
+
+      return;
+    };
+    /**
+    * Open modal dialog.
+    */
+
+
+    this.modal = function (options, callback) {
+      callback = callback || function () {};
+
+      return px2style.modal(options, function () {
+        callback();
+      });
+    };
+    /**
+    * Close modal dialog.
+    */
+
+
+    this.closeModal = function (callback) {
+      callback = callback || function () {};
+
+      return px2style.closeModal(function () {
+        callback();
+      });
+    };
+    /**
+    * gpiBridgeを呼び出す
+    */
+
+
+    this.gpiBridge = function (data, callback) {
+      data.moduleId = this.moduleId;
+      return this.options.gpiBridge(data, callback);
+    };
+    /**
+    * 再描画
+    */
+
+
+    this.redraw = function (callback) {
+      callback = callback || function () {};
+
+      callback();
+      return;
+    };
+    /**
+    * 編集操作を完了する
+    */
+
+
+    this.finish = function () {
+      this.options.complete();
+    };
+  };
+})();
+
+/***/ }),
+
+/***/ "./node_modules/base64-js/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/base64-js/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  var i
+  for (i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/buffer/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/buffer/index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
 /*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @author   Feross Aboukhadijeh <http://feross.org>
  * @license  MIT
  */
+/* eslint-disable no-proto */
 
-var base64 = require('base64-js')
-var ieee754 = require('ieee754')
+
+
+var base64 = __webpack_require__(/*! base64-js */ "./node_modules/base64-js/index.js")
+var ieee754 = __webpack_require__(/*! ieee754 */ "./node_modules/ieee754/index.js")
+var isArray = __webpack_require__(/*! isarray */ "./node_modules/isarray/index.js")
 
 exports.Buffer = Buffer
-exports.SlowBuffer = Buffer
+exports.SlowBuffer = SlowBuffer
 exports.INSPECT_MAX_BYTES = 50
-Buffer.poolSize = 8192
 
 /**
- * If `Buffer._useTypedArrays`:
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
  *   === true    Use Uint8Array implementation (fastest)
- *   === false   Use Object implementation (compatible down to IE6)
+ *   === false   Use Object implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * Due to various browser bugs, sometimes the Object implementation will be used even
+ * when the browser supports typed arrays.
+ *
+ * Note:
+ *
+ *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+ *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+ *
+ *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+ *
+ *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+ *     incorrect length in some situations.
+
+ * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+ * get the Object implementation, which is slower but behaves correctly.
  */
-Buffer._useTypedArrays = (function () {
-  // Detect if browser supports Typed Arrays. Supported browsers are IE 10+, Firefox 4+,
-  // Chrome 7+, Safari 5.1+, Opera 11.6+, iOS 4.2+. If the browser does not support adding
-  // properties to `Uint8Array` instances, then that's the same as no `Uint8Array` support
-  // because we need to be able to add all the node Buffer API methods. This is an issue
-  // in Firefox 4-29. Now fixed: https://bugzilla.mozilla.org/show_bug.cgi?id=695438
+Buffer.TYPED_ARRAY_SUPPORT = __webpack_require__.g.TYPED_ARRAY_SUPPORT !== undefined
+  ? __webpack_require__.g.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+/*
+ * Export kMaxLength after typed array support is determined.
+ */
+exports.kMaxLength = kMaxLength()
+
+function typedArraySupport () {
   try {
-    var buf = new ArrayBuffer(0)
-    var arr = new Uint8Array(buf)
-    arr.foo = function () { return 42 }
-    return 42 === arr.foo() &&
-        typeof arr.subarray === 'function' // Chrome 9-10 lack `subarray`
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42 && // typed array instances can be augmented
+        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
   } catch (e) {
     return false
   }
-})()
-
-/**
- * Class: Buffer
- * =============
- *
- * The Buffer constructor returns instances of `Uint8Array` that are augmented
- * with function properties for all the node `Buffer` API functions. We use
- * `Uint8Array` so that square bracket notation works as expected -- it returns
- * a single octet.
- *
- * By augmenting the instances, we can avoid modifying the `Uint8Array`
- * prototype.
- */
-function Buffer (subject, encoding, noZero) {
-  if (!(this instanceof Buffer))
-    return new Buffer(subject, encoding, noZero)
-
-  var type = typeof subject
-
-  // Workaround: node's base64 implementation allows for non-padded strings
-  // while base64-js does not.
-  if (encoding === 'base64' && type === 'string') {
-    subject = stringtrim(subject)
-    while (subject.length % 4 !== 0) {
-      subject = subject + '='
-    }
-  }
-
-  // Find the length
-  var length
-  if (type === 'number')
-    length = coerce(subject)
-  else if (type === 'string')
-    length = Buffer.byteLength(subject, encoding)
-  else if (type === 'object')
-    length = coerce(subject.length) // assume that object is array-like
-  else
-    throw new Error('First argument needs to be a number, array or string.')
-
-  var buf
-  if (Buffer._useTypedArrays) {
-    // Preferred: Return an augmented `Uint8Array` instance for best performance
-    buf = Buffer._augment(new Uint8Array(length))
-  } else {
-    // Fallback: Return THIS instance of Buffer (created by `new`)
-    buf = this
-    buf.length = length
-    buf._isBuffer = true
-  }
-
-  var i
-  if (Buffer._useTypedArrays && typeof subject.byteLength === 'number') {
-    // Speed optimization -- use set if we're copying from a typed array
-    buf._set(subject)
-  } else if (isArrayish(subject)) {
-    // Treat array-ish objects as a byte array
-    for (i = 0; i < length; i++) {
-      if (Buffer.isBuffer(subject))
-        buf[i] = subject.readUInt8(i)
-      else
-        buf[i] = subject[i]
-    }
-  } else if (type === 'string') {
-    buf.write(subject, 0, encoding)
-  } else if (type === 'number' && !Buffer._useTypedArrays && !noZero) {
-    for (i = 0; i < length; i++) {
-      buf[i] = 0
-    }
-  }
-
-  return buf
 }
 
-// STATIC METHODS
-// ==============
+function kMaxLength () {
+  return Buffer.TYPED_ARRAY_SUPPORT
+    ? 0x7fffffff
+    : 0x3fffffff
+}
 
-Buffer.isEncoding = function (encoding) {
+function createBuffer (that, length) {
+  if (kMaxLength() < length) {
+    throw new RangeError('Invalid typed array length')
+  }
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = new Uint8Array(length)
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    if (that === null) {
+      that = new Buffer(length)
+    }
+    that.length = length
+  }
+
+  return that
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+    return new Buffer(arg, encodingOrOffset, length)
+  }
+
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(this, arg)
+  }
+  return from(this, arg, encodingOrOffset, length)
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+// TODO: Legacy, not needed anymore. Remove in next major version.
+Buffer._augment = function (arr) {
+  arr.__proto__ = Buffer.prototype
+  return arr
+}
+
+function from (that, value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    return fromArrayBuffer(that, value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(that, value, encodingOrOffset)
+  }
+
+  return fromObject(that, value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(null, value, encodingOrOffset, length)
+}
+
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
+}
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (that, size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(that, size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(that, size).fill(fill, encoding)
+      : createBuffer(that, size).fill(fill)
+  }
+  return createBuffer(that, size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(null, size, fill, encoding)
+}
+
+function allocUnsafe (that, size) {
+  assertSize(size)
+  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+    for (var i = 0; i < size; ++i) {
+      that[i] = 0
+    }
+  }
+  return that
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(null, size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(null, size)
+}
+
+function fromString (that, string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  that = createBuffer(that, length)
+
+  var actual = that.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    that = that.slice(0, actual)
+  }
+
+  return that
+}
+
+function fromArrayLike (that, array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  that = createBuffer(that, length)
+  for (var i = 0; i < length; i += 1) {
+    that[i] = array[i] & 255
+  }
+  return that
+}
+
+function fromArrayBuffer (that, array, byteOffset, length) {
+  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  if (byteOffset === undefined && length === undefined) {
+    array = new Uint8Array(array)
+  } else if (length === undefined) {
+    array = new Uint8Array(array, byteOffset)
+  } else {
+    array = new Uint8Array(array, byteOffset, length)
+  }
+
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = array
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    that = fromArrayLike(that, array)
+  }
+  return that
+}
+
+function fromObject (that, obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    that = createBuffer(that, len)
+
+    if (that.length === 0) {
+      return that
+    }
+
+    obj.copy(that, 0, 0, len)
+    return that
+  }
+
+  if (obj) {
+    if ((typeof ArrayBuffer !== 'undefined' &&
+        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+        return createBuffer(that, 0)
+      }
+      return fromArrayLike(that, obj)
+    }
+
+    if (obj.type === 'Buffer' && isArray(obj.data)) {
+      return fromArrayLike(that, obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < kMaxLength()` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= kMaxLength()) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return !!(b != null && b._isBuffer)
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
   switch (String(encoding).toLowerCase()) {
     case 'hex':
     case 'utf8':
     case 'utf-8':
     case 'ascii':
+    case 'latin1':
     case 'binary':
     case 'base64':
-    case 'raw':
     case 'ucs2':
     case 'ucs-2':
     case 'utf16le':
@@ -258,73 +2421,415 @@ Buffer.isEncoding = function (encoding) {
   }
 }
 
-Buffer.isBuffer = function (b) {
-  return !!(b !== null && b !== undefined && b._isBuffer)
-}
-
-Buffer.byteLength = function (str, encoding) {
-  var ret
-  str = str + ''
-  switch (encoding || 'utf8') {
-    case 'hex':
-      ret = str.length / 2
-      break
-    case 'utf8':
-    case 'utf-8':
-      ret = utf8ToBytes(str).length
-      break
-    case 'ascii':
-    case 'binary':
-    case 'raw':
-      ret = str.length
-      break
-    case 'base64':
-      ret = base64ToBytes(str).length
-      break
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      ret = str.length * 2
-      break
-    default:
-      throw new Error('Unknown encoding')
+Buffer.concat = function concat (list, length) {
+  if (!isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
   }
-  return ret
-}
-
-Buffer.concat = function (list, totalLength) {
-  assert(isArray(list), 'Usage: Buffer.concat(list, [totalLength])\n' +
-      'list should be an Array.')
 
   if (list.length === 0) {
-    return new Buffer(0)
-  } else if (list.length === 1) {
-    return list[0]
+    return Buffer.alloc(0)
   }
 
   var i
-  if (typeof totalLength !== 'number') {
-    totalLength = 0
-    for (i = 0; i < list.length; i++) {
-      totalLength += list[i].length
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
     }
   }
 
-  var buf = new Buffer(totalLength)
+  var buffer = Buffer.allocUnsafe(length)
   var pos = 0
-  for (i = 0; i < list.length; i++) {
-    var item = list[i]
-    item.copy(buf, pos)
-    pos += item.length
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
   }
-  return buf
+  return buffer
 }
 
-// BUFFER INSTANCE METHODS
-// =======================
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
 
-function _hexWrite (buf, string, offset, length) {
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+// Buffer instances.
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length | 0
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (isNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (Buffer.TYPED_ARRAY_SUPPORT &&
+        typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
   offset = Number(offset) || 0
   var remaining = buf.length - offset
   if (!length) {
@@ -338,191 +2843,119 @@ function _hexWrite (buf, string, offset, length) {
 
   // must be an even number of digits
   var strLen = string.length
-  assert(strLen % 2 === 0, 'Invalid hex string')
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
 
   if (length > strLen / 2) {
     length = strLen / 2
   }
-  for (var i = 0; i < length; i++) {
-    var byte = parseInt(string.substr(i * 2, 2), 16)
-    assert(!isNaN(byte), 'Invalid hex string')
-    buf[offset + i] = byte
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (isNaN(parsed)) return i
+    buf[offset + i] = parsed
   }
-  Buffer._charsWritten = i * 2
   return i
 }
 
-function _utf8Write (buf, string, offset, length) {
-  var charsWritten = Buffer._charsWritten =
-    blitBuffer(utf8ToBytes(string), buf, offset, length)
-  return charsWritten
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
 }
 
-function _asciiWrite (buf, string, offset, length) {
-  var charsWritten = Buffer._charsWritten =
-    blitBuffer(asciiToBytes(string), buf, offset, length)
-  return charsWritten
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
 }
 
-function _binaryWrite (buf, string, offset, length) {
-  return _asciiWrite(buf, string, offset, length)
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
 }
 
-function _base64Write (buf, string, offset, length) {
-  var charsWritten = Buffer._charsWritten =
-    blitBuffer(base64ToBytes(string), buf, offset, length)
-  return charsWritten
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
 }
 
-function _utf16leWrite (buf, string, offset, length) {
-  var charsWritten = Buffer._charsWritten =
-    blitBuffer(utf16leToBytes(string), buf, offset, length)
-  return charsWritten
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
 }
 
-Buffer.prototype.write = function (string, offset, length, encoding) {
-  // Support both (string, offset, length, encoding)
-  // and the legacy (string, encoding, offset, length)
-  if (isFinite(offset)) {
-    if (!isFinite(length)) {
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset | 0
+    if (isFinite(length)) {
+      length = length | 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
       encoding = length
       length = undefined
     }
-  } else {  // legacy
-    var swap = encoding
-    encoding = offset
-    offset = length
-    length = swap
+  // legacy write(string, encoding, offset, length) - remove in v0.13
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
   }
 
-  offset = Number(offset) || 0
   var remaining = this.length - offset
-  if (!length) {
-    length = remaining
-  } else {
-    length = Number(length)
-    if (length > remaining) {
-      length = remaining
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
     }
   }
-  encoding = String(encoding || 'utf8').toLowerCase()
-
-  var ret
-  switch (encoding) {
-    case 'hex':
-      ret = _hexWrite(this, string, offset, length)
-      break
-    case 'utf8':
-    case 'utf-8':
-      ret = _utf8Write(this, string, offset, length)
-      break
-    case 'ascii':
-      ret = _asciiWrite(this, string, offset, length)
-      break
-    case 'binary':
-      ret = _binaryWrite(this, string, offset, length)
-      break
-    case 'base64':
-      ret = _base64Write(this, string, offset, length)
-      break
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      ret = _utf16leWrite(this, string, offset, length)
-      break
-    default:
-      throw new Error('Unknown encoding')
-  }
-  return ret
 }
 
-Buffer.prototype.toString = function (encoding, start, end) {
-  var self = this
-
-  encoding = String(encoding || 'utf8').toLowerCase()
-  start = Number(start) || 0
-  end = (end !== undefined)
-    ? Number(end)
-    : end = self.length
-
-  // Fastpath empty strings
-  if (end === start)
-    return ''
-
-  var ret
-  switch (encoding) {
-    case 'hex':
-      ret = _hexSlice(self, start, end)
-      break
-    case 'utf8':
-    case 'utf-8':
-      ret = _utf8Slice(self, start, end)
-      break
-    case 'ascii':
-      ret = _asciiSlice(self, start, end)
-      break
-    case 'binary':
-      ret = _binarySlice(self, start, end)
-      break
-    case 'base64':
-      ret = _base64Slice(self, start, end)
-      break
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      ret = _utf16leSlice(self, start, end)
-      break
-    default:
-      throw new Error('Unknown encoding')
-  }
-  return ret
-}
-
-Buffer.prototype.toJSON = function () {
+Buffer.prototype.toJSON = function toJSON () {
   return {
     type: 'Buffer',
     data: Array.prototype.slice.call(this._arr || this, 0)
   }
 }
 
-// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-Buffer.prototype.copy = function (target, target_start, start, end) {
-  var source = this
-
-  if (!start) start = 0
-  if (!end && end !== 0) end = this.length
-  if (!target_start) target_start = 0
-
-  // Copy 0 bytes; we're done
-  if (end === start) return
-  if (target.length === 0 || source.length === 0) return
-
-  // Fatal error conditions
-  assert(end >= start, 'sourceEnd < sourceStart')
-  assert(target_start >= 0 && target_start < target.length,
-      'targetStart out of bounds')
-  assert(start >= 0 && start < source.length, 'sourceStart out of bounds')
-  assert(end >= 0 && end <= source.length, 'sourceEnd out of bounds')
-
-  // Are we oob?
-  if (end > this.length)
-    end = this.length
-  if (target.length - target_start < end - start)
-    end = target.length - target_start + start
-
-  var len = end - start
-
-  if (len < 100 || !Buffer._useTypedArrays) {
-    for (var i = 0; i < len; i++)
-      target[i + target_start] = this[i + start]
-  } else {
-    target._set(this.subarray(start, start + len), target_start)
-  }
-}
-
-function _base64Slice (buf, start, end) {
+function base64Slice (buf, start, end) {
   if (start === 0 && end === buf.length) {
     return base64.fromByteArray(buf)
   } else {
@@ -530,615 +2963,750 @@ function _base64Slice (buf, start, end) {
   }
 }
 
-function _utf8Slice (buf, start, end) {
-  var res = ''
-  var tmp = ''
+function utf8Slice (buf, start, end) {
   end = Math.min(buf.length, end)
+  var res = []
 
-  for (var i = start; i < end; i++) {
-    if (buf[i] <= 0x7F) {
-      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
-      tmp = ''
-    } else {
-      tmp += '%' + buf[i].toString(16)
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
     }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
   }
 
-  return res + decodeUtf8Char(tmp)
+  return decodeCodePointsArray(res)
 }
 
-function _asciiSlice (buf, start, end) {
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
   var ret = ''
   end = Math.min(buf.length, end)
 
-  for (var i = start; i < end; i++)
-    ret += String.fromCharCode(buf[i])
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
   return ret
 }
 
-function _binarySlice (buf, start, end) {
-  return _asciiSlice(buf, start, end)
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
 }
 
-function _hexSlice (buf, start, end) {
+function hexSlice (buf, start, end) {
   var len = buf.length
 
   if (!start || start < 0) start = 0
   if (!end || end < 0 || end > len) end = len
 
   var out = ''
-  for (var i = start; i < end; i++) {
+  for (var i = start; i < end; ++i) {
     out += toHex(buf[i])
   }
   return out
 }
 
-function _utf16leSlice (buf, start, end) {
+function utf16leSlice (buf, start, end) {
   var bytes = buf.slice(start, end)
   var res = ''
   for (var i = 0; i < bytes.length; i += 2) {
-    res += String.fromCharCode(bytes[i] + bytes[i+1] * 256)
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
   }
   return res
 }
 
-Buffer.prototype.slice = function (start, end) {
+Buffer.prototype.slice = function slice (start, end) {
   var len = this.length
-  start = clamp(start, len, 0)
-  end = clamp(end, len, len)
+  start = ~~start
+  end = end === undefined ? len : ~~end
 
-  if (Buffer._useTypedArrays) {
-    return Buffer._augment(this.subarray(start, end))
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    newBuf = this.subarray(start, end)
+    newBuf.__proto__ = Buffer.prototype
   } else {
     var sliceLen = end - start
-    var newBuf = new Buffer(sliceLen, undefined, true)
-    for (var i = 0; i < sliceLen; i++) {
+    newBuf = new Buffer(sliceLen, undefined)
+    for (var i = 0; i < sliceLen; ++i) {
       newBuf[i] = this[i + start]
     }
-    return newBuf
   }
+
+  return newBuf
 }
 
-// `get` will be removed in Node 0.13+
-Buffer.prototype.get = function (offset) {
-  console.log('.get() is deprecated. Access using array indexes instead.')
-  return this.readUInt8(offset)
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
 }
 
-// `set` will be removed in Node 0.13+
-Buffer.prototype.set = function (v, offset) {
-  console.log('.set() is deprecated. Access using array indexes instead.')
-  return this.writeUInt8(v, offset)
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
 }
 
-Buffer.prototype.readUInt8 = function (offset, noAssert) {
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
   if (!noAssert) {
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset < this.length, 'Trying to read beyond buffer length')
+    checkOffset(offset, byteLength, this.length)
   }
 
-  if (offset >= this.length)
-    return
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
 
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
   return this[offset]
 }
 
-function _readUInt16 (buf, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 1 < buf.length, 'Trying to read beyond buffer length')
-  }
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
 
-  var len = buf.length
-  if (offset >= len)
-    return
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
 
-  var val
-  if (littleEndian) {
-    val = buf[offset]
-    if (offset + 1 < len)
-      val |= buf[offset + 1] << 8
-  } else {
-    val = buf[offset] << 8
-    if (offset + 1 < len)
-      val |= buf[offset + 1]
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
   }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
   return val
 }
 
-Buffer.prototype.readUInt16LE = function (offset, noAssert) {
-  return _readUInt16(this, offset, true, noAssert)
-}
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
 
-Buffer.prototype.readUInt16BE = function (offset, noAssert) {
-  return _readUInt16(this, offset, false, noAssert)
-}
-
-function _readUInt32 (buf, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 3 < buf.length, 'Trying to read beyond buffer length')
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
   }
+  mul *= 0x80
 
-  var len = buf.length
-  if (offset >= len)
-    return
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
 
-  var val
-  if (littleEndian) {
-    if (offset + 2 < len)
-      val = buf[offset + 2] << 16
-    if (offset + 1 < len)
-      val |= buf[offset + 1] << 8
-    val |= buf[offset]
-    if (offset + 3 < len)
-      val = val + (buf[offset + 3] << 24 >>> 0)
-  } else {
-    if (offset + 1 < len)
-      val = buf[offset + 1] << 16
-    if (offset + 2 < len)
-      val |= buf[offset + 2] << 8
-    if (offset + 3 < len)
-      val |= buf[offset + 3]
-    val = val + (buf[offset] << 24 >>> 0)
-  }
   return val
 }
 
-Buffer.prototype.readUInt32LE = function (offset, noAssert) {
-  return _readUInt32(this, offset, true, noAssert)
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
 }
 
-Buffer.prototype.readUInt32BE = function (offset, noAssert) {
-  return _readUInt32(this, offset, false, noAssert)
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
 }
 
-Buffer.prototype.readInt8 = function (offset, noAssert) {
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
   if (!noAssert) {
-    assert(offset !== undefined && offset !== null,
-        'missing offset')
-    assert(offset < this.length, 'Trying to read beyond buffer length')
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
   }
 
-  if (offset >= this.length)
-    return
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
 
-  var neg = this[offset] & 0x80
-  if (neg)
-    return (0xff - this[offset] + 1) * -1
-  else
-    return this[offset]
+  return offset + byteLength
 }
 
-function _readInt16 (buf, offset, littleEndian, noAssert) {
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
   if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 1 < buf.length, 'Trying to read beyond buffer length')
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
   }
 
-  var len = buf.length
-  if (offset >= len)
-    return
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
 
-  var val = _readUInt16(buf, offset, littleEndian, true)
-  var neg = val & 0x8000
-  if (neg)
-    return (0xffff - val + 1) * -1
-  else
-    return val
+  return offset + byteLength
 }
 
-Buffer.prototype.readInt16LE = function (offset, noAssert) {
-  return _readInt16(this, offset, true, noAssert)
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  this[offset] = (value & 0xff)
+  return offset + 1
 }
 
-Buffer.prototype.readInt16BE = function (offset, noAssert) {
-  return _readInt16(this, offset, false, noAssert)
+function objectWriteUInt16 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+      (littleEndian ? i : 1 - i) * 8
+  }
 }
 
-function _readInt32 (buf, offset, littleEndian, noAssert) {
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+function objectWriteUInt32 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffffffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+  }
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset + 3] = (value >>> 24)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 1] = (value >>> 8)
+    this[offset] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
   if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 3 < buf.length, 'Trying to read beyond buffer length')
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
   }
 
-  var len = buf.length
-  if (offset >= len)
-    return
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
 
-  var val = _readUInt32(buf, offset, littleEndian, true)
-  var neg = val & 0x80000000
-  if (neg)
-    return (0xffffffff - val + 1) * -1
-  else
-    return val
+  return offset + byteLength
 }
 
-Buffer.prototype.readInt32LE = function (offset, noAssert) {
-  return _readInt32(this, offset, true, noAssert)
-}
-
-Buffer.prototype.readInt32BE = function (offset, noAssert) {
-  return _readInt32(this, offset, false, noAssert)
-}
-
-function _readFloat (buf, offset, littleEndian, noAssert) {
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
   if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset + 3 < buf.length, 'Trying to read beyond buffer length')
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
   }
 
-  return ieee754.read(buf, offset, littleEndian, 23, 4)
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
 }
 
-Buffer.prototype.readFloatLE = function (offset, noAssert) {
-  return _readFloat(this, offset, true, noAssert)
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
 }
 
-Buffer.prototype.readFloatBE = function (offset, noAssert) {
-  return _readFloat(this, offset, false, noAssert)
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
 }
 
-function _readDouble (buf, offset, littleEndian, noAssert) {
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 3] = (value >>> 24)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
   if (!noAssert) {
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset + 7 < buf.length, 'Trying to read beyond buffer length')
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
   }
-
-  return ieee754.read(buf, offset, littleEndian, 52, 8)
-}
-
-Buffer.prototype.readDoubleLE = function (offset, noAssert) {
-  return _readDouble(this, offset, true, noAssert)
-}
-
-Buffer.prototype.readDoubleBE = function (offset, noAssert) {
-  return _readDouble(this, offset, false, noAssert)
-}
-
-Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset < this.length, 'trying to write beyond buffer length')
-    verifuint(value, 0xff)
-  }
-
-  if (offset >= this.length) return
-
-  this[offset] = value
-}
-
-function _writeUInt16 (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 1 < buf.length, 'trying to write beyond buffer length')
-    verifuint(value, 0xffff)
-  }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
-  for (var i = 0, j = Math.min(len - offset, 2); i < j; i++) {
-    buf[offset + i] =
-        (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
-            (littleEndian ? i : 1 - i) * 8
-  }
-}
-
-Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
-  _writeUInt16(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
-  _writeUInt16(this, value, offset, false, noAssert)
-}
-
-function _writeUInt32 (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 3 < buf.length, 'trying to write beyond buffer length')
-    verifuint(value, 0xffffffff)
-  }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
-  for (var i = 0, j = Math.min(len - offset, 4); i < j; i++) {
-    buf[offset + i] =
-        (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
-  }
-}
-
-Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
-  _writeUInt32(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
-  _writeUInt32(this, value, offset, false, noAssert)
-}
-
-Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset < this.length, 'Trying to write beyond buffer length')
-    verifsint(value, 0x7f, -0x80)
-  }
-
-  if (offset >= this.length)
-    return
-
-  if (value >= 0)
-    this.writeUInt8(value, offset, noAssert)
-  else
-    this.writeUInt8(0xff + value + 1, offset, noAssert)
-}
-
-function _writeInt16 (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 1 < buf.length, 'Trying to write beyond buffer length')
-    verifsint(value, 0x7fff, -0x8000)
-  }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
-  if (value >= 0)
-    _writeUInt16(buf, value, offset, littleEndian, noAssert)
-  else
-    _writeUInt16(buf, 0xffff + value + 1, offset, littleEndian, noAssert)
-}
-
-Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
-  _writeInt16(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
-  _writeInt16(this, value, offset, false, noAssert)
-}
-
-function _writeInt32 (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 3 < buf.length, 'Trying to write beyond buffer length')
-    verifsint(value, 0x7fffffff, -0x80000000)
-  }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
-  if (value >= 0)
-    _writeUInt32(buf, value, offset, littleEndian, noAssert)
-  else
-    _writeUInt32(buf, 0xffffffff + value + 1, offset, littleEndian, noAssert)
-}
-
-Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
-  _writeInt32(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
-  _writeInt32(this, value, offset, false, noAssert)
-}
-
-function _writeFloat (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 3 < buf.length, 'Trying to write beyond buffer length')
-    verifIEEE754(value, 3.4028234663852886e+38, -3.4028234663852886e+38)
-  }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
   ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
 }
 
-Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
-  _writeFloat(this, value, offset, true, noAssert)
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
 }
 
-Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
-  _writeFloat(this, value, offset, false, noAssert)
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
 }
 
-function _writeDouble (buf, value, offset, littleEndian, noAssert) {
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
   if (!noAssert) {
-    assert(value !== undefined && value !== null, 'missing value')
-    assert(typeof littleEndian === 'boolean', 'missing or invalid endian')
-    assert(offset !== undefined && offset !== null, 'missing offset')
-    assert(offset + 7 < buf.length,
-        'Trying to write beyond buffer length')
-    verifIEEE754(value, 1.7976931348623157E+308, -1.7976931348623157E+308)
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
   }
-
-  var len = buf.length
-  if (offset >= len)
-    return
-
   ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
 }
 
-Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
-  _writeDouble(this, value, offset, true, noAssert)
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
 }
 
-Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
-  _writeDouble(this, value, offset, false, noAssert)
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
 }
 
-// fill(value, start=0, end=buffer.length)
-Buffer.prototype.fill = function (value, start, end) {
-  if (!value) value = 0
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
   if (!start) start = 0
-  if (!end) end = this.length
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
 
-  if (typeof value === 'string') {
-    value = value.charCodeAt(0)
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
   }
 
-  assert(typeof value === 'number' && !isNaN(value), 'value is not a number')
-  assert(end >= start, 'end < start')
+  var len = end - start
+  var i
 
-  // Fill 0 bytes; we're done
-  if (end === start) return
-  if (this.length === 0) return
-
-  assert(start >= 0 && start < this.length, 'start out of bounds')
-  assert(end >= 0 && end <= this.length, 'end out of bounds')
-
-  for (var i = start; i < end; i++) {
-    this[i] = value
-  }
-}
-
-Buffer.prototype.inspect = function () {
-  var out = []
-  var len = this.length
-  for (var i = 0; i < len; i++) {
-    out[i] = toHex(this[i])
-    if (i === exports.INSPECT_MAX_BYTES) {
-      out[i + 1] = '...'
-      break
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
     }
-  }
-  return '<Buffer ' + out.join(' ') + '>'
-}
-
-/**
- * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
- * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
- */
-Buffer.prototype.toArrayBuffer = function () {
-  if (typeof Uint8Array !== 'undefined') {
-    if (Buffer._useTypedArrays) {
-      return (new Buffer(this)).buffer
-    } else {
-      var buf = new Uint8Array(this.length)
-      for (var i = 0, len = buf.length; i < len; i += 1)
-        buf[i] = this[i]
-      return buf.buffer
+  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
     }
   } else {
-    throw new Error('Buffer.toArrayBuffer not supported in this browser')
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
   }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : utf8ToBytes(new Buffer(val, encoding).toString())
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
 }
 
 // HELPER FUNCTIONS
 // ================
 
+var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
 function stringtrim (str) {
   if (str.trim) return str.trim()
   return str.replace(/^\s+|\s+$/g, '')
-}
-
-var BP = Buffer.prototype
-
-/**
- * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
- */
-Buffer._augment = function (arr) {
-  arr._isBuffer = true
-
-  // save reference to original Uint8Array get/set methods before overwriting
-  arr._get = arr.get
-  arr._set = arr.set
-
-  // deprecated, will be removed in node 0.13+
-  arr.get = BP.get
-  arr.set = BP.set
-
-  arr.write = BP.write
-  arr.toString = BP.toString
-  arr.toLocaleString = BP.toString
-  arr.toJSON = BP.toJSON
-  arr.copy = BP.copy
-  arr.slice = BP.slice
-  arr.readUInt8 = BP.readUInt8
-  arr.readUInt16LE = BP.readUInt16LE
-  arr.readUInt16BE = BP.readUInt16BE
-  arr.readUInt32LE = BP.readUInt32LE
-  arr.readUInt32BE = BP.readUInt32BE
-  arr.readInt8 = BP.readInt8
-  arr.readInt16LE = BP.readInt16LE
-  arr.readInt16BE = BP.readInt16BE
-  arr.readInt32LE = BP.readInt32LE
-  arr.readInt32BE = BP.readInt32BE
-  arr.readFloatLE = BP.readFloatLE
-  arr.readFloatBE = BP.readFloatBE
-  arr.readDoubleLE = BP.readDoubleLE
-  arr.readDoubleBE = BP.readDoubleBE
-  arr.writeUInt8 = BP.writeUInt8
-  arr.writeUInt16LE = BP.writeUInt16LE
-  arr.writeUInt16BE = BP.writeUInt16BE
-  arr.writeUInt32LE = BP.writeUInt32LE
-  arr.writeUInt32BE = BP.writeUInt32BE
-  arr.writeInt8 = BP.writeInt8
-  arr.writeInt16LE = BP.writeInt16LE
-  arr.writeInt16BE = BP.writeInt16BE
-  arr.writeInt32LE = BP.writeInt32LE
-  arr.writeInt32BE = BP.writeInt32BE
-  arr.writeFloatLE = BP.writeFloatLE
-  arr.writeFloatBE = BP.writeFloatBE
-  arr.writeDoubleLE = BP.writeDoubleLE
-  arr.writeDoubleBE = BP.writeDoubleBE
-  arr.fill = BP.fill
-  arr.inspect = BP.inspect
-  arr.toArrayBuffer = BP.toArrayBuffer
-
-  return arr
-}
-
-// slice(start, end)
-function clamp (index, len, defaultValue) {
-  if (typeof index !== 'number') return defaultValue
-  index = ~~index;  // Coerce to integer.
-  if (index >= len) return len
-  if (index >= 0) return index
-  index += len
-  if (index >= 0) return index
-  return 0
-}
-
-function coerce (length) {
-  // Coerce length to a number (possibly NaN), round up
-  // in case it's fractional (e.g. 123.456) then do a
-  // double negate to coerce a NaN to 0. Easy, right?
-  length = ~~Math.ceil(+length)
-  return length < 0 ? 0 : length
-}
-
-function isArray (subject) {
-  return (Array.isArray || function (subject) {
-    return Object.prototype.toString.call(subject) === '[object Array]'
-  })(subject)
-}
-
-function isArrayish (subject) {
-  return isArray(subject) || Buffer.isBuffer(subject) ||
-      subject && typeof subject === 'object' &&
-      typeof subject.length === 'number'
 }
 
 function toHex (n) {
@@ -1146,36 +3714,101 @@ function toHex (n) {
   return n.toString(16)
 }
 
-function utf8ToBytes (str) {
-  var byteArray = []
-  for (var i = 0; i < str.length; i++) {
-    var b = str.charCodeAt(i)
-    if (b <= 0x7F)
-      byteArray.push(str.charCodeAt(i))
-    else {
-      var start = i
-      if (b >= 0xD800 && b <= 0xDFFF) i++
-      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
-      for (var j = 0; j < h.length; j++)
-        byteArray.push(parseInt(h[j], 16))
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
     }
   }
-  return byteArray
+
+  return bytes
 }
 
 function asciiToBytes (str) {
   var byteArray = []
-  for (var i = 0; i < str.length; i++) {
+  for (var i = 0; i < str.length; ++i) {
     // Node's code seems to be doing this and not & 0x7F..
     byteArray.push(str.charCodeAt(i) & 0xFF)
   }
   return byteArray
 }
 
-function utf16leToBytes (str) {
+function utf16leToBytes (str, units) {
   var c, hi, lo
   var byteArray = []
-  for (var i = 0; i < str.length; i++) {
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
     c = str.charCodeAt(i)
     hi = c >> 8
     lo = c % 256
@@ -1187,575 +3820,31 @@ function utf16leToBytes (str) {
 }
 
 function base64ToBytes (str) {
-  return base64.toByteArray(str)
+  return base64.toByteArray(base64clean(str))
 }
 
 function blitBuffer (src, dst, offset, length) {
-  var pos
-  for (var i = 0; i < length; i++) {
-    if ((i + offset >= dst.length) || (i >= src.length))
-      break
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
     dst[i + offset] = src[i]
   }
   return i
 }
 
-function decodeUtf8Char (str) {
-  try {
-    return decodeURIComponent(str)
-  } catch (err) {
-    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
-  }
+function isnan (val) {
+  return val !== val // eslint-disable-line no-self-compare
 }
 
-/*
- * We have to make sure that the value is a valid integer. This means that it
- * is non-negative. It has no fractional component and that it does not
- * exceed the maximum allowed value.
- */
-function verifuint (value, max) {
-  assert(typeof value === 'number', 'cannot write a non-number as a number')
-  assert(value >= 0, 'specified a negative value for writing an unsigned value')
-  assert(value <= max, 'value is larger than maximum value for type')
-  assert(Math.floor(value) === value, 'value has a fractional component')
-}
 
-function verifsint (value, max, min) {
-  assert(typeof value === 'number', 'cannot write a non-number as a number')
-  assert(value <= max, 'value larger than maximum allowed value')
-  assert(value >= min, 'value smaller than minimum allowed value')
-  assert(Math.floor(value) === value, 'value has a fractional component')
-}
+/***/ }),
 
-function verifIEEE754 (value, max, min) {
-  assert(typeof value === 'number', 'cannot write a non-number as a number')
-  assert(value <= max, 'value larger than maximum allowed value')
-  assert(value >= min, 'value smaller than minimum allowed value')
-}
+/***/ "./node_modules/ejs/lib/ejs.js":
+/*!*************************************!*\
+  !*** ./node_modules/ejs/lib/ejs.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-function assert (test, message) {
-  if (!test) throw new Error(message || 'Failed assertion')
-}
-
-},{"base64-js":1,"ieee754":14}],4:[function(require,module,exports){
-var Buffer = require('buffer').Buffer;
-var intSize = 4;
-var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
-var chrsz = 8;
-
-function toArray(buf, bigEndian) {
-  if ((buf.length % intSize) !== 0) {
-    var len = buf.length + (intSize - (buf.length % intSize));
-    buf = Buffer.concat([buf, zeroBuffer], len);
-  }
-
-  var arr = [];
-  var fn = bigEndian ? buf.readInt32BE : buf.readInt32LE;
-  for (var i = 0; i < buf.length; i += intSize) {
-    arr.push(fn.call(buf, i));
-  }
-  return arr;
-}
-
-function toBuffer(arr, size, bigEndian) {
-  var buf = new Buffer(size);
-  var fn = bigEndian ? buf.writeInt32BE : buf.writeInt32LE;
-  for (var i = 0; i < arr.length; i++) {
-    fn.call(buf, arr[i], i * 4, true);
-  }
-  return buf;
-}
-
-function hash(buf, fn, hashSize, bigEndian) {
-  if (!Buffer.isBuffer(buf)) buf = new Buffer(buf);
-  var arr = fn(toArray(buf, bigEndian), buf.length * chrsz);
-  return toBuffer(arr, hashSize, bigEndian);
-}
-
-module.exports = { hash: hash };
-
-},{"buffer":3}],5:[function(require,module,exports){
-var Buffer = require('buffer').Buffer
-var sha = require('./sha')
-var sha256 = require('./sha256')
-var rng = require('./rng')
-var md5 = require('./md5')
-
-var algorithms = {
-  sha1: sha,
-  sha256: sha256,
-  md5: md5
-}
-
-var blocksize = 64
-var zeroBuffer = new Buffer(blocksize); zeroBuffer.fill(0)
-function hmac(fn, key, data) {
-  if(!Buffer.isBuffer(key)) key = new Buffer(key)
-  if(!Buffer.isBuffer(data)) data = new Buffer(data)
-
-  if(key.length > blocksize) {
-    key = fn(key)
-  } else if(key.length < blocksize) {
-    key = Buffer.concat([key, zeroBuffer], blocksize)
-  }
-
-  var ipad = new Buffer(blocksize), opad = new Buffer(blocksize)
-  for(var i = 0; i < blocksize; i++) {
-    ipad[i] = key[i] ^ 0x36
-    opad[i] = key[i] ^ 0x5C
-  }
-
-  var hash = fn(Buffer.concat([ipad, data]))
-  return fn(Buffer.concat([opad, hash]))
-}
-
-function hash(alg, key) {
-  alg = alg || 'sha1'
-  var fn = algorithms[alg]
-  var bufs = []
-  var length = 0
-  if(!fn) error('algorithm:', alg, 'is not yet supported')
-  return {
-    update: function (data) {
-      if(!Buffer.isBuffer(data)) data = new Buffer(data)
-        
-      bufs.push(data)
-      length += data.length
-      return this
-    },
-    digest: function (enc) {
-      var buf = Buffer.concat(bufs)
-      var r = key ? hmac(fn, key, buf) : fn(buf)
-      bufs = null
-      return enc ? r.toString(enc) : r
-    }
-  }
-}
-
-function error () {
-  var m = [].slice.call(arguments).join(' ')
-  throw new Error([
-    m,
-    'we accept pull requests',
-    'http://github.com/dominictarr/crypto-browserify'
-    ].join('\n'))
-}
-
-exports.createHash = function (alg) { return hash(alg) }
-exports.createHmac = function (alg, key) { return hash(alg, key) }
-exports.randomBytes = function(size, callback) {
-  if (callback && callback.call) {
-    try {
-      callback.call(this, undefined, new Buffer(rng(size)))
-    } catch (err) { callback(err) }
-  } else {
-    return new Buffer(rng(size))
-  }
-}
-
-function each(a, f) {
-  for(var i in a)
-    f(a[i], i)
-}
-
-// the least I can do is make error messages for the rest of the node.js/crypto api.
-each(['createCredentials'
-, 'createCipher'
-, 'createCipheriv'
-, 'createDecipher'
-, 'createDecipheriv'
-, 'createSign'
-, 'createVerify'
-, 'createDiffieHellman'
-, 'pbkdf2'], function (name) {
-  exports[name] = function () {
-    error('sorry,', name, 'is not implemented yet')
-  }
-})
-
-},{"./md5":6,"./rng":7,"./sha":8,"./sha256":9,"buffer":3}],6:[function(require,module,exports){
-/*
- * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
- * Digest Algorithm, as defined in RFC 1321.
- * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for more info.
- */
-
-var helpers = require('./helpers');
-
-/*
- * Perform a simple self-test to see if the VM is working
- */
-function md5_vm_test()
-{
-  return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
-}
-
-/*
- * Calculate the MD5 of an array of little-endian words, and a bit length
- */
-function core_md5(x, len)
-{
-  /* append padding */
-  x[len >> 5] |= 0x80 << ((len) % 32);
-  x[(((len + 64) >>> 9) << 4) + 14] = len;
-
-  var a =  1732584193;
-  var b = -271733879;
-  var c = -1732584194;
-  var d =  271733878;
-
-  for(var i = 0; i < x.length; i += 16)
-  {
-    var olda = a;
-    var oldb = b;
-    var oldc = c;
-    var oldd = d;
-
-    a = md5_ff(a, b, c, d, x[i+ 0], 7 , -680876936);
-    d = md5_ff(d, a, b, c, x[i+ 1], 12, -389564586);
-    c = md5_ff(c, d, a, b, x[i+ 2], 17,  606105819);
-    b = md5_ff(b, c, d, a, x[i+ 3], 22, -1044525330);
-    a = md5_ff(a, b, c, d, x[i+ 4], 7 , -176418897);
-    d = md5_ff(d, a, b, c, x[i+ 5], 12,  1200080426);
-    c = md5_ff(c, d, a, b, x[i+ 6], 17, -1473231341);
-    b = md5_ff(b, c, d, a, x[i+ 7], 22, -45705983);
-    a = md5_ff(a, b, c, d, x[i+ 8], 7 ,  1770035416);
-    d = md5_ff(d, a, b, c, x[i+ 9], 12, -1958414417);
-    c = md5_ff(c, d, a, b, x[i+10], 17, -42063);
-    b = md5_ff(b, c, d, a, x[i+11], 22, -1990404162);
-    a = md5_ff(a, b, c, d, x[i+12], 7 ,  1804603682);
-    d = md5_ff(d, a, b, c, x[i+13], 12, -40341101);
-    c = md5_ff(c, d, a, b, x[i+14], 17, -1502002290);
-    b = md5_ff(b, c, d, a, x[i+15], 22,  1236535329);
-
-    a = md5_gg(a, b, c, d, x[i+ 1], 5 , -165796510);
-    d = md5_gg(d, a, b, c, x[i+ 6], 9 , -1069501632);
-    c = md5_gg(c, d, a, b, x[i+11], 14,  643717713);
-    b = md5_gg(b, c, d, a, x[i+ 0], 20, -373897302);
-    a = md5_gg(a, b, c, d, x[i+ 5], 5 , -701558691);
-    d = md5_gg(d, a, b, c, x[i+10], 9 ,  38016083);
-    c = md5_gg(c, d, a, b, x[i+15], 14, -660478335);
-    b = md5_gg(b, c, d, a, x[i+ 4], 20, -405537848);
-    a = md5_gg(a, b, c, d, x[i+ 9], 5 ,  568446438);
-    d = md5_gg(d, a, b, c, x[i+14], 9 , -1019803690);
-    c = md5_gg(c, d, a, b, x[i+ 3], 14, -187363961);
-    b = md5_gg(b, c, d, a, x[i+ 8], 20,  1163531501);
-    a = md5_gg(a, b, c, d, x[i+13], 5 , -1444681467);
-    d = md5_gg(d, a, b, c, x[i+ 2], 9 , -51403784);
-    c = md5_gg(c, d, a, b, x[i+ 7], 14,  1735328473);
-    b = md5_gg(b, c, d, a, x[i+12], 20, -1926607734);
-
-    a = md5_hh(a, b, c, d, x[i+ 5], 4 , -378558);
-    d = md5_hh(d, a, b, c, x[i+ 8], 11, -2022574463);
-    c = md5_hh(c, d, a, b, x[i+11], 16,  1839030562);
-    b = md5_hh(b, c, d, a, x[i+14], 23, -35309556);
-    a = md5_hh(a, b, c, d, x[i+ 1], 4 , -1530992060);
-    d = md5_hh(d, a, b, c, x[i+ 4], 11,  1272893353);
-    c = md5_hh(c, d, a, b, x[i+ 7], 16, -155497632);
-    b = md5_hh(b, c, d, a, x[i+10], 23, -1094730640);
-    a = md5_hh(a, b, c, d, x[i+13], 4 ,  681279174);
-    d = md5_hh(d, a, b, c, x[i+ 0], 11, -358537222);
-    c = md5_hh(c, d, a, b, x[i+ 3], 16, -722521979);
-    b = md5_hh(b, c, d, a, x[i+ 6], 23,  76029189);
-    a = md5_hh(a, b, c, d, x[i+ 9], 4 , -640364487);
-    d = md5_hh(d, a, b, c, x[i+12], 11, -421815835);
-    c = md5_hh(c, d, a, b, x[i+15], 16,  530742520);
-    b = md5_hh(b, c, d, a, x[i+ 2], 23, -995338651);
-
-    a = md5_ii(a, b, c, d, x[i+ 0], 6 , -198630844);
-    d = md5_ii(d, a, b, c, x[i+ 7], 10,  1126891415);
-    c = md5_ii(c, d, a, b, x[i+14], 15, -1416354905);
-    b = md5_ii(b, c, d, a, x[i+ 5], 21, -57434055);
-    a = md5_ii(a, b, c, d, x[i+12], 6 ,  1700485571);
-    d = md5_ii(d, a, b, c, x[i+ 3], 10, -1894986606);
-    c = md5_ii(c, d, a, b, x[i+10], 15, -1051523);
-    b = md5_ii(b, c, d, a, x[i+ 1], 21, -2054922799);
-    a = md5_ii(a, b, c, d, x[i+ 8], 6 ,  1873313359);
-    d = md5_ii(d, a, b, c, x[i+15], 10, -30611744);
-    c = md5_ii(c, d, a, b, x[i+ 6], 15, -1560198380);
-    b = md5_ii(b, c, d, a, x[i+13], 21,  1309151649);
-    a = md5_ii(a, b, c, d, x[i+ 4], 6 , -145523070);
-    d = md5_ii(d, a, b, c, x[i+11], 10, -1120210379);
-    c = md5_ii(c, d, a, b, x[i+ 2], 15,  718787259);
-    b = md5_ii(b, c, d, a, x[i+ 9], 21, -343485551);
-
-    a = safe_add(a, olda);
-    b = safe_add(b, oldb);
-    c = safe_add(c, oldc);
-    d = safe_add(d, oldd);
-  }
-  return Array(a, b, c, d);
-
-}
-
-/*
- * These functions implement the four basic operations the algorithm uses.
- */
-function md5_cmn(q, a, b, x, s, t)
-{
-  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
-}
-function md5_ff(a, b, c, d, x, s, t)
-{
-  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
-}
-function md5_gg(a, b, c, d, x, s, t)
-{
-  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
-}
-function md5_hh(a, b, c, d, x, s, t)
-{
-  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
-}
-function md5_ii(a, b, c, d, x, s, t)
-{
-  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
-}
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-function safe_add(x, y)
-{
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return (msw << 16) | (lsw & 0xFFFF);
-}
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function bit_rol(num, cnt)
-{
-  return (num << cnt) | (num >>> (32 - cnt));
-}
-
-module.exports = function md5(buf) {
-  return helpers.hash(buf, core_md5, 16);
-};
-
-},{"./helpers":4}],7:[function(require,module,exports){
-// Original code adapted from Robert Kieffer.
-// details at https://github.com/broofa/node-uuid
-(function() {
-  var _global = this;
-
-  var mathRNG, whatwgRNG;
-
-  // NOTE: Math.random() does not guarantee "cryptographic quality"
-  mathRNG = function(size) {
-    var bytes = new Array(size);
-    var r;
-
-    for (var i = 0, r; i < size; i++) {
-      if ((i & 0x03) == 0) r = Math.random() * 0x100000000;
-      bytes[i] = r >>> ((i & 0x03) << 3) & 0xff;
-    }
-
-    return bytes;
-  }
-
-  if (_global.crypto && crypto.getRandomValues) {
-    whatwgRNG = function(size) {
-      var bytes = new Uint8Array(size);
-      crypto.getRandomValues(bytes);
-      return bytes;
-    }
-  }
-
-  module.exports = whatwgRNG || mathRNG;
-
-}())
-
-},{}],8:[function(require,module,exports){
-/*
- * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
- * in FIPS PUB 180-1
- * Version 2.1a Copyright Paul Johnston 2000 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for details.
- */
-
-var helpers = require('./helpers');
-
-/*
- * Calculate the SHA-1 of an array of big-endian words, and a bit length
- */
-function core_sha1(x, len)
-{
-  /* append padding */
-  x[len >> 5] |= 0x80 << (24 - len % 32);
-  x[((len + 64 >> 9) << 4) + 15] = len;
-
-  var w = Array(80);
-  var a =  1732584193;
-  var b = -271733879;
-  var c = -1732584194;
-  var d =  271733878;
-  var e = -1009589776;
-
-  for(var i = 0; i < x.length; i += 16)
-  {
-    var olda = a;
-    var oldb = b;
-    var oldc = c;
-    var oldd = d;
-    var olde = e;
-
-    for(var j = 0; j < 80; j++)
-    {
-      if(j < 16) w[j] = x[i + j];
-      else w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
-      var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
-                       safe_add(safe_add(e, w[j]), sha1_kt(j)));
-      e = d;
-      d = c;
-      c = rol(b, 30);
-      b = a;
-      a = t;
-    }
-
-    a = safe_add(a, olda);
-    b = safe_add(b, oldb);
-    c = safe_add(c, oldc);
-    d = safe_add(d, oldd);
-    e = safe_add(e, olde);
-  }
-  return Array(a, b, c, d, e);
-
-}
-
-/*
- * Perform the appropriate triplet combination function for the current
- * iteration
- */
-function sha1_ft(t, b, c, d)
-{
-  if(t < 20) return (b & c) | ((~b) & d);
-  if(t < 40) return b ^ c ^ d;
-  if(t < 60) return (b & c) | (b & d) | (c & d);
-  return b ^ c ^ d;
-}
-
-/*
- * Determine the appropriate additive constant for the current iteration
- */
-function sha1_kt(t)
-{
-  return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
-         (t < 60) ? -1894007588 : -899497514;
-}
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-function safe_add(x, y)
-{
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return (msw << 16) | (lsw & 0xFFFF);
-}
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function rol(num, cnt)
-{
-  return (num << cnt) | (num >>> (32 - cnt));
-}
-
-module.exports = function sha1(buf) {
-  return helpers.hash(buf, core_sha1, 20, true);
-};
-
-},{"./helpers":4}],9:[function(require,module,exports){
-
-/**
- * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
- * in FIPS 180-2
- * Version 2.2-beta Copyright Angel Marin, Paul Johnston 2000 - 2009.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- *
- */
-
-var helpers = require('./helpers');
-
-var safe_add = function(x, y) {
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return (msw << 16) | (lsw & 0xFFFF);
-};
-
-var S = function(X, n) {
-  return (X >>> n) | (X << (32 - n));
-};
-
-var R = function(X, n) {
-  return (X >>> n);
-};
-
-var Ch = function(x, y, z) {
-  return ((x & y) ^ ((~x) & z));
-};
-
-var Maj = function(x, y, z) {
-  return ((x & y) ^ (x & z) ^ (y & z));
-};
-
-var Sigma0256 = function(x) {
-  return (S(x, 2) ^ S(x, 13) ^ S(x, 22));
-};
-
-var Sigma1256 = function(x) {
-  return (S(x, 6) ^ S(x, 11) ^ S(x, 25));
-};
-
-var Gamma0256 = function(x) {
-  return (S(x, 7) ^ S(x, 18) ^ R(x, 3));
-};
-
-var Gamma1256 = function(x) {
-  return (S(x, 17) ^ S(x, 19) ^ R(x, 10));
-};
-
-var core_sha256 = function(m, l) {
-  var K = new Array(0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2);
-  var HASH = new Array(0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19);
-    var W = new Array(64);
-    var a, b, c, d, e, f, g, h, i, j;
-    var T1, T2;
-  /* append padding */
-  m[l >> 5] |= 0x80 << (24 - l % 32);
-  m[((l + 64 >> 9) << 4) + 15] = l;
-  for (var i = 0; i < m.length; i += 16) {
-    a = HASH[0]; b = HASH[1]; c = HASH[2]; d = HASH[3]; e = HASH[4]; f = HASH[5]; g = HASH[6]; h = HASH[7];
-    for (var j = 0; j < 64; j++) {
-      if (j < 16) {
-        W[j] = m[j + i];
-      } else {
-        W[j] = safe_add(safe_add(safe_add(Gamma1256(W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
-      }
-      T1 = safe_add(safe_add(safe_add(safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
-      T2 = safe_add(Sigma0256(a), Maj(a, b, c));
-      h = g; g = f; f = e; e = safe_add(d, T1); d = c; c = b; b = a; a = safe_add(T1, T2);
-    }
-    HASH[0] = safe_add(a, HASH[0]); HASH[1] = safe_add(b, HASH[1]); HASH[2] = safe_add(c, HASH[2]); HASH[3] = safe_add(d, HASH[3]);
-    HASH[4] = safe_add(e, HASH[4]); HASH[5] = safe_add(f, HASH[5]); HASH[6] = safe_add(g, HASH[6]); HASH[7] = safe_add(h, HASH[7]);
-  }
-  return HASH;
-};
-
-module.exports = function sha256(buf) {
-  return helpers.hash(buf, core_sha256, 32, true);
-};
-
-},{"./helpers":4}],10:[function(require,module,exports){
+"use strict";
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1774,7 +3863,7 @@ module.exports = function sha256(buf) {
  *
 */
 
-'use strict';
+
 
 /**
  * @file Embedded JavaScript templating engine. {@link http://ejs.co}
@@ -1802,12 +3891,14 @@ module.exports = function sha256(buf) {
  * @public
  */
 
-var fs = require('fs');
-var path = require('path');
-var utils = require('./utils');
+
+var fs = __webpack_require__(/*! fs */ "?c1fc");
+var path = __webpack_require__(/*! path */ "?df27");
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/ejs/lib/utils.js");
 
 var scopeOptionWarned = false;
-var _VERSION_STRING = require('../package.json').version;
+/** @type {string} */
+var _VERSION_STRING = (__webpack_require__(/*! ../package.json */ "./node_modules/ejs/package.json").version);
 var _DEFAULT_OPEN_DELIMITER = '<';
 var _DEFAULT_CLOSE_DELIMITER = '>';
 var _DEFAULT_DELIMITER = '%';
@@ -1821,6 +3912,7 @@ var _OPTS_PASSABLE_WITH_DATA = ['delimiter', 'scope', 'context', 'debug', 'compi
 // so we make an exception for `renderFile`
 var _OPTS_PASSABLE_WITH_DATA_EXPRESS = _OPTS_PASSABLE_WITH_DATA.concat('cache');
 var _BOM = /^\uFEFF/;
+var _JS_IDENTIFIER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 
 /**
  * EJS template function cache. This can be a LRU object from lru-cache NPM
@@ -1857,7 +3949,7 @@ exports.localsName = _DEFAULT_LOCALS_NAME;
  * Promise implementation -- defaults to the native implementation if available
  * This is mostly just for testability
  *
- * @type {Function}
+ * @type {PromiseConstructorLike}
  * @public
  */
 
@@ -1869,7 +3961,7 @@ exports.promiseImpl = (new Function('return this;'))().Promise;
  *
  * @param {String}  name     specified path
  * @param {String}  filename parent file path
- * @param {Boolean} isDir    parent file path whether is directory
+ * @param {Boolean} [isDir=false] whether the parent file path is a directory
  * @return {String}
  */
 exports.resolveInclude = function(name, filename, isDir) {
@@ -1883,6 +3975,23 @@ exports.resolveInclude = function(name, filename, isDir) {
   }
   return includePath;
 };
+
+/**
+ * Try to resolve file path on multiple directories
+ *
+ * @param  {String}        name  specified path
+ * @param  {Array<String>} paths list of possible parent directory paths
+ * @return {String}
+ */
+function resolvePaths(name, paths) {
+  var filePath;
+  if (paths.some(function (v) {
+    filePath = exports.resolveInclude(name, v, true);
+    return fs.existsSync(filePath);
+  })) {
+    return filePath;
+  }
+}
 
 /**
  * Get the path to the included file by Options
@@ -1899,7 +4008,12 @@ function getIncludePath(path, options) {
 
   // Abs path
   if (match && match.length) {
-    includePath = exports.resolveInclude(path.replace(/^\/*/,''), options.root || '/', true);
+    path = path.replace(/^\/*/, '');
+    if (Array.isArray(options.root)) {
+      includePath = resolvePaths(path, options.root);
+    } else {
+      includePath = exports.resolveInclude(path, options.root || '/', true);
+    }
   }
   // Relative paths
   else {
@@ -1911,15 +4025,10 @@ function getIncludePath(path, options) {
       }
     }
     // Then look in any views directories
-    if (!includePath) {
-      if (Array.isArray(views) && views.some(function (v) {
-        filePath = exports.resolveInclude(path, v, true);
-        return fs.existsSync(filePath);
-      })) {
-        includePath = filePath;
-      }
+    if (!includePath && Array.isArray(views)) {
+      includePath = resolvePaths(path, views);
     }
-    if (!includePath) {
+    if (!includePath && typeof options.includer !== 'function') {
       throw new Error('Could not find the include file "' +
           options.escapeFunction(path) + '"');
     }
@@ -2045,55 +4154,41 @@ function fileLoader(filePath){
  */
 
 function includeFile(path, options) {
-  var opts = utils.shallowCopy({}, options);
+  var opts = utils.shallowCopy(utils.createNullProtoObjWherePossible(), options);
   opts.filename = getIncludePath(path, opts);
+  if (typeof options.includer === 'function') {
+    var includerResult = options.includer(path, opts.filename);
+    if (includerResult) {
+      if (includerResult.filename) {
+        opts.filename = includerResult.filename;
+      }
+      if (includerResult.template) {
+        return handleCache(opts, includerResult.template);
+      }
+    }
+  }
   return handleCache(opts);
-}
-
-/**
- * Get the JavaScript source of an included file.
- *
- * @memberof module:ejs-internal
- * @param {String}  path    path for the specified file
- * @param {Options} options compilation options
- * @return {Object}
- * @static
- */
-
-function includeSource(path, options) {
-  var opts = utils.shallowCopy({}, options);
-  var includePath;
-  var template;
-  includePath = getIncludePath(path, opts);
-  template = fileLoader(includePath).toString().replace(_BOM, '');
-  opts.filename = includePath;
-  var templ = new Template(template, opts);
-  templ.generateSource();
-  return {
-    source: templ.source,
-    filename: includePath,
-    template: template
-  };
 }
 
 /**
  * Re-throw the given `err` in context to the `str` of ejs, `filename`, and
  * `lineno`.
  *
- * @implements RethrowCallback
+ * @implements {RethrowCallback}
  * @memberof module:ejs-internal
  * @param {Error}  err      Error object
  * @param {String} str      EJS source
- * @param {String} filename file name of the EJS file
- * @param {String} lineno   line number of the error
+ * @param {String} flnm     file name of the EJS file
+ * @param {Number} lineno   line number of the error
+ * @param {EscapeCallback} esc
  * @static
  */
 
-function rethrow(err, str, flnm, lineno, esc){
+function rethrow(err, str, flnm, lineno, esc) {
   var lines = str.split('\n');
   var start = Math.max(lineno - 3, 0);
   var end = Math.min(lines.length, lineno + 3);
-  var filename = esc(flnm); // eslint-disable-line
+  var filename = esc(flnm);
   // Error context
   var context = lines.slice(start, end).map(function (line, i){
     var curr = i + start + 1;
@@ -2122,7 +4217,7 @@ function stripSemi(str){
  *
  * @param {String}  template EJS template
  *
- * @param {Options} opts     compilation options
+ * @param {Options} [opts] compilation options
  *
  * @return {(TemplateFunction|ClientFunction)}
  * Depending on the value of `opts.client`, either type might be returned.
@@ -2165,8 +4260,8 @@ exports.compile = function compile(template, opts) {
  */
 
 exports.render = function (template, d, o) {
-  var data = d || {};
-  var opts = o || {};
+  var data = d || utils.createNullProtoObjWherePossible();
+  var opts = o || utils.createNullProtoObjWherePossible();
 
   // No options object -- if there are optiony names
   // in the data, copy them to options
@@ -2237,7 +4332,7 @@ exports.renderFile = function () {
     opts.filename = filename;
   }
   else {
-    data = {};
+    data = utils.createNullProtoObjWherePossible();
   }
 
   return tryHandleCache(opts, data, cb);
@@ -2259,14 +4354,14 @@ exports.clearCache = function () {
 };
 
 function Template(text, opts) {
-  opts = opts || {};
-  var options = {};
+  opts = opts || utils.createNullProtoObjWherePossible();
+  var options = utils.createNullProtoObjWherePossible();
   this.templateText = text;
+  /** @type {string | null} */
   this.mode = null;
   this.truncate = false;
   this.currentLine = 1;
   this.source = '';
-  this.dependencies = [];
   options.client = opts.client || false;
   options.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
   options.compileDebug = opts.compileDebug !== false;
@@ -2280,6 +4375,7 @@ function Template(text, opts) {
   options.cache = opts.cache || false;
   options.rmWhitespace = opts.rmWhitespace;
   options.root = opts.root;
+  options.includer = opts.includer;
   options.outputFunctionName = opts.outputFunctionName;
   options.localsName = opts.localsName || exports.localsName || _DEFAULT_LOCALS_NAME;
   options.views = opts.views;
@@ -2320,13 +4416,19 @@ Template.prototype = {
   },
 
   compile: function () {
+    /** @type {string} */
     var src;
+    /** @type {ClientFunction} */
     var fn;
     var opts = this.opts;
     var prepended = '';
     var appended = '';
+    /** @type {EscapeCallback} */
     var escapeFn = opts.escapeFunction;
+    /** @type {FunctionConstructor} */
     var ctor;
+    /** @type {string} */
+    var sanitizedFilename = opts.filename ? JSON.stringify(opts.filename) : 'undefined';
 
     if (!this.source) {
       this.generateSource();
@@ -2334,12 +4436,21 @@ Template.prototype = {
         '  var __output = "";\n' +
         '  function __append(s) { if (s !== undefined && s !== null) __output += s }\n';
       if (opts.outputFunctionName) {
+        if (!_JS_IDENTIFIER.test(opts.outputFunctionName)) {
+          throw new Error('outputFunctionName is not a valid JS identifier.');
+        }
         prepended += '  var ' + opts.outputFunctionName + ' = __append;' + '\n';
+      }
+      if (opts.localsName && !_JS_IDENTIFIER.test(opts.localsName)) {
+        throw new Error('localsName is not a valid JS identifier.');
       }
       if (opts.destructuredLocals && opts.destructuredLocals.length) {
         var destructuring = '  var __locals = (' + opts.localsName + ' || {}),\n';
         for (var i = 0; i < opts.destructuredLocals.length; i++) {
           var name = opts.destructuredLocals[i];
+          if (!_JS_IDENTIFIER.test(name)) {
+            throw new Error('destructuredLocals[' + i + '] is not a valid JS identifier.');
+          }
           if (i > 0) {
             destructuring += ',\n  ';
           }
@@ -2358,8 +4469,7 @@ Template.prototype = {
     if (opts.compileDebug) {
       src = 'var __line = 1' + '\n'
         + '  , __lines = ' + JSON.stringify(this.templateText) + '\n'
-        + '  , __filename = ' + (opts.filename ?
-        JSON.stringify(opts.filename) : 'undefined') + ';' + '\n'
+        + '  , __filename = ' + sanitizedFilename + ';' + '\n'
         + 'try {' + '\n'
         + this.source
         + '} catch (e) {' + '\n'
@@ -2385,7 +4495,7 @@ Template.prototype = {
     }
     if (opts.compileDebug && opts.filename) {
       src = src + '\n'
-        + '//# sourceURL=' + opts.filename + '\n';
+        + '//# sourceURL=' + sanitizedFilename + '\n';
     }
 
     try {
@@ -2431,15 +4541,15 @@ Template.prototype = {
     // Adds a local `include` function which allows full recursive include
     var returnedFn = opts.client ? fn : function anonymous(data) {
       var include = function (path, includeData) {
-        var d = utils.shallowCopy({}, data);
+        var d = utils.shallowCopy(utils.createNullProtoObjWherePossible(), data);
         if (includeData) {
           d = utils.shallowCopy(d, includeData);
         }
         return includeFile(path, opts)(d);
       };
-      return fn.apply(opts.context, [data || {}, escapeFn, include, rethrow]);
+      return fn.apply(opts.context,
+        [data || utils.createNullProtoObjWherePossible(), escapeFn, include, rethrow]);
     };
-    returnedFn.dependencies = this.dependencies;
     if (opts.filename && typeof Object.defineProperty === 'function') {
       var filename = opts.filename;
       var basename = path.basename(filename, path.extname(filename));
@@ -2477,12 +4587,7 @@ Template.prototype = {
 
     if (matches && matches.length) {
       matches.forEach(function (line, index) {
-        var opening;
         var closing;
-        var include;
-        var includeOpts;
-        var includeObj;
-        var includeSrc;
         // If this is an opening tag, check for closing tags
         // FIXME: May end up with some false positives here
         // Better to store modes as k/v with openDelimiter + delimiter as key
@@ -2492,35 +4597,6 @@ Template.prototype = {
           closing = matches[index + 2];
           if (!(closing == d + c || closing == '-' + d + c || closing == '_' + d + c)) {
             throw new Error('Could not find matching close tag for "' + line + '".');
-          }
-        }
-        // HACK: backward-compat `include` preprocessor directives
-        if (opts.legacyInclude && (include = line.match(/^\s*include\s+(\S+)/))) {
-          opening = matches[index - 1];
-          // Must be in EVAL or RAW mode
-          if (opening && (opening == o + d || opening == o + d + '-' || opening == o + d + '_')) {
-            includeOpts = utils.shallowCopy({}, self.opts);
-            includeObj = includeSource(include[1], includeOpts);
-            if (self.opts.compileDebug) {
-              includeSrc =
-                  '    ; (function(){' + '\n'
-                  + '      var __line = 1' + '\n'
-                  + '      , __lines = ' + JSON.stringify(includeObj.template) + '\n'
-                  + '      , __filename = ' + JSON.stringify(includeObj.filename) + ';' + '\n'
-                  + '      try {' + '\n'
-                  + includeObj.source
-                  + '      } catch (e) {' + '\n'
-                  + '        rethrow(e, __lines, __filename, __line, escapeFn);' + '\n'
-                  + '      }' + '\n'
-                  + '    ; }).call(this)' + '\n';
-            }else{
-              includeSrc = '    ; (function(){' + '\n' + includeObj.source +
-                  '    ; }).call(this)' + '\n';
-            }
-            self.source += includeSrc;
-            self.dependencies.push(exports.resolveInclude(include[1],
-              includeOpts.filename));
-            return;
           }
         }
         self.scanLine(line);
@@ -2696,22 +4772,6 @@ exports.escapeXML = utils.escapeXML;
 
 exports.__express = exports.renderFile;
 
-// Add require support
-/* istanbul ignore else */
-if (require.extensions) {
-  require.extensions['.ejs'] = function (module, flnm) {
-    console.log('Deprecated: this API will go away in EJS v2.8');
-    var filename = flnm || /* istanbul ignore next */ module.filename;
-    var options = {
-      filename: filename,
-      client: true
-    };
-    var template = fileLoader(filename).toString();
-    var fn = exports.compile(template, options);
-    module._compile('module.exports = ' + fn.toString() + ';', filename);
-  };
-}
-
 /**
  * Version of EJS.
  *
@@ -2737,7 +4797,16 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":12,"./utils":11,"fs":2,"path":16}],11:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/ejs/lib/utils.js":
+/*!***************************************!*\
+  !*** ./node_modules/ejs/lib/utils.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2762,9 +4831,11 @@ if (typeof window != 'undefined') {
  * @private
  */
 
-'use strict';
+
 
 var regExpChars = /[|\\{}()[\]^$+*?.]/g;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var hasOwn = function (obj, key) { return hasOwnProperty.apply(obj, [key]); };
 
 /**
  * Escape characters reserved in regular expressions.
@@ -2854,8 +4925,16 @@ exports.escapeXML.toString = function () {
  */
 exports.shallowCopy = function (to, from) {
   from = from || {};
-  for (var p in from) {
-    to[p] = from[p];
+  if ((to !== null) && (to !== undefined)) {
+    for (var p in from) {
+      if (!hasOwn(from, p)) {
+        continue;
+      }
+      if (p === '__proto__' || p === 'constructor') {
+        continue;
+      }
+      to[p] = from[p];
+    }
   }
   return to;
 };
@@ -2873,10 +4952,20 @@ exports.shallowCopy = function (to, from) {
  * @private
  */
 exports.shallowCopyFromList = function (to, from, list) {
-  for (var i = 0; i < list.length; i++) {
-    var p = list[i];
-    if (typeof from[p] != 'undefined') {
-      to[p] = from[p];
+  list = list || [];
+  from = from || {};
+  if ((to !== null) && (to !== undefined)) {
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      if (typeof from[p] != 'undefined') {
+        if (!hasOwn(from, p)) {
+          continue;
+        }
+        if (p === '__proto__' || p === 'constructor') {
+          continue;
+        }
+        to[p] = from[p];
+      }
     }
   }
   return to;
@@ -2886,7 +4975,7 @@ exports.shallowCopyFromList = function (to, from, list) {
  * Simple in-process cache implementation. Does not implement limits of any
  * sort.
  *
- * @implements Cache
+ * @implements {Cache}
  * @static
  * @private
  */
@@ -2906,81 +4995,54 @@ exports.cache = {
   }
 };
 
-},{}],12:[function(require,module,exports){
-module.exports={
-  "_from": "ejs@^2.7.4",
-  "_id": "ejs@2.7.4",
-  "_inBundle": false,
-  "_integrity": "sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==",
-  "_location": "/ejs",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "range",
-    "registry": true,
-    "raw": "ejs@^2.7.4",
-    "name": "ejs",
-    "escapedName": "ejs",
-    "rawSpec": "^2.7.4",
-    "saveSpec": null,
-    "fetchSpec": "^2.7.4"
-  },
-  "_requiredBy": [
-    "/",
-    "/broccoli-html-editor",
-    "/langbank",
-    "/pickles2-contents-editor"
-  ],
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.7.4.tgz",
-  "_shasum": "48661287573dcc53e366c7a1ae52c3a120eec9ba",
-  "_spec": "ejs@^2.7.4",
-  "_where": "/Users/tomk79/mydoc_TomK/projs/pickles2/pickles2/node-pickles2-module-editor",
-  "author": {
-    "name": "Matthew Eernisse",
-    "email": "mde@fleegix.org",
-    "url": "http://fleegix.org"
-  },
-  "bugs": {
-    "url": "https://github.com/mde/ejs/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {},
-  "deprecated": false,
-  "description": "Embedded JavaScript templates",
-  "devDependencies": {
-    "browserify": "^13.1.1",
-    "eslint": "^4.14.0",
-    "git-directory-deploy": "^1.5.1",
-    "jake": "^10.3.1",
-    "jsdoc": "^3.4.0",
-    "lru-cache": "^4.0.1",
-    "mocha": "^5.0.5",
-    "uglify-js": "^3.3.16"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "homepage": "https://github.com/mde/ejs",
-  "keywords": [
-    "template",
-    "engine",
-    "ejs"
-  ],
-  "license": "Apache-2.0",
-  "main": "./lib/ejs.js",
-  "name": "ejs",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mde/ejs.git"
-  },
-  "scripts": {
-    "postinstall": "node ./postinstall.js",
-    "test": "mocha"
-  },
-  "version": "2.7.4"
-}
+/**
+ * Transforms hyphen case variable into camel case.
+ *
+ * @param {String} string Hyphen case string
+ * @return {String} Camel case string
+ * @static
+ * @private
+ */
+exports.hyphenToCamel = function (str) {
+  return str.replace(/-[a-z]/g, function (match) { return match[1].toUpperCase(); });
+};
 
-},{}],13:[function(require,module,exports){
-(function (process,global){
+/**
+ * Returns a null-prototype object in runtimes that support it
+ *
+ * @return {Object} Object, prototype will be set to null where possible
+ * @static
+ * @private
+ */
+exports.createNullProtoObjWherePossible = (function () {
+  if (typeof Object.create == 'function') {
+    return function () {
+      return Object.create(null);
+    };
+  }
+  if (!({__proto__: null} instanceof Object)) {
+    return function () {
+      return {__proto__: null};
+    };
+  }
+  // Not possible, just pass through
+  return function () {
+    return {};
+  };
+})();
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/es6-promise/dist/es6-promise.js":
+/*!******************************************************!*\
+  !*** ./node_modules/es6-promise/dist/es6-promise.js ***!
+  \******************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
@@ -2990,9 +5052,8 @@ module.exports={
  */
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global.ES6Promise = factory());
+     true ? module.exports = factory() :
+    0;
 }(this, (function () { 'use strict';
 
 function objectOrFunction(x) {
@@ -3112,8 +5173,8 @@ function flush() {
 
 function attemptVertx() {
   try {
-    var r = require;
-    var vertx = r('vertx');
+    var r = undefined;
+    var vertx = __webpack_require__(/*! vertx */ "?3e0e");
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -3129,7 +5190,7 @@ if (isNode) {
   scheduleFlush = useMutationObserver();
 } else if (isWorker) {
   scheduleFlush = useMessageChannel();
-} else if (browserWindow === undefined && typeof require === 'function') {
+} else if (browserWindow === undefined && "function" === 'function') {
   scheduleFlush = attemptVertx();
 } else {
   scheduleFlush = useSetTimeout();
@@ -4096,8 +6157,8 @@ Promise.prototype = {
 function polyfill() {
     var local = undefined;
 
-    if (typeof global !== 'undefined') {
-        local = global;
+    if (typeof __webpack_require__.g !== 'undefined') {
+        local = __webpack_require__.g;
     } else if (typeof self !== 'undefined') {
         local = self;
     } else {
@@ -4135,8 +6196,16 @@ return Promise;
 
 })));
 //# sourceMappingURL=es6-promise.map
-}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"pBGvAp":17}],14:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/ieee754/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/ieee754/index.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -4222,9 +6291,32 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],15:[function(require,module,exports){
-/*!
- * jQuery JavaScript Library v3.6.0
+
+/***/ }),
+
+/***/ "./node_modules/isarray/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery/dist/jquery.js":
+/*!********************************************!*\
+  !*** ./node_modules/jquery/dist/jquery.js ***!
+  \********************************************/
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery JavaScript Library v3.6.1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -4234,13 +6326,13 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2021-03-02T17:08Z
+ * Date: 2022-08-26T17:52Z
  */
 ( function( global, factory ) {
 
 	"use strict";
 
-	if ( typeof module === "object" && typeof module.exports === "object" ) {
+	if (  true && typeof module.exports === "object" ) {
 
 		// For CommonJS and CommonJS-like environments where a proper `window`
 		// is present, execute the factory and get jQuery.
@@ -4248,7 +6340,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 		// (such as Node.js), expose a factory as module.exports.
 		// This accentuates the need for the creation of a real `window`.
 		// e.g. var jQuery = require("jquery")(window);
-		// See ticket #14549 for more info.
+		// See ticket trac-14549 for more info.
 		module.exports = global.document ?
 			factory( global, true ) :
 			function( w ) {
@@ -4376,7 +6468,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.6.0",
+	version = "3.6.1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -7354,8 +9446,8 @@ jQuery.fn.extend( {
 var rootjQuery,
 
 	// A simple way to check for HTML strings
-	// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
-	// Strict HTML recognition (#11290: must start with <)
+	// Prioritize #id over <tag> to avoid XSS via location.hash (trac-9521)
+	// Strict HTML recognition (trac-11290: must start with <)
 	// Shortcut simple #id case for speed
 	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
 
@@ -8312,7 +10404,7 @@ jQuery.extend( {
 	isReady: false,
 
 	// A counter to track how many items to wait for before
-	// the ready event fires. See #6781
+	// the ready event fires. See trac-6781
 	readyWait: 1,
 
 	// Handle when the DOM is ready
@@ -8440,7 +10532,7 @@ function fcamelCase( _all, letter ) {
 
 // Convert dashed to camelCase; used by the css and data modules
 // Support: IE <=9 - 11, Edge 12 - 15
-// Microsoft forgot to hump their vendor prefix (#9572)
+// Microsoft forgot to hump their vendor prefix (trac-9572)
 function camelCase( string ) {
 	return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 }
@@ -8476,7 +10568,7 @@ Data.prototype = {
 			value = {};
 
 			// We can accept data for non-element nodes in modern browsers,
-			// but we should not, see #8335.
+			// but we should not, see trac-8335.
 			// Always return an empty object.
 			if ( acceptData( owner ) ) {
 
@@ -8715,7 +10807,7 @@ jQuery.fn.extend( {
 					while ( i-- ) {
 
 						// Support: IE 11 only
-						// The attrs elements can be null (#14894)
+						// The attrs elements can be null (trac-14894)
 						if ( attrs[ i ] ) {
 							name = attrs[ i ].name;
 							if ( name.indexOf( "data-" ) === 0 ) {
@@ -9138,9 +11230,9 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 		input = document.createElement( "input" );
 
 	// Support: Android 4.0 - 4.3 only
-	// Check state lost if the name is set (#11217)
+	// Check state lost if the name is set (trac-11217)
 	// Support: Windows Web Apps (WWA)
-	// `name` and `type` must use .setAttribute for WWA (#14901)
+	// `name` and `type` must use .setAttribute for WWA (trac-14901)
 	input.setAttribute( "type", "radio" );
 	input.setAttribute( "checked", "checked" );
 	input.setAttribute( "name", "t" );
@@ -9164,7 +11256,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 } )();
 
 
-// We have to close these tags to support XHTML (#13200)
+// We have to close these tags to support XHTML (trac-13200)
 var wrapMap = {
 
 	// XHTML parsers do not magically insert elements in the
@@ -9190,7 +11282,7 @@ if ( !support.option ) {
 function getAll( context, tag ) {
 
 	// Support: IE <=9 - 11 only
-	// Use typeof to avoid zero-argument method invocation on host objects (#15151)
+	// Use typeof to avoid zero-argument method invocation on host objects (trac-15151)
 	var ret;
 
 	if ( typeof context.getElementsByTagName !== "undefined" ) {
@@ -9273,7 +11365,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 				// Remember the top-level container
 				tmp = fragment.firstChild;
 
-				// Ensure the created nodes are orphaned (#12392)
+				// Ensure the created nodes are orphaned (trac-12392)
 				tmp.textContent = "";
 			}
 		}
@@ -9694,15 +11786,15 @@ jQuery.event = {
 
 			for ( ; cur !== this; cur = cur.parentNode || this ) {
 
-				// Don't check non-elements (#13208)
-				// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
+				// Don't check non-elements (trac-13208)
+				// Don't process clicks on disabled elements (trac-6911, trac-8165, trac-11382, trac-11764)
 				if ( cur.nodeType === 1 && !( event.type === "click" && cur.disabled === true ) ) {
 					matchedHandlers = [];
 					matchedSelectors = {};
 					for ( i = 0; i < delegateCount; i++ ) {
 						handleObj = handlers[ i ];
 
-						// Don't conflict with Object.prototype properties (#13203)
+						// Don't conflict with Object.prototype properties (trac-13203)
 						sel = handleObj.selector + " ";
 
 						if ( matchedSelectors[ sel ] === undefined ) {
@@ -9956,7 +12048,7 @@ jQuery.Event = function( src, props ) {
 
 		// Create target properties
 		// Support: Safari <=6 - 7 only
-		// Target should not be a text node (#504, #13143)
+		// Target should not be a text node (trac-504, trac-13143)
 		this.target = ( src.target && src.target.nodeType === 3 ) ?
 			src.target.parentNode :
 			src.target;
@@ -10079,10 +12171,10 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 			return true;
 		},
 
-		// Suppress native focus or blur as it's already being fired
-		// in leverageNative.
-		_default: function() {
-			return true;
+		// Suppress native focus or blur if we're currently inside
+		// a leveraged native-event stack
+		_default: function( event ) {
+			return dataPriv.get( event.target, type );
 		},
 
 		delegateType: delegateType
@@ -10181,7 +12273,8 @@ var
 
 	// checked="checked" or checked
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;
+
+	rcleanScript = /^\s*<!\[CDATA\[|\]\]>\s*$/g;
 
 // Prefer a tbody over its parent table for containing new rows
 function manipulationTarget( elem, content ) {
@@ -10295,7 +12388,7 @@ function domManip( collection, args, callback, ignored ) {
 
 			// Use the original fragment for the last item
 			// instead of the first because it can end up
-			// being emptied incorrectly in certain situations (#8070).
+			// being emptied incorrectly in certain situations (trac-8070).
 			for ( ; i < l; i++ ) {
 				node = fragment;
 
@@ -10336,6 +12429,12 @@ function domManip( collection, args, callback, ignored ) {
 								}, doc );
 							}
 						} else {
+
+							// Unwrap a CDATA section containing script contents. This shouldn't be
+							// needed as in XML documents they're already not visible when
+							// inspecting element contents and in HTML documents they have no
+							// meaning but we're preserving that logic for backwards compatibility.
+							// This will be removed completely in 4.0. See gh-4904.
 							DOMEval( node.textContent.replace( rcleanScript, "" ), node, doc );
 						}
 					}
@@ -10618,9 +12717,12 @@ jQuery.each( {
 } );
 var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
 
+var rcustomProp = /^--/;
+
+
 var getStyles = function( elem ) {
 
-		// Support: IE <=11 only, Firefox <=30 (#15098, #14150)
+		// Support: IE <=11 only, Firefox <=30 (trac-15098, trac-14150)
 		// IE throws on elements created in popups
 		// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
 		var view = elem.ownerDocument.defaultView;
@@ -10654,6 +12756,15 @@ var swap = function( elem, options, callback ) {
 
 
 var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
+
+var whitespace = "[\\x20\\t\\r\\n\\f]";
+
+
+var rtrimCSS = new RegExp(
+	"^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
+	"g"
+);
+
 
 
 
@@ -10720,7 +12831,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 	}
 
 	// Support: IE <=9 - 11 only
-	// Style of cloned element affects source element cloned (#8908)
+	// Style of cloned element affects source element cloned (trac-8908)
 	div.style.backgroundClip = "content-box";
 	div.cloneNode( true ).style.backgroundClip = "";
 	support.clearCloneStyle = div.style.backgroundClip === "content-box";
@@ -10800,6 +12911,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 
 function curCSS( elem, name, computed ) {
 	var width, minWidth, maxWidth, ret,
+		isCustomProp = rcustomProp.test( name ),
 
 		// Support: Firefox 51+
 		// Retrieving style before computed somehow
@@ -10810,10 +12922,21 @@ function curCSS( elem, name, computed ) {
 	computed = computed || getStyles( elem );
 
 	// getPropertyValue is needed for:
-	//   .css('filter') (IE 9 only, #12537)
-	//   .css('--customProperty) (#3144)
+	//   .css('filter') (IE 9 only, trac-12537)
+	//   .css('--customProperty) (gh-3144)
 	if ( computed ) {
 		ret = computed.getPropertyValue( name ) || computed[ name ];
+
+		// trim whitespace for custom property (issue gh-4926)
+		if ( isCustomProp ) {
+
+			// rtrim treats U+000D CARRIAGE RETURN and U+000C FORM FEED
+			// as whitespace while CSS does not, but this is not a problem
+			// because CSS preprocessing replaces them with U+000A LINE FEED
+			// (which *is* CSS whitespace)
+			// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
+			ret = ret.replace( rtrimCSS, "$1" );
+		}
 
 		if ( ret === "" && !isAttached( elem ) ) {
 			ret = jQuery.style( elem, name );
@@ -10910,7 +13033,6 @@ var
 	// except "table", "table-cell", or "table-caption"
 	// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
 	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
-	rcustomProp = /^--/,
 	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
 	cssNormalTransform = {
 		letterSpacing: "0",
@@ -11146,15 +13268,15 @@ jQuery.extend( {
 		if ( value !== undefined ) {
 			type = typeof value;
 
-			// Convert "+=" or "-=" to relative numbers (#7345)
+			// Convert "+=" or "-=" to relative numbers (trac-7345)
 			if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
 				value = adjustCSS( elem, name, ret );
 
-				// Fixes bug #9237
+				// Fixes bug trac-9237
 				type = "number";
 			}
 
-			// Make sure that null and NaN values aren't set (#7116)
+			// Make sure that null and NaN values aren't set (trac-7116)
 			if ( value == null || value !== value ) {
 				return;
 			}
@@ -11778,7 +13900,7 @@ function Animation( elem, properties, options ) {
 				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
 
 				// Support: Android 2.3 only
-				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
+				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (trac-12497)
 				temp = remaining / animation.duration || 0,
 				percent = 1 - temp,
 				index = 0,
@@ -12168,7 +14290,6 @@ jQuery.fx.speeds = {
 
 
 // Based off of the plugin by Clint Helfers, with permission.
-// https://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
 jQuery.fn.delay = function( time, type ) {
 	time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 	type = type || "fx";
@@ -12393,8 +14514,7 @@ jQuery.extend( {
 				// Support: IE <=9 - 11 only
 				// elem.tabIndex doesn't always return the
 				// correct value when it hasn't been explicitly set
-				// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
-				// Use proper attribute retrieval(#12072)
+				// Use proper attribute retrieval (trac-12072)
 				var tabindex = jQuery.find.attr( elem, "tabindex" );
 
 				if ( tabindex ) {
@@ -12498,8 +14618,7 @@ function classesToArray( value ) {
 
 jQuery.fn.extend( {
 	addClass: function( value ) {
-		var classes, elem, cur, curValue, clazz, j, finalValue,
-			i = 0;
+		var classNames, cur, curValue, className, i, finalValue;
 
 		if ( isFunction( value ) ) {
 			return this.each( function( j ) {
@@ -12507,36 +14626,35 @@ jQuery.fn.extend( {
 			} );
 		}
 
-		classes = classesToArray( value );
+		classNames = classesToArray( value );
 
-		if ( classes.length ) {
-			while ( ( elem = this[ i++ ] ) ) {
-				curValue = getClass( elem );
-				cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+		if ( classNames.length ) {
+			return this.each( function() {
+				curValue = getClass( this );
+				cur = this.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
 
 				if ( cur ) {
-					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
-						if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
-							cur += clazz + " ";
+					for ( i = 0; i < classNames.length; i++ ) {
+						className = classNames[ i ];
+						if ( cur.indexOf( " " + className + " " ) < 0 ) {
+							cur += className + " ";
 						}
 					}
 
 					// Only assign if different to avoid unneeded rendering.
 					finalValue = stripAndCollapse( cur );
 					if ( curValue !== finalValue ) {
-						elem.setAttribute( "class", finalValue );
+						this.setAttribute( "class", finalValue );
 					}
 				}
-			}
+			} );
 		}
 
 		return this;
 	},
 
 	removeClass: function( value ) {
-		var classes, elem, cur, curValue, clazz, j, finalValue,
-			i = 0;
+		var classNames, cur, curValue, className, i, finalValue;
 
 		if ( isFunction( value ) ) {
 			return this.each( function( j ) {
@@ -12548,44 +14666,41 @@ jQuery.fn.extend( {
 			return this.attr( "class", "" );
 		}
 
-		classes = classesToArray( value );
+		classNames = classesToArray( value );
 
-		if ( classes.length ) {
-			while ( ( elem = this[ i++ ] ) ) {
-				curValue = getClass( elem );
+		if ( classNames.length ) {
+			return this.each( function() {
+				curValue = getClass( this );
 
 				// This expression is here for better compressibility (see addClass)
-				cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+				cur = this.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
 
 				if ( cur ) {
-					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
+					for ( i = 0; i < classNames.length; i++ ) {
+						className = classNames[ i ];
 
 						// Remove *all* instances
-						while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
-							cur = cur.replace( " " + clazz + " ", " " );
+						while ( cur.indexOf( " " + className + " " ) > -1 ) {
+							cur = cur.replace( " " + className + " ", " " );
 						}
 					}
 
 					// Only assign if different to avoid unneeded rendering.
 					finalValue = stripAndCollapse( cur );
 					if ( curValue !== finalValue ) {
-						elem.setAttribute( "class", finalValue );
+						this.setAttribute( "class", finalValue );
 					}
 				}
-			}
+			} );
 		}
 
 		return this;
 	},
 
 	toggleClass: function( value, stateVal ) {
-		var type = typeof value,
+		var classNames, className, i, self,
+			type = typeof value,
 			isValidValue = type === "string" || Array.isArray( value );
-
-		if ( typeof stateVal === "boolean" && isValidValue ) {
-			return stateVal ? this.addClass( value ) : this.removeClass( value );
-		}
 
 		if ( isFunction( value ) ) {
 			return this.each( function( i ) {
@@ -12596,17 +14711,20 @@ jQuery.fn.extend( {
 			} );
 		}
 
-		return this.each( function() {
-			var className, i, self, classNames;
+		if ( typeof stateVal === "boolean" && isValidValue ) {
+			return stateVal ? this.addClass( value ) : this.removeClass( value );
+		}
 
+		classNames = classesToArray( value );
+
+		return this.each( function() {
 			if ( isValidValue ) {
 
 				// Toggle individual class names
-				i = 0;
 				self = jQuery( this );
-				classNames = classesToArray( value );
 
-				while ( ( className = classNames[ i++ ] ) ) {
+				for ( i = 0; i < classNames.length; i++ ) {
+					className = classNames[ i ];
 
 					// Check each className given, space separated list
 					if ( self.hasClass( className ) ) {
@@ -12740,7 +14858,7 @@ jQuery.extend( {
 					val :
 
 					// Support: IE <=10 - 11 only
-					// option.text throws exceptions (#14686, #14858)
+					// option.text throws exceptions (trac-14686, trac-14858)
 					// Strip and collapse whitespace
 					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
 					stripAndCollapse( jQuery.text( elem ) );
@@ -12767,7 +14885,7 @@ jQuery.extend( {
 					option = options[ i ];
 
 					// Support: IE <=9 only
-					// IE8-9 doesn't update selected after form reset (#2551)
+					// IE8-9 doesn't update selected after form reset (trac-2551)
 					if ( ( option.selected || i === index ) &&
 
 							// Don't return options that are disabled or in a disabled optgroup
@@ -12910,8 +15028,8 @@ jQuery.extend( jQuery.event, {
 			return;
 		}
 
-		// Determine event propagation path in advance, per W3C events spec (#9951)
-		// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
+		// Determine event propagation path in advance, per W3C events spec (trac-9951)
+		// Bubble up to document, then to window; watch for a global ownerDocument var (trac-9724)
 		if ( !onlyHandlers && !special.noBubble && !isWindow( elem ) ) {
 
 			bubbleType = special.delegateType || type;
@@ -12963,7 +15081,7 @@ jQuery.extend( jQuery.event, {
 				acceptData( elem ) ) {
 
 				// Call a native DOM method on the target with the same name as the event.
-				// Don't do default actions on window, that's where global variables be (#6170)
+				// Don't do default actions on window, that's where global variables be (trac-6170)
 				if ( ontype && isFunction( elem[ type ] ) && !isWindow( elem ) ) {
 
 					// Don't re-trigger an onFOO event when we call its FOO() method
@@ -13237,7 +15355,7 @@ var
 	rantiCache = /([?&])_=[^&]*/,
 	rheaders = /^(.*?):[ \t]*([^\r\n]*)$/mg,
 
-	// #7653, #8125, #8152: local protocol detection
+	// trac-7653, trac-8125, trac-8152: local protocol detection
 	rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 	rnoContent = /^(?:GET|HEAD)$/,
 	rprotocol = /^\/\//,
@@ -13260,7 +15378,7 @@ var
 	 */
 	transports = {},
 
-	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
+	// Avoid comment-prolog char sequence (trac-10098); must appease lint and evade compression
 	allTypes = "*/".concat( "*" ),
 
 	// Anchor tag for parsing the document origin
@@ -13331,7 +15449,7 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 
 // A special extend for ajax options
 // that takes "flat" options (not to be deep extended)
-// Fixes #9887
+// Fixes trac-9887
 function ajaxExtend( target, src ) {
 	var key, deep,
 		flatOptions = jQuery.ajaxSettings.flatOptions || {};
@@ -13742,12 +15860,12 @@ jQuery.extend( {
 		deferred.promise( jqXHR );
 
 		// Add protocol if not provided (prefilters might expect it)
-		// Handle falsy url in the settings object (#10093: consistency with old signature)
+		// Handle falsy url in the settings object (trac-10093: consistency with old signature)
 		// We also use the url parameter if available
 		s.url = ( ( url || s.url || location.href ) + "" )
 			.replace( rprotocol, location.protocol + "//" );
 
-		// Alias method option to type as per ticket #12004
+		// Alias method option to type as per ticket trac-12004
 		s.type = options.method || options.type || s.method || s.type;
 
 		// Extract dataTypes list
@@ -13790,7 +15908,7 @@ jQuery.extend( {
 		}
 
 		// We can fire global events as of now if asked to
-		// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
+		// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (trac-15118)
 		fireGlobals = jQuery.event && s.global;
 
 		// Watch for a new set of requests
@@ -13819,7 +15937,7 @@ jQuery.extend( {
 			if ( s.data && ( s.processData || typeof s.data === "string" ) ) {
 				cacheURL += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data;
 
-				// #9682: remove data so that it's not used in an eventual retry
+				// trac-9682: remove data so that it's not used in an eventual retry
 				delete s.data;
 			}
 
@@ -14092,7 +16210,7 @@ jQuery._evalUrl = function( url, options, doc ) {
 	return jQuery.ajax( {
 		url: url,
 
-		// Make this explicit, since user can override this through ajaxSetup (#11264)
+		// Make this explicit, since user can override this through ajaxSetup (trac-11264)
 		type: "GET",
 		dataType: "script",
 		cache: true,
@@ -14201,7 +16319,7 @@ var xhrSuccessStatus = {
 		0: 200,
 
 		// Support: IE <=9 only
-		// #1450: sometimes IE returns 1223 when it should be 204
+		// trac-1450: sometimes IE returns 1223 when it should be 204
 		1223: 204
 	},
 	xhrSupported = jQuery.ajaxSettings.xhr();
@@ -14273,7 +16391,7 @@ jQuery.ajaxTransport( function( options ) {
 								} else {
 									complete(
 
-										// File: protocol always yields status 0; see #8605, #14207
+										// File: protocol always yields status 0; see trac-8605, trac-14207
 										xhr.status,
 										xhr.statusText
 									);
@@ -14334,7 +16452,7 @@ jQuery.ajaxTransport( function( options ) {
 					xhr.send( options.hasContent && options.data || null );
 				} catch ( e ) {
 
-					// #14683: Only rethrow if this hasn't been notified as an error yet
+					// trac-14683: Only rethrow if this hasn't been notified as an error yet
 					if ( callback ) {
 						throw e;
 					}
@@ -14978,7 +17096,9 @@ jQuery.each(
 
 // Support: Android <=4.0 only
 // Make sure we trim BOM and NBSP
-var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+// Require that the "whitespace run" starts from a non-whitespace
+// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
+var rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
 
 // Bind a function to a context, optionally partially applying any
 // arguments.
@@ -15045,7 +17165,7 @@ jQuery.isNumeric = function( obj ) {
 jQuery.trim = function( text ) {
 	return text == null ?
 		"" :
-		( text + "" ).replace( rtrim, "" );
+		( text + "" ).replace( rtrim, "$1" );
 };
 
 
@@ -15063,10 +17183,11 @@ jQuery.trim = function( text ) {
 // AMD loader is present. jQuery is a special case. For more information, see
 // https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
 
-if ( typeof define === "function" && define.amd ) {
-	define( "jquery", [], function() {
+if ( true ) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 		return jQuery;
-	} );
+	}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 }
 
 
@@ -15093,8 +17214,8 @@ jQuery.noConflict = function( deep ) {
 };
 
 // Expose jQuery and $ identifiers, even in AMD
-// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
-// and CommonJS for browser emulators (#13566)
+// (trac-7102#comment:10, https://github.com/jquery/jquery/pull/557)
+// and CommonJS for browser emulators (trac-13566)
 if ( typeof noGlobal === "undefined" ) {
 	window.jQuery = window.$ = jQuery;
 }
@@ -15105,356 +17226,188 @@ if ( typeof noGlobal === "undefined" ) {
 return jQuery;
 } );
 
-},{}],16:[function(require,module,exports){
-(function (process){
-// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
-// backported and transplited with Babel, with backwards-compat fixes
 
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
+/***/ }),
 
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
+/***/ "./src/pickles2-module-editor.css.scss":
+/*!*********************************************!*\
+  !*** ./src/pickles2-module-editor.css.scss ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
 
 
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
+/***/ }),
 
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/***/ ((module) => {
 
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  if (path.length === 0) return '.';
-  var code = path.charCodeAt(0);
-  var hasRoot = code === 47 /*/*/;
-  var end = -1;
-  var matchedSlash = true;
-  for (var i = path.length - 1; i >= 1; --i) {
-    code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        if (!matchedSlash) {
-          end = i;
-          break;
-        }
-      } else {
-      // We saw the first non-path separator
-      matchedSlash = false;
-    }
-  }
-
-  if (end === -1) return hasRoot ? '/' : '.';
-  if (hasRoot && end === 1) {
-    // return '//';
-    // Backwards-compat fix:
-    return '/';
-  }
-  return path.slice(0, end);
-};
-
-function basename(path) {
-  if (typeof path !== 'string') path = path + '';
-
-  var start = 0;
-  var end = -1;
-  var matchedSlash = true;
-  var i;
-
-  for (i = path.length - 1; i >= 0; --i) {
-    if (path.charCodeAt(i) === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          start = i + 1;
-          break;
-        }
-      } else if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // path component
-      matchedSlash = false;
-      end = i + 1;
-    }
-  }
-
-  if (end === -1) return '';
-  return path.slice(start, end);
-}
-
-// Uses a mixed approach for backwards-compatibility, as ext behavior changed
-// in new Node.js versions, so only basename() above is backported here
-exports.basename = function (path, ext) {
-  var f = basename(path);
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-exports.extname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  var startDot = -1;
-  var startPart = 0;
-  var end = -1;
-  var matchedSlash = true;
-  // Track the state of characters (if any) we see before our first dot and
-  // after any path separator we find
-  var preDotState = 0;
-  for (var i = path.length - 1; i >= 0; --i) {
-    var code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          startPart = i + 1;
-          break;
-        }
-        continue;
-      }
-    if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // extension
-      matchedSlash = false;
-      end = i + 1;
-    }
-    if (code === 46 /*.*/) {
-        // If this is our first dot, mark it as the start of our extension
-        if (startDot === -1)
-          startDot = i;
-        else if (preDotState !== 1)
-          preDotState = 1;
-    } else if (startDot !== -1) {
-      // We saw a non-dot and non-path separator before our dot, so we should
-      // have a good chance at having a non-empty extension
-      preDotState = -1;
-    }
-  }
-
-  if (startDot === -1 || end === -1 ||
-      // We saw a non-dot character immediately before the dot
-      preDotState === 0 ||
-      // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-    return '';
-  }
-  return path.slice(startDot, end);
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-}).call(this,require("pBGvAp"))
-},{"pBGvAp":17}],17:[function(require,module,exports){
 // shim for using process in browser
-
 var process = module.exports = {};
 
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
 
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
     }
 
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
             }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
+        }
+        queueIndex = -1;
+        len = queue.length;
     }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
 
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
 
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
 process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
 
 function noop() {}
 
@@ -15465,18 +17418,30 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
+process.umask = function() { return 0; };
 
-},{}],18:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/array_keys.js":
+/*!*************************************************!*\
+  !*** ./node_modules/utils79/apis/array_keys.js ***!
+  \*************************************************/
+/***/ ((module) => {
+
 /**
  * 配列(または連想配列)のキーの配列を取得する
  */
@@ -15488,8 +17453,16 @@ module.exports = function(ary){
     return rtn;
 }
 
-},{}],19:[function(require,module,exports){
-(function (Buffer){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/base64_decode.js":
+/*!****************************************************!*\
+  !*** ./node_modules/utils79/apis/base64_decode.js ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 /**
  * base64デコードする
  */
@@ -15499,9 +17472,16 @@ module.exports = function( base64 ){
 	return bin;
 }
 
-}).call(this,require("buffer").Buffer)
-},{"buffer":3}],20:[function(require,module,exports){
-(function (Buffer){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/base64_encode.js":
+/*!****************************************************!*\
+  !*** ./node_modules/utils79/apis/base64_encode.js ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 /**
  * base64エンコードする
  */
@@ -15511,8 +17491,15 @@ module.exports = function( bin ){
 	return base64;
 }
 
-}).call(this,require("buffer").Buffer)
-},{"buffer":3}],21:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/basename.js":
+/*!***********************************************!*\
+  !*** ./node_modules/utils79/apis/basename.js ***!
+  \***********************************************/
+/***/ ((module) => {
+
 /**
  * パス文字列から、ファイル名を取り出す
  */
@@ -15522,7 +17509,15 @@ module.exports = function( path ){
     return rtn;
 }
 
-},{}],22:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/count.js":
+/*!********************************************!*\
+  !*** ./node_modules/utils79/apis/count.js ***!
+  \********************************************/
+/***/ ((module) => {
+
 /**
  * 配列(または連想配列)の要素数を数える
  */
@@ -15530,7 +17525,15 @@ module.exports = function(ary){
     return this.array_keys(ary).length;
 }
 
-},{}],23:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/dirname.js":
+/*!**********************************************!*\
+  !*** ./node_modules/utils79/apis/dirname.js ***!
+  \**********************************************/
+/***/ ((module) => {
+
 /**
  * ディレクトリ名を得る
  */
@@ -15538,7 +17541,15 @@ module.exports = function(path){
     return path.replace(/(?:\/|\\)[^\/\\]*(?:\/|\\)?$/, '');
 }
 
-},{}],24:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/divide.js":
+/*!*********************************************!*\
+  !*** ./node_modules/utils79/apis/divide.js ***!
+  \*********************************************/
+/***/ ((module) => {
+
 /**
  * 文字列をn文字ずつ分割する
  */
@@ -15557,7 +17568,15 @@ module.exports = function(str, n){
 	return rtn;
 }
 
-},{}],25:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/h.js":
+/*!****************************************!*\
+  !*** ./node_modules/utils79/apis/h.js ***!
+  \****************************************/
+/***/ ((module) => {
+
 /**
  * HTML特殊文字をエスケープする
  */
@@ -15570,43 +17589,75 @@ module.exports = function(str){
 	return str;
 }
 
-},{}],26:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/is_dir.js":
+/*!*********************************************!*\
+  !*** ./node_modules/utils79/apis/is_dir.js ***!
+  \*********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 /**
  * ディレクトリが存在するか調べる
  */
 module.exports = function( path ){
-    var fs = require('fs');
+    var fs = __webpack_require__(/*! fs */ "?98d1");
     if( !fs.existsSync(path) || !fs.statSync(path).isDirectory() ){
         return false;
     }
     return true;
 }
 
-},{"fs":2}],27:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/is_file.js":
+/*!**********************************************!*\
+  !*** ./node_modules/utils79/apis/is_file.js ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 /**
  * ファイルが存在するか調べる
  */
 module.exports = function( path ){
-    var fs = require('fs');
+    var fs = __webpack_require__(/*! fs */ "?98d1");
     if( !fs.existsSync(path) || !fs.statSync(path).isFile() ){
         return false;
     }
     return true;
 }
 
-},{"fs":2}],28:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/md5.js":
+/*!******************************************!*\
+  !*** ./node_modules/utils79/apis/md5.js ***!
+  \******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 /**
  * md5ハッシュを求める
  */
 module.exports = function( str ){
 	str = this.toStr(str);
-	var crypto = require('crypto');
+	var crypto = __webpack_require__(/*! crypto */ "?df92");
 	var md5 = crypto.createHash('md5');
 	md5.update(str, 'utf8');
 	return md5.digest('hex');
 }
 
-},{"crypto":5}],29:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/normalize_path.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/utils79/apis/normalize_path.js ***!
+  \*****************************************************/
+/***/ ((module) => {
+
 /**
  * パスを正規化する。
  *
@@ -15637,7 +17688,15 @@ module.exports = function($path){
     return $prefix+$path;
 }
 
-},{}],30:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/regexp_quote.js":
+/*!***************************************************!*\
+  !*** ./node_modules/utils79/apis/regexp_quote.js ***!
+  \***************************************************/
+/***/ ((module) => {
+
 /**
  * 正規表現で使えるようにエスケープ処理を施す
  */
@@ -15646,19 +17705,35 @@ module.exports = function(str) {
     return str.replace(/([.*+?^=!:${}()|[\]\/\\])/g, "\\$1");
 }
 
-},{}],31:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/sha1.js":
+/*!*******************************************!*\
+  !*** ./node_modules/utils79/apis/sha1.js ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 /**
  * sha1ハッシュを求める
  */
 module.exports = function( str ){
 	str = this.toStr(str);
-	var crypto = require('crypto');
+	var crypto = __webpack_require__(/*! crypto */ "?df92");
 	var sha1 = crypto.createHash('sha1');
 	sha1.update(str, 'utf8');
 	return sha1.digest('hex');
 }
 
-},{"crypto":5}],32:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/toStr.js":
+/*!********************************************!*\
+  !*** ./node_modules/utils79/apis/toStr.js ***!
+  \********************************************/
+/***/ ((module) => {
+
 /**
  * 文字列型に置き換える
  */
@@ -15683,7 +17758,15 @@ module.exports = function(val){
     return ''+val;
 }
 
-},{}],33:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/trim.js":
+/*!*******************************************!*\
+  !*** ./node_modules/utils79/apis/trim.js ***!
+  \*******************************************/
+/***/ ((module) => {
+
 /**
  * 文字列の前後から空白文字列を削除する
  */
@@ -15694,7 +17777,15 @@ module.exports = function(str){
 	return str;
 }
 
-},{}],34:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/apis/validate.js":
+/*!***********************************************!*\
+  !*** ./node_modules/utils79/apis/validate.js ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
 /**
  * 入力値のセットを確認する
  * 内部で validator を使用します。
@@ -15703,7 +17794,7 @@ module.exports = function(str){
 module.exports = function(values, rules, callback){
     callback = callback || function(){};
     var err = null;
-    var validator = require('validator');
+    var validator = __webpack_require__(/*! validator */ "./node_modules/validator/index.js");
 
     for( var key in rules ){
         var rule = rules[key];
@@ -15741,7 +17832,15 @@ module.exports = function(values, rules, callback){
     callback(err);
 }
 
-},{"validator":36}],35:[function(require,module,exports){
+
+/***/ }),
+
+/***/ "./node_modules/utils79/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/utils79/index.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 /**
  * node-iterate79
  */
@@ -15750,334 +17849,343 @@ module.exports = function(values, rules, callback){
 	/**
 	 * 文字列型に置き換える
 	 */
-	exports.toStr = require('./apis/toStr.js');
+	exports.toStr = __webpack_require__(/*! ./apis/toStr.js */ "./node_modules/utils79/apis/toStr.js");
 
 	/**
 	 * 文字列の前後から空白文字列を削除する
 	 */
-	exports.trim = require('./apis/trim.js');
+	exports.trim = __webpack_require__(/*! ./apis/trim.js */ "./node_modules/utils79/apis/trim.js");
 
 	/**
 	 * 配列(または連想配列)のキーの配列を取得する
 	 */
-	exports.array_keys = require('./apis/array_keys.js');
+	exports.array_keys = __webpack_require__(/*! ./apis/array_keys.js */ "./node_modules/utils79/apis/array_keys.js");
 
 	/**
 	 * 配列(または連想配列)の要素数を数える
 	 */
-	exports.count = require('./apis/count.js');
+	exports.count = __webpack_require__(/*! ./apis/count.js */ "./node_modules/utils79/apis/count.js");
 
 	/**
 	 * base64エンコードする
 	 */
-	exports.base64_encode = require('./apis/base64_encode.js');
+	exports.base64_encode = __webpack_require__(/*! ./apis/base64_encode.js */ "./node_modules/utils79/apis/base64_encode.js");
 
 	/**
 	 * base64デコードする
 	 */
-	exports.base64_decode = require('./apis/base64_decode.js');
+	exports.base64_decode = __webpack_require__(/*! ./apis/base64_decode.js */ "./node_modules/utils79/apis/base64_decode.js");
 
 	/**
 	 * md5ハッシュを求める
 	 */
-	exports.md5 = require('./apis/md5.js');
+	exports.md5 = __webpack_require__(/*! ./apis/md5.js */ "./node_modules/utils79/apis/md5.js");
 
 	/**
 	 * sha1ハッシュを求める
 	 */
-	exports.sha1 = require('./apis/sha1.js');
+	exports.sha1 = __webpack_require__(/*! ./apis/sha1.js */ "./node_modules/utils79/apis/sha1.js");
 
 	/**
 	 * ファイルが存在するか調べる
 	 */
-	exports.is_file = require('./apis/is_file.js');
+	exports.is_file = __webpack_require__(/*! ./apis/is_file.js */ "./node_modules/utils79/apis/is_file.js");
 
 	/**
 	 * ディレクトリが存在するか調べる
 	 */
-	exports.is_dir = require('./apis/is_dir.js');
+	exports.is_dir = __webpack_require__(/*! ./apis/is_dir.js */ "./node_modules/utils79/apis/is_dir.js");
 
 	/**
 	 * パス文字列から、ファイル名を取り出す
 	 */
-	exports.basename = require('./apis/basename.js');
+	exports.basename = __webpack_require__(/*! ./apis/basename.js */ "./node_modules/utils79/apis/basename.js");
 
 	/**
 	 * ディレクトリ名を得る
 	 */
-	exports.dirname = require('./apis/dirname.js');
+	exports.dirname = __webpack_require__(/*! ./apis/dirname.js */ "./node_modules/utils79/apis/dirname.js");
 
 	/**
 	 * パスを正規化する
 	 */
-	exports.normalize_path = require('./apis/normalize_path.js');
+	exports.normalize_path = __webpack_require__(/*! ./apis/normalize_path.js */ "./node_modules/utils79/apis/normalize_path.js");
 
 	/**
 	 * 正規表現で使えるようにエスケープ処理を施す
 	 */
-	exports.regexp_quote = require('./apis/regexp_quote.js');
+	exports.regexp_quote = __webpack_require__(/*! ./apis/regexp_quote.js */ "./node_modules/utils79/apis/regexp_quote.js");
 
 	/**
 	 * 入力値のセットを確認する
 	 */
-	exports.validate = require('./apis/validate.js');
+	exports.validate = __webpack_require__(/*! ./apis/validate.js */ "./node_modules/utils79/apis/validate.js");
 
 	/**
 	 * 文字列をn文字ずつ分割する
 	 */
-	exports.divide = require('./apis/divide.js');
+	exports.divide = __webpack_require__(/*! ./apis/divide.js */ "./node_modules/utils79/apis/divide.js");
 
 	/**
 	 * HTML特殊文字をエスケープする
 	 */
-	exports.h = require('./apis/h.js');
+	exports.h = __webpack_require__(/*! ./apis/h.js */ "./node_modules/utils79/apis/h.js");
 
 })(exports);
 
-},{"./apis/array_keys.js":18,"./apis/base64_decode.js":19,"./apis/base64_encode.js":20,"./apis/basename.js":21,"./apis/count.js":22,"./apis/dirname.js":23,"./apis/divide.js":24,"./apis/h.js":25,"./apis/is_dir.js":26,"./apis/is_file.js":27,"./apis/md5.js":28,"./apis/normalize_path.js":29,"./apis/regexp_quote.js":30,"./apis/sha1.js":31,"./apis/toStr.js":32,"./apis/trim.js":33,"./apis/validate.js":34}],36:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/validator/index.js ***!
+  \*****************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
-var _toDate = require('./lib/toDate');
+var _toDate = __webpack_require__(/*! ./lib/toDate */ "./node_modules/validator/lib/toDate.js");
 
 var _toDate2 = _interopRequireDefault(_toDate);
 
-var _toFloat = require('./lib/toFloat');
+var _toFloat = __webpack_require__(/*! ./lib/toFloat */ "./node_modules/validator/lib/toFloat.js");
 
 var _toFloat2 = _interopRequireDefault(_toFloat);
 
-var _toInt = require('./lib/toInt');
+var _toInt = __webpack_require__(/*! ./lib/toInt */ "./node_modules/validator/lib/toInt.js");
 
 var _toInt2 = _interopRequireDefault(_toInt);
 
-var _toBoolean = require('./lib/toBoolean');
+var _toBoolean = __webpack_require__(/*! ./lib/toBoolean */ "./node_modules/validator/lib/toBoolean.js");
 
 var _toBoolean2 = _interopRequireDefault(_toBoolean);
 
-var _equals = require('./lib/equals');
+var _equals = __webpack_require__(/*! ./lib/equals */ "./node_modules/validator/lib/equals.js");
 
 var _equals2 = _interopRequireDefault(_equals);
 
-var _contains = require('./lib/contains');
+var _contains = __webpack_require__(/*! ./lib/contains */ "./node_modules/validator/lib/contains.js");
 
 var _contains2 = _interopRequireDefault(_contains);
 
-var _matches = require('./lib/matches');
+var _matches = __webpack_require__(/*! ./lib/matches */ "./node_modules/validator/lib/matches.js");
 
 var _matches2 = _interopRequireDefault(_matches);
 
-var _isEmail = require('./lib/isEmail');
+var _isEmail = __webpack_require__(/*! ./lib/isEmail */ "./node_modules/validator/lib/isEmail.js");
 
 var _isEmail2 = _interopRequireDefault(_isEmail);
 
-var _isURL = require('./lib/isURL');
+var _isURL = __webpack_require__(/*! ./lib/isURL */ "./node_modules/validator/lib/isURL.js");
 
 var _isURL2 = _interopRequireDefault(_isURL);
 
-var _isMACAddress = require('./lib/isMACAddress');
+var _isMACAddress = __webpack_require__(/*! ./lib/isMACAddress */ "./node_modules/validator/lib/isMACAddress.js");
 
 var _isMACAddress2 = _interopRequireDefault(_isMACAddress);
 
-var _isIP = require('./lib/isIP');
+var _isIP = __webpack_require__(/*! ./lib/isIP */ "./node_modules/validator/lib/isIP.js");
 
 var _isIP2 = _interopRequireDefault(_isIP);
 
-var _isFQDN = require('./lib/isFQDN');
+var _isFQDN = __webpack_require__(/*! ./lib/isFQDN */ "./node_modules/validator/lib/isFQDN.js");
 
 var _isFQDN2 = _interopRequireDefault(_isFQDN);
 
-var _isBoolean = require('./lib/isBoolean');
+var _isBoolean = __webpack_require__(/*! ./lib/isBoolean */ "./node_modules/validator/lib/isBoolean.js");
 
 var _isBoolean2 = _interopRequireDefault(_isBoolean);
 
-var _isAlpha = require('./lib/isAlpha');
+var _isAlpha = __webpack_require__(/*! ./lib/isAlpha */ "./node_modules/validator/lib/isAlpha.js");
 
 var _isAlpha2 = _interopRequireDefault(_isAlpha);
 
-var _isAlphanumeric = require('./lib/isAlphanumeric');
+var _isAlphanumeric = __webpack_require__(/*! ./lib/isAlphanumeric */ "./node_modules/validator/lib/isAlphanumeric.js");
 
 var _isAlphanumeric2 = _interopRequireDefault(_isAlphanumeric);
 
-var _isNumeric = require('./lib/isNumeric');
+var _isNumeric = __webpack_require__(/*! ./lib/isNumeric */ "./node_modules/validator/lib/isNumeric.js");
 
 var _isNumeric2 = _interopRequireDefault(_isNumeric);
 
-var _isLowercase = require('./lib/isLowercase');
+var _isLowercase = __webpack_require__(/*! ./lib/isLowercase */ "./node_modules/validator/lib/isLowercase.js");
 
 var _isLowercase2 = _interopRequireDefault(_isLowercase);
 
-var _isUppercase = require('./lib/isUppercase');
+var _isUppercase = __webpack_require__(/*! ./lib/isUppercase */ "./node_modules/validator/lib/isUppercase.js");
 
 var _isUppercase2 = _interopRequireDefault(_isUppercase);
 
-var _isAscii = require('./lib/isAscii');
+var _isAscii = __webpack_require__(/*! ./lib/isAscii */ "./node_modules/validator/lib/isAscii.js");
 
 var _isAscii2 = _interopRequireDefault(_isAscii);
 
-var _isFullWidth = require('./lib/isFullWidth');
+var _isFullWidth = __webpack_require__(/*! ./lib/isFullWidth */ "./node_modules/validator/lib/isFullWidth.js");
 
 var _isFullWidth2 = _interopRequireDefault(_isFullWidth);
 
-var _isHalfWidth = require('./lib/isHalfWidth');
+var _isHalfWidth = __webpack_require__(/*! ./lib/isHalfWidth */ "./node_modules/validator/lib/isHalfWidth.js");
 
 var _isHalfWidth2 = _interopRequireDefault(_isHalfWidth);
 
-var _isVariableWidth = require('./lib/isVariableWidth');
+var _isVariableWidth = __webpack_require__(/*! ./lib/isVariableWidth */ "./node_modules/validator/lib/isVariableWidth.js");
 
 var _isVariableWidth2 = _interopRequireDefault(_isVariableWidth);
 
-var _isMultibyte = require('./lib/isMultibyte');
+var _isMultibyte = __webpack_require__(/*! ./lib/isMultibyte */ "./node_modules/validator/lib/isMultibyte.js");
 
 var _isMultibyte2 = _interopRequireDefault(_isMultibyte);
 
-var _isSurrogatePair = require('./lib/isSurrogatePair');
+var _isSurrogatePair = __webpack_require__(/*! ./lib/isSurrogatePair */ "./node_modules/validator/lib/isSurrogatePair.js");
 
 var _isSurrogatePair2 = _interopRequireDefault(_isSurrogatePair);
 
-var _isInt = require('./lib/isInt');
+var _isInt = __webpack_require__(/*! ./lib/isInt */ "./node_modules/validator/lib/isInt.js");
 
 var _isInt2 = _interopRequireDefault(_isInt);
 
-var _isFloat = require('./lib/isFloat');
+var _isFloat = __webpack_require__(/*! ./lib/isFloat */ "./node_modules/validator/lib/isFloat.js");
 
 var _isFloat2 = _interopRequireDefault(_isFloat);
 
-var _isDecimal = require('./lib/isDecimal');
+var _isDecimal = __webpack_require__(/*! ./lib/isDecimal */ "./node_modules/validator/lib/isDecimal.js");
 
 var _isDecimal2 = _interopRequireDefault(_isDecimal);
 
-var _isHexadecimal = require('./lib/isHexadecimal');
+var _isHexadecimal = __webpack_require__(/*! ./lib/isHexadecimal */ "./node_modules/validator/lib/isHexadecimal.js");
 
 var _isHexadecimal2 = _interopRequireDefault(_isHexadecimal);
 
-var _isDivisibleBy = require('./lib/isDivisibleBy');
+var _isDivisibleBy = __webpack_require__(/*! ./lib/isDivisibleBy */ "./node_modules/validator/lib/isDivisibleBy.js");
 
 var _isDivisibleBy2 = _interopRequireDefault(_isDivisibleBy);
 
-var _isHexColor = require('./lib/isHexColor');
+var _isHexColor = __webpack_require__(/*! ./lib/isHexColor */ "./node_modules/validator/lib/isHexColor.js");
 
 var _isHexColor2 = _interopRequireDefault(_isHexColor);
 
-var _isMD = require('./lib/isMD5');
+var _isMD = __webpack_require__(/*! ./lib/isMD5 */ "./node_modules/validator/lib/isMD5.js");
 
 var _isMD2 = _interopRequireDefault(_isMD);
 
-var _isJSON = require('./lib/isJSON');
+var _isJSON = __webpack_require__(/*! ./lib/isJSON */ "./node_modules/validator/lib/isJSON.js");
 
 var _isJSON2 = _interopRequireDefault(_isJSON);
 
-var _isNull = require('./lib/isNull');
+var _isNull = __webpack_require__(/*! ./lib/isNull */ "./node_modules/validator/lib/isNull.js");
 
 var _isNull2 = _interopRequireDefault(_isNull);
 
-var _isLength = require('./lib/isLength');
+var _isLength = __webpack_require__(/*! ./lib/isLength */ "./node_modules/validator/lib/isLength.js");
 
 var _isLength2 = _interopRequireDefault(_isLength);
 
-var _isByteLength = require('./lib/isByteLength');
+var _isByteLength = __webpack_require__(/*! ./lib/isByteLength */ "./node_modules/validator/lib/isByteLength.js");
 
 var _isByteLength2 = _interopRequireDefault(_isByteLength);
 
-var _isUUID = require('./lib/isUUID');
+var _isUUID = __webpack_require__(/*! ./lib/isUUID */ "./node_modules/validator/lib/isUUID.js");
 
 var _isUUID2 = _interopRequireDefault(_isUUID);
 
-var _isMongoId = require('./lib/isMongoId');
+var _isMongoId = __webpack_require__(/*! ./lib/isMongoId */ "./node_modules/validator/lib/isMongoId.js");
 
 var _isMongoId2 = _interopRequireDefault(_isMongoId);
 
-var _isDate = require('./lib/isDate');
+var _isDate = __webpack_require__(/*! ./lib/isDate */ "./node_modules/validator/lib/isDate.js");
 
 var _isDate2 = _interopRequireDefault(_isDate);
 
-var _isAfter = require('./lib/isAfter');
+var _isAfter = __webpack_require__(/*! ./lib/isAfter */ "./node_modules/validator/lib/isAfter.js");
 
 var _isAfter2 = _interopRequireDefault(_isAfter);
 
-var _isBefore = require('./lib/isBefore');
+var _isBefore = __webpack_require__(/*! ./lib/isBefore */ "./node_modules/validator/lib/isBefore.js");
 
 var _isBefore2 = _interopRequireDefault(_isBefore);
 
-var _isIn = require('./lib/isIn');
+var _isIn = __webpack_require__(/*! ./lib/isIn */ "./node_modules/validator/lib/isIn.js");
 
 var _isIn2 = _interopRequireDefault(_isIn);
 
-var _isCreditCard = require('./lib/isCreditCard');
+var _isCreditCard = __webpack_require__(/*! ./lib/isCreditCard */ "./node_modules/validator/lib/isCreditCard.js");
 
 var _isCreditCard2 = _interopRequireDefault(_isCreditCard);
 
-var _isISIN = require('./lib/isISIN');
+var _isISIN = __webpack_require__(/*! ./lib/isISIN */ "./node_modules/validator/lib/isISIN.js");
 
 var _isISIN2 = _interopRequireDefault(_isISIN);
 
-var _isISBN = require('./lib/isISBN');
+var _isISBN = __webpack_require__(/*! ./lib/isISBN */ "./node_modules/validator/lib/isISBN.js");
 
 var _isISBN2 = _interopRequireDefault(_isISBN);
 
-var _isMobilePhone = require('./lib/isMobilePhone');
+var _isMobilePhone = __webpack_require__(/*! ./lib/isMobilePhone */ "./node_modules/validator/lib/isMobilePhone.js");
 
 var _isMobilePhone2 = _interopRequireDefault(_isMobilePhone);
 
-var _isCurrency = require('./lib/isCurrency');
+var _isCurrency = __webpack_require__(/*! ./lib/isCurrency */ "./node_modules/validator/lib/isCurrency.js");
 
 var _isCurrency2 = _interopRequireDefault(_isCurrency);
 
-var _isISO = require('./lib/isISO8601');
+var _isISO = __webpack_require__(/*! ./lib/isISO8601 */ "./node_modules/validator/lib/isISO8601.js");
 
 var _isISO2 = _interopRequireDefault(_isISO);
 
-var _isBase = require('./lib/isBase64');
+var _isBase = __webpack_require__(/*! ./lib/isBase64 */ "./node_modules/validator/lib/isBase64.js");
 
 var _isBase2 = _interopRequireDefault(_isBase);
 
-var _isDataURI = require('./lib/isDataURI');
+var _isDataURI = __webpack_require__(/*! ./lib/isDataURI */ "./node_modules/validator/lib/isDataURI.js");
 
 var _isDataURI2 = _interopRequireDefault(_isDataURI);
 
-var _ltrim = require('./lib/ltrim');
+var _ltrim = __webpack_require__(/*! ./lib/ltrim */ "./node_modules/validator/lib/ltrim.js");
 
 var _ltrim2 = _interopRequireDefault(_ltrim);
 
-var _rtrim = require('./lib/rtrim');
+var _rtrim = __webpack_require__(/*! ./lib/rtrim */ "./node_modules/validator/lib/rtrim.js");
 
 var _rtrim2 = _interopRequireDefault(_rtrim);
 
-var _trim = require('./lib/trim');
+var _trim = __webpack_require__(/*! ./lib/trim */ "./node_modules/validator/lib/trim.js");
 
 var _trim2 = _interopRequireDefault(_trim);
 
-var _escape = require('./lib/escape');
+var _escape = __webpack_require__(/*! ./lib/escape */ "./node_modules/validator/lib/escape.js");
 
 var _escape2 = _interopRequireDefault(_escape);
 
-var _unescape = require('./lib/unescape');
+var _unescape = __webpack_require__(/*! ./lib/unescape */ "./node_modules/validator/lib/unescape.js");
 
 var _unescape2 = _interopRequireDefault(_unescape);
 
-var _stripLow = require('./lib/stripLow');
+var _stripLow = __webpack_require__(/*! ./lib/stripLow */ "./node_modules/validator/lib/stripLow.js");
 
 var _stripLow2 = _interopRequireDefault(_stripLow);
 
-var _whitelist = require('./lib/whitelist');
+var _whitelist = __webpack_require__(/*! ./lib/whitelist */ "./node_modules/validator/lib/whitelist.js");
 
 var _whitelist2 = _interopRequireDefault(_whitelist);
 
-var _blacklist = require('./lib/blacklist');
+var _blacklist = __webpack_require__(/*! ./lib/blacklist */ "./node_modules/validator/lib/blacklist.js");
 
 var _blacklist2 = _interopRequireDefault(_blacklist);
 
-var _isWhitelisted = require('./lib/isWhitelisted');
+var _isWhitelisted = __webpack_require__(/*! ./lib/isWhitelisted */ "./node_modules/validator/lib/isWhitelisted.js");
 
 var _isWhitelisted2 = _interopRequireDefault(_isWhitelisted);
 
-var _normalizeEmail = require('./lib/normalizeEmail');
+var _normalizeEmail = __webpack_require__(/*! ./lib/normalizeEmail */ "./node_modules/validator/lib/normalizeEmail.js");
 
 var _normalizeEmail2 = _interopRequireDefault(_normalizeEmail);
 
-var _toString = require('./lib/util/toString');
+var _toString = __webpack_require__(/*! ./lib/util/toString */ "./node_modules/validator/lib/util/toString.js");
 
 var _toString2 = _interopRequireDefault(_toString);
 
@@ -16119,14 +18227,23 @@ var validator = {
   toString: _toString2.default
 };
 
-exports.default = validator;
+exports["default"] = validator;
 module.exports = exports['default'];
-},{"./lib/blacklist":38,"./lib/contains":39,"./lib/equals":40,"./lib/escape":41,"./lib/isAfter":42,"./lib/isAlpha":43,"./lib/isAlphanumeric":44,"./lib/isAscii":45,"./lib/isBase64":46,"./lib/isBefore":47,"./lib/isBoolean":48,"./lib/isByteLength":49,"./lib/isCreditCard":50,"./lib/isCurrency":51,"./lib/isDataURI":52,"./lib/isDate":53,"./lib/isDecimal":54,"./lib/isDivisibleBy":55,"./lib/isEmail":56,"./lib/isFQDN":57,"./lib/isFloat":58,"./lib/isFullWidth":59,"./lib/isHalfWidth":60,"./lib/isHexColor":61,"./lib/isHexadecimal":62,"./lib/isIP":63,"./lib/isISBN":64,"./lib/isISIN":65,"./lib/isISO8601":66,"./lib/isIn":67,"./lib/isInt":68,"./lib/isJSON":69,"./lib/isLength":70,"./lib/isLowercase":71,"./lib/isMACAddress":72,"./lib/isMD5":73,"./lib/isMobilePhone":74,"./lib/isMongoId":75,"./lib/isMultibyte":76,"./lib/isNull":77,"./lib/isNumeric":78,"./lib/isSurrogatePair":79,"./lib/isURL":80,"./lib/isUUID":81,"./lib/isUppercase":82,"./lib/isVariableWidth":83,"./lib/isWhitelisted":84,"./lib/ltrim":85,"./lib/matches":86,"./lib/normalizeEmail":87,"./lib/rtrim":88,"./lib/stripLow":89,"./lib/toBoolean":90,"./lib/toDate":91,"./lib/toFloat":92,"./lib/toInt":93,"./lib/trim":94,"./lib/unescape":95,"./lib/util/toString":98,"./lib/whitelist":99}],37:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/alpha.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/alpha.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 var alpha = exports.alpha = {
   'en-US': /^[A-Z]+$/i,
   'cs-CZ': /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
@@ -16180,15 +18297,24 @@ for (var _locale, _i = 0; _i < arabicLocales.length; _i++) {
   alpha[_locale] = alpha.ar;
   alphanumeric[_locale] = alphanumeric.ar;
 }
-},{}],38:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/blacklist.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/blacklist.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = blacklist;
+}));
+exports["default"] = blacklist;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16199,19 +18325,28 @@ function blacklist(str, chars) {
   return str.replace(new RegExp('[' + chars + ']+', 'g'), '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],39:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/contains.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/contains.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = contains;
+}));
+exports["default"] = contains;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _toString = require('./util/toString');
+var _toString = __webpack_require__(/*! ./util/toString */ "./node_modules/validator/lib/util/toString.js");
 
 var _toString2 = _interopRequireDefault(_toString);
 
@@ -16222,15 +18357,24 @@ function contains(str, elem) {
   return str.indexOf((0, _toString2.default)(elem)) >= 0;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96,"./util/toString":98}],40:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/equals.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/equals.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = equals;
+}));
+exports["default"] = equals;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16241,15 +18385,24 @@ function equals(str, comparison) {
   return str === comparison;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],41:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/escape.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/escape.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
       value: true
-});
-exports.default = escape;
+}));
+exports["default"] = escape;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16260,19 +18413,28 @@ function escape(str) {
       return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/`/g, '&#96;');
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],42:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isAfter.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/isAfter.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isAfter;
+}));
+exports["default"] = isAfter;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _toDate = require('./toDate');
+var _toDate = __webpack_require__(/*! ./toDate */ "./node_modules/validator/lib/toDate.js");
 
 var _toDate2 = _interopRequireDefault(_toDate);
 
@@ -16287,19 +18449,28 @@ function isAfter(str) {
   return !!(original && comparison && original > comparison);
 }
 module.exports = exports['default'];
-},{"./toDate":91,"./util/assertString":96}],43:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isAlpha.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/isAlpha.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isAlpha;
+}));
+exports["default"] = isAlpha;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _alpha = require('./alpha');
+var _alpha = __webpack_require__(/*! ./alpha */ "./node_modules/validator/lib/alpha.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16313,19 +18484,28 @@ function isAlpha(str) {
   throw new Error('Invalid locale \'' + locale + '\'');
 }
 module.exports = exports['default'];
-},{"./alpha":37,"./util/assertString":96}],44:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isAlphanumeric.js":
+/*!******************************************************!*\
+  !*** ./node_modules/validator/lib/isAlphanumeric.js ***!
+  \******************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isAlphanumeric;
+}));
+exports["default"] = isAlphanumeric;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _alpha = require('./alpha');
+var _alpha = __webpack_require__(/*! ./alpha */ "./node_modules/validator/lib/alpha.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16339,15 +18519,24 @@ function isAlphanumeric(str) {
   throw new Error('Invalid locale \'' + locale + '\'');
 }
 module.exports = exports['default'];
-},{"./alpha":37,"./util/assertString":96}],45:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isAscii.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/isAscii.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isAscii;
+}));
+exports["default"] = isAscii;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16362,15 +18551,24 @@ function isAscii(str) {
   return ascii.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],46:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isBase64.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/isBase64.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isBase64;
+}));
+exports["default"] = isBase64;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16388,19 +18586,28 @@ function isBase64(str) {
   return firstPaddingChar === -1 || firstPaddingChar === len - 1 || firstPaddingChar === len - 2 && str[len - 1] === '=';
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],47:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isBefore.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/isBefore.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isBefore;
+}));
+exports["default"] = isBefore;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _toDate = require('./toDate');
+var _toDate = __webpack_require__(/*! ./toDate */ "./node_modules/validator/lib/toDate.js");
 
 var _toDate2 = _interopRequireDefault(_toDate);
 
@@ -16415,15 +18622,24 @@ function isBefore(str) {
   return !!(original && comparison && original < comparison);
 }
 module.exports = exports['default'];
-},{"./toDate":91,"./util/assertString":96}],48:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isBoolean.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isBoolean.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isBoolean;
+}));
+exports["default"] = isBoolean;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16434,18 +18650,27 @@ function isBoolean(str) {
   return ['true', 'false', '1', '0'].indexOf(str) >= 0;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],49:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isByteLength.js":
+/*!****************************************************!*\
+  !*** ./node_modules/validator/lib/isByteLength.js ***!
+  \****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-exports.default = isByteLength;
+exports["default"] = isByteLength;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16468,15 +18693,24 @@ function isByteLength(str, options) {
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],50:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isCreditCard.js":
+/*!****************************************************!*\
+  !*** ./node_modules/validator/lib/isCreditCard.js ***!
+  \****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isCreditCard;
+}));
+exports["default"] = isCreditCard;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16514,19 +18748,28 @@ function isCreditCard(str) {
   return !!(sum % 10 === 0 ? sanitized : false);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],51:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isCurrency.js":
+/*!**************************************************!*\
+  !*** ./node_modules/validator/lib/isCurrency.js ***!
+  \**************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isCurrency;
+}));
+exports["default"] = isCurrency;
 
-var _merge = require('./util/merge');
+var _merge = __webpack_require__(/*! ./util/merge */ "./node_modules/validator/lib/util/merge.js");
 
 var _merge2 = _interopRequireDefault(_merge);
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16603,15 +18846,24 @@ function isCurrency(str, options) {
   return currencyRegex(options).test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96,"./util/merge":97}],52:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isDataURI.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isDataURI.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isDataURI;
+}));
+exports["default"] = isDataURI;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16624,19 +18876,28 @@ function isDataURI(str) {
   return dataURI.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],53:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isDate.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isDate.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isDate;
+}));
+exports["default"] = isDate;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _isISO = require('./isISO8601');
+var _isISO = __webpack_require__(/*! ./isISO8601 */ "./node_modules/validator/lib/isISO8601.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16725,15 +18986,24 @@ function isDate(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./isISO8601":66,"./util/assertString":96}],54:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isDecimal.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isDecimal.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isDecimal;
+}));
+exports["default"] = isDecimal;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16746,19 +19016,28 @@ function isDecimal(str) {
   return str !== '' && decimal.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],55:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isDivisibleBy.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/validator/lib/isDivisibleBy.js ***!
+  \*****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isDivisibleBy;
+}));
+exports["default"] = isDivisibleBy;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _toFloat = require('./toFloat');
+var _toFloat = __webpack_require__(/*! ./toFloat */ "./node_modules/validator/lib/toFloat.js");
 
 var _toFloat2 = _interopRequireDefault(_toFloat);
 
@@ -16769,27 +19048,36 @@ function isDivisibleBy(str, num) {
   return (0, _toFloat2.default)(str) % parseInt(num, 10) === 0;
 }
 module.exports = exports['default'];
-},{"./toFloat":92,"./util/assertString":96}],56:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isEmail.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/isEmail.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isEmail;
+}));
+exports["default"] = isEmail;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _merge = require('./util/merge');
+var _merge = __webpack_require__(/*! ./util/merge */ "./node_modules/validator/lib/util/merge.js");
 
 var _merge2 = _interopRequireDefault(_merge);
 
-var _isByteLength = require('./isByteLength');
+var _isByteLength = __webpack_require__(/*! ./isByteLength */ "./node_modules/validator/lib/isByteLength.js");
 
 var _isByteLength2 = _interopRequireDefault(_isByteLength);
 
-var _isFQDN = require('./isFQDN');
+var _isFQDN = __webpack_require__(/*! ./isFQDN */ "./node_modules/validator/lib/isFQDN.js");
 
 var _isFQDN2 = _interopRequireDefault(_isFQDN);
 
@@ -16856,19 +19144,28 @@ function isEmail(str, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./isByteLength":49,"./isFQDN":57,"./util/assertString":96,"./util/merge":97}],57:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isFQDN.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isFQDN.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isFDQN;
+}));
+exports["default"] = isFDQN;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _merge = require('./util/merge');
+var _merge = __webpack_require__(/*! ./util/merge */ "./node_modules/validator/lib/util/merge.js");
 
 var _merge2 = _interopRequireDefault(_merge);
 
@@ -16914,15 +19211,24 @@ function isFDQN(str, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96,"./util/merge":97}],58:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isFloat.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/isFloat.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isFloat;
+}));
+exports["default"] = isFloat;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16939,16 +19245,25 @@ function isFloat(str, options) {
   return float.test(str) && (!options.hasOwnProperty('min') || str >= options.min) && (!options.hasOwnProperty('max') || str <= options.max);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],59:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isFullWidth.js":
+/*!***************************************************!*\
+  !*** ./node_modules/validator/lib/isFullWidth.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.fullWidth = undefined;
-exports.default = isFullWidth;
+exports["default"] = isFullWidth;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16960,16 +19275,25 @@ function isFullWidth(str) {
   (0, _assertString2.default)(str);
   return fullWidth.test(str);
 }
-},{"./util/assertString":96}],60:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isHalfWidth.js":
+/*!***************************************************!*\
+  !*** ./node_modules/validator/lib/isHalfWidth.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.halfWidth = undefined;
-exports.default = isHalfWidth;
+exports["default"] = isHalfWidth;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -16981,15 +19305,24 @@ function isHalfWidth(str) {
   (0, _assertString2.default)(str);
   return halfWidth.test(str);
 }
-},{"./util/assertString":96}],61:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isHexColor.js":
+/*!**************************************************!*\
+  !*** ./node_modules/validator/lib/isHexColor.js ***!
+  \**************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isHexColor;
+}));
+exports["default"] = isHexColor;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17002,15 +19335,24 @@ function isHexColor(str) {
   return hexcolor.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],62:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isHexadecimal.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/validator/lib/isHexadecimal.js ***!
+  \*****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isHexadecimal;
+}));
+exports["default"] = isHexadecimal;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17023,15 +19365,24 @@ function isHexadecimal(str) {
   return hexadecimal.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],63:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isIP.js":
+/*!********************************************!*\
+  !*** ./node_modules/validator/lib/isIP.js ***!
+  \********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isIP;
+}));
+exports["default"] = isIP;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17105,15 +19456,24 @@ function isIP(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],64:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isISBN.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isISBN.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isISBN;
+}));
+exports["default"] = isISBN;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17163,15 +19523,24 @@ function isISBN(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],65:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isISIN.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isISIN.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isISIN;
+}));
+exports["default"] = isISIN;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17212,20 +19581,29 @@ function isISIN(str) {
   return parseInt(str.substr(str.length - 1), 10) === (10000 - sum) % 10;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],66:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isISO8601.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isISO8601.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 exports.iso8601 = undefined;
 
-exports.default = function (str) {
+exports["default"] = function (str) {
   (0, _assertString2.default)(str);
   return iso8601.test(str);
 };
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17235,22 +19613,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // from http://goo.gl/0ejHHW
 var iso8601 = exports.iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 /* eslint-enable max-len */
-},{"./util/assertString":96}],67:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isIn.js":
+/*!********************************************!*\
+  !*** ./node_modules/validator/lib/isIn.js ***!
+  \********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-exports.default = isIn;
+exports["default"] = isIn;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _toString = require('./util/toString');
+var _toString = __webpack_require__(/*! ./util/toString */ "./node_modules/validator/lib/util/toString.js");
 
 var _toString2 = _interopRequireDefault(_toString);
 
@@ -17275,15 +19662,24 @@ function isIn(str, options) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96,"./util/toString":98}],68:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isInt.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/isInt.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isInt;
+}));
+exports["default"] = isInt;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17307,18 +19703,27 @@ function isInt(str, options) {
   return regex.test(str) && minCheckPassed && maxCheckPassed;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],69:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isJSON.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isJSON.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-exports.default = isJSON;
+exports["default"] = isJSON;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17333,18 +19738,27 @@ function isJSON(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],70:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isLength.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/isLength.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-exports.default = isLength;
+exports["default"] = isLength;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17368,15 +19782,24 @@ function isLength(str, options) {
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],71:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isLowercase.js":
+/*!***************************************************!*\
+  !*** ./node_modules/validator/lib/isLowercase.js ***!
+  \***************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isLowercase;
+}));
+exports["default"] = isLowercase;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17387,15 +19810,24 @@ function isLowercase(str) {
   return str === str.toLowerCase();
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],72:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isMACAddress.js":
+/*!****************************************************!*\
+  !*** ./node_modules/validator/lib/isMACAddress.js ***!
+  \****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isMACAddress;
+}));
+exports["default"] = isMACAddress;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17408,15 +19840,24 @@ function isMACAddress(str) {
   return macAddress.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],73:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isMD5.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/isMD5.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isMD5;
+}));
+exports["default"] = isMD5;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17429,15 +19870,24 @@ function isMD5(str) {
   return md5.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],74:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isMobilePhone.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/validator/lib/isMobilePhone.js ***!
+  \*****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isMobilePhone;
+}));
+exports["default"] = isMobilePhone;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17494,19 +19944,28 @@ function isMobilePhone(str, locale) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],75:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isMongoId.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isMongoId.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isMongoId;
+}));
+exports["default"] = isMongoId;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _isHexadecimal = require('./isHexadecimal');
+var _isHexadecimal = __webpack_require__(/*! ./isHexadecimal */ "./node_modules/validator/lib/isHexadecimal.js");
 
 var _isHexadecimal2 = _interopRequireDefault(_isHexadecimal);
 
@@ -17517,15 +19976,24 @@ function isMongoId(str) {
   return (0, _isHexadecimal2.default)(str) && str.length === 24;
 }
 module.exports = exports['default'];
-},{"./isHexadecimal":62,"./util/assertString":96}],76:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isMultibyte.js":
+/*!***************************************************!*\
+  !*** ./node_modules/validator/lib/isMultibyte.js ***!
+  \***************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isMultibyte;
+}));
+exports["default"] = isMultibyte;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17540,15 +20008,24 @@ function isMultibyte(str) {
   return multibyte.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],77:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isNull.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isNull.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isNull;
+}));
+exports["default"] = isNull;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17559,15 +20036,24 @@ function isNull(str) {
   return str.length === 0;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],78:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isNumeric.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/isNumeric.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isNumeric;
+}));
+exports["default"] = isNumeric;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17580,15 +20066,24 @@ function isNumeric(str) {
   return numeric.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],79:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isSurrogatePair.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/validator/lib/isSurrogatePair.js ***!
+  \*******************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isSurrogatePair;
+}));
+exports["default"] = isSurrogatePair;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17601,27 +20096,36 @@ function isSurrogatePair(str) {
   return surrogatePair.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],80:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isURL.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/isURL.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isURL;
+}));
+exports["default"] = isURL;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _isFQDN = require('./isFQDN');
+var _isFQDN = __webpack_require__(/*! ./isFQDN */ "./node_modules/validator/lib/isFQDN.js");
 
 var _isFQDN2 = _interopRequireDefault(_isFQDN);
 
-var _isIP = require('./isIP');
+var _isIP = __webpack_require__(/*! ./isIP */ "./node_modules/validator/lib/isIP.js");
 
 var _isIP2 = _interopRequireDefault(_isIP);
 
-var _merge = require('./util/merge');
+var _merge = __webpack_require__(/*! ./util/merge */ "./node_modules/validator/lib/util/merge.js");
 
 var _merge2 = _interopRequireDefault(_merge);
 
@@ -17744,15 +20248,24 @@ function isURL(url, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./isFQDN":57,"./isIP":63,"./util/assertString":96,"./util/merge":97}],81:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isUUID.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/isUUID.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isUUID;
+}));
+exports["default"] = isUUID;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17773,15 +20286,24 @@ function isUUID(str) {
   return pattern && pattern.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],82:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isUppercase.js":
+/*!***************************************************!*\
+  !*** ./node_modules/validator/lib/isUppercase.js ***!
+  \***************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isUppercase;
+}));
+exports["default"] = isUppercase;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17792,21 +20314,30 @@ function isUppercase(str) {
   return str === str.toUpperCase();
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],83:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isVariableWidth.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/validator/lib/isVariableWidth.js ***!
+  \*******************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isVariableWidth;
+}));
+exports["default"] = isVariableWidth;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _isFullWidth = require('./isFullWidth');
+var _isFullWidth = __webpack_require__(/*! ./isFullWidth */ "./node_modules/validator/lib/isFullWidth.js");
 
-var _isHalfWidth = require('./isHalfWidth');
+var _isHalfWidth = __webpack_require__(/*! ./isHalfWidth */ "./node_modules/validator/lib/isHalfWidth.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17815,15 +20346,24 @@ function isVariableWidth(str) {
   return _isFullWidth.fullWidth.test(str) && _isHalfWidth.halfWidth.test(str);
 }
 module.exports = exports['default'];
-},{"./isFullWidth":59,"./isHalfWidth":60,"./util/assertString":96}],84:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/isWhitelisted.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/validator/lib/isWhitelisted.js ***!
+  \*****************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = isWhitelisted;
+}));
+exports["default"] = isWhitelisted;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17839,15 +20379,24 @@ function isWhitelisted(str, chars) {
   return true;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],85:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/ltrim.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/ltrim.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = ltrim;
+}));
+exports["default"] = ltrim;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17859,15 +20408,24 @@ function ltrim(str, chars) {
   return str.replace(pattern, '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],86:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/matches.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/matches.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = matches;
+}));
+exports["default"] = matches;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17881,19 +20439,28 @@ function matches(str, pattern, modifiers) {
   return pattern.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],87:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/normalizeEmail.js":
+/*!******************************************************!*\
+  !*** ./node_modules/validator/lib/normalizeEmail.js ***!
+  \******************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = normalizeEmail;
+}));
+exports["default"] = normalizeEmail;
 
-var _isEmail = require('./isEmail');
+var _isEmail = __webpack_require__(/*! ./isEmail */ "./node_modules/validator/lib/isEmail.js");
 
 var _isEmail2 = _interopRequireDefault(_isEmail);
 
-var _merge = require('./util/merge');
+var _merge = __webpack_require__(/*! ./util/merge */ "./node_modules/validator/lib/util/merge.js");
 
 var _merge2 = _interopRequireDefault(_merge);
 
@@ -17930,15 +20497,24 @@ function normalizeEmail(email, options) {
   return parts.join('@');
 }
 module.exports = exports['default'];
-},{"./isEmail":56,"./util/merge":97}],88:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/rtrim.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/rtrim.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = rtrim;
+}));
+exports["default"] = rtrim;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -17956,19 +20532,28 @@ function rtrim(str, chars) {
   return idx < str.length ? str.substr(0, idx + 1) : str;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],89:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/stripLow.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/stripLow.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = stripLow;
+}));
+exports["default"] = stripLow;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
-var _blacklist = require('./blacklist');
+var _blacklist = __webpack_require__(/*! ./blacklist */ "./node_modules/validator/lib/blacklist.js");
 
 var _blacklist2 = _interopRequireDefault(_blacklist);
 
@@ -17980,15 +20565,24 @@ function stripLow(str, keep_new_lines) {
   return (0, _blacklist2.default)(str, chars);
 }
 module.exports = exports['default'];
-},{"./blacklist":38,"./util/assertString":96}],90:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/toBoolean.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/toBoolean.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = toBoolean;
+}));
+exports["default"] = toBoolean;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18002,15 +20596,24 @@ function toBoolean(str, strict) {
   return str !== '0' && str !== 'false' && str !== '';
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],91:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/toDate.js":
+/*!**********************************************!*\
+  !*** ./node_modules/validator/lib/toDate.js ***!
+  \**********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = toDate;
+}));
+exports["default"] = toDate;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18022,15 +20625,24 @@ function toDate(date) {
   return !isNaN(date) ? new Date(date) : null;
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],92:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/toFloat.js":
+/*!***********************************************!*\
+  !*** ./node_modules/validator/lib/toFloat.js ***!
+  \***********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = toFloat;
+}));
+exports["default"] = toFloat;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18041,15 +20653,24 @@ function toFloat(str) {
   return parseFloat(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],93:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/toInt.js":
+/*!*********************************************!*\
+  !*** ./node_modules/validator/lib/toInt.js ***!
+  \*********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = toInt;
+}));
+exports["default"] = toInt;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18060,19 +20681,28 @@ function toInt(str, radix) {
   return parseInt(str, radix || 10);
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],94:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/trim.js":
+/*!********************************************!*\
+  !*** ./node_modules/validator/lib/trim.js ***!
+  \********************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = trim;
+}));
+exports["default"] = trim;
 
-var _rtrim = require('./rtrim');
+var _rtrim = __webpack_require__(/*! ./rtrim */ "./node_modules/validator/lib/rtrim.js");
 
 var _rtrim2 = _interopRequireDefault(_rtrim);
 
-var _ltrim = require('./ltrim');
+var _ltrim = __webpack_require__(/*! ./ltrim */ "./node_modules/validator/lib/ltrim.js");
 
 var _ltrim2 = _interopRequireDefault(_ltrim);
 
@@ -18082,15 +20712,24 @@ function trim(str, chars) {
   return (0, _rtrim2.default)((0, _ltrim2.default)(str, chars), chars);
 }
 module.exports = exports['default'];
-},{"./ltrim":85,"./rtrim":88}],95:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/unescape.js":
+/*!************************************************!*\
+  !*** ./node_modules/validator/lib/unescape.js ***!
+  \************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
       value: true
-});
-exports.default = unescape;
+}));
+exports["default"] = unescape;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18101,26 +20740,44 @@ function unescape(str) {
       return str.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#96;/g, '`');
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],96:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/util/assertString.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/validator/lib/util/assertString.js ***!
+  \*********************************************************/
+/***/ ((module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = assertString;
+}));
+exports["default"] = assertString;
 function assertString(input) {
   if (typeof input !== 'string') {
     throw new TypeError('This library (validator.js) validates strings only');
   }
 }
 module.exports = exports['default'];
-},{}],97:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/util/merge.js":
+/*!**************************************************!*\
+  !*** ./node_modules/validator/lib/util/merge.js ***!
+  \**************************************************/
+/***/ ((module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = merge;
+}));
+exports["default"] = merge;
 function merge() {
   var obj = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
   var defaults = arguments[1];
@@ -18133,16 +20790,25 @@ function merge() {
   return obj;
 }
 module.exports = exports['default'];
-},{}],98:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/util/toString.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/validator/lib/util/toString.js ***!
+  \*****************************************************/
+/***/ ((module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
+}));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-exports.default = toString;
+exports["default"] = toString;
 function toString(input) {
   if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object' && input !== null) {
     if (typeof input.toString === 'function') {
@@ -18156,15 +20822,24 @@ function toString(input) {
   return String(input);
 }
 module.exports = exports['default'];
-},{}],99:[function(require,module,exports){
-'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+/***/ }),
+
+/***/ "./node_modules/validator/lib/whitelist.js":
+/*!*************************************************!*\
+  !*** ./node_modules/validator/lib/whitelist.js ***!
+  \*************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
   value: true
-});
-exports.default = whitelist;
+}));
+exports["default"] = whitelist;
 
-var _assertString = require('./util/assertString');
+var _assertString = __webpack_require__(/*! ./util/assertString */ "./node_modules/validator/lib/util/assertString.js");
 
 var _assertString2 = _interopRequireDefault(_assertString);
 
@@ -18175,1837 +20850,222 @@ function whitelist(str, chars) {
   return str.replace(new RegExp('[^' + chars + ']+', 'g'), '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":96}],100:[function(require,module,exports){
-/**
- * Pickles2ModuleEditor
- */
-(function(){
-	var __dirname = (function() {
-		if (document.currentScript) {
-			return document.currentScript.src;
-		} else {
-			var scripts = document.getElementsByTagName('script'),
-			script = scripts[scripts.length-1];
-			if (script.src) {
-				return script.src;
-			}
-		}
-	})().replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 
-	window.Pickles2ModuleEditor = function(){
-		var $ = require('jquery');
-		var Promise = require('es6-promise').Promise;
-		var $canvas,
-			$canvasContent;
-
-		var _this = this;
-		this.__dirname = __dirname;
-		this.options = {};
-		this.moduleId;
-
-		var px2meConf,
-			px2conf,
-			templates;
-		var pages = {
-			'list': require('./pages/list/index.js'),
-			'editModule': require('./pages/editModule/index.js'),
-			'editCategory': require('./pages/editCategory/index.js'),
-			'editPackage': require('./pages/editPackage/index.js'),
-			'addNewPackage': require('./pages/addNewPackage/index.js'),
-			'addNewCategory': require('./pages/addNewCategory/index.js'),
-			'addNewModule': require('./pages/addNewModule/index.js'),
-			'deletePackage': require('./pages/deletePackage/index.js'),
-			'deleteCategory': require('./pages/deleteCategory/index.js'),
-			'deleteModule': require('./pages/deleteModule/index.js')
-		};
-		var px2ce;
-
-		/**
-		* initialize
-		*/
-		this.init = function(options, callback){
-			console.info('initialize pickles2-module-editor...');
-			callback = callback || function(){};
-			// console.log(options);
-
-			this.options = options;
-			this.options.gpiBridge = this.options.gpiBridge || function(){ alert('gpiBridge required.'); };
-			this.options.complete = this.options.complete || function(){ alert('finished.'); };
-			this.options.onMessage = this.options.onMessage || function(message){ alert('onMessage: '+message); };
-			this.options.preview = this.options.preview || {};
-			this.options.lang = this.options.lang || 'en';
-
-			$canvas = $(options.elmCanvas);
-			$canvas.addClass('pickles2-module-editor');
-			$canvasContent = $('<div class="pickles2-module-editor__content">');
-			$canvas.html('')
-				.append($canvasContent)
-			;
-
-			new Promise(function(rlv){rlv();})
-				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.progress( function(){
-						rlv();
-					} );
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					px2ce = new window.Pickles2ContentsEditor();
-					px2ce.init(
-						{
-							'page_path': '/px2me-dummy.html' , // <- 編集対象ページのパス
-							'elmCanvas': document.createElement('div'), // <- 編集画面を描画するための器となる要素
-							'lang': _this.options.lang, // language
-							'preview':{ // プレビュー用サーバーの情報を設定します。
-								'origin': window.location.origin
-							},
-							'customFields': {},
-							'gpiBridge': function(input, callback){
-								// GPI(General Purpose Interface) Bridge
-								// broccoliは、バックグラウンドで様々なデータ通信を行います。
-								// GPIは、これらのデータ通信を行うための汎用的なAPIです。
-								_this.gpiBridge(
-									{
-										'api':'px2ceBridge',
-										'forPx2CE': input
-									},
-									function(result){
-										callback(result);
-									}
-								);
-								return;
-							},
-							'complete': function(){
-								alert('完了しました。');
-							},
-							'onClickContentsLink': function( uri, data ){
-								alert('編集: ' + uri);
-							},
-							'onMessage': function( message ){
-								// ユーザーへ知らせるメッセージを表示する
-								console.info('message: '+message);
-							}
-						},
-						function(){
-							// スタンバイ完了したら呼び出されるコールバックメソッドです。
-							console.info('pickles2-contents-editor standby!!');
-							rlv();
-						}
-					);
-
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.getConfig( function(conf){
-						px2meConf = conf;
-						_this.px2meConf = px2meConf;
-						// console.log(px2meConf);
-						rlv();
-					} );
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.getPickles2Config( function(conf){
-						px2conf = conf;
-						_this.px2conf = px2conf;
-
-						_this.px2conf = _this.px2conf || {};
-						_this.px2conf.plugins = _this.px2conf.plugins || {};
-						_this.px2conf.plugins.px2dt = _this.px2conf.plugins.px2dt || {};
-						_this.px2conf.plugins.px2dt.paths_module_template = _this.px2conf.plugins.px2dt.paths_module_template || {};
-
-						// console.log(px2conf);
-						rlv();
-					} );
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					// テンプレートをロードする
-					_this.gpiBridge(
-						{
-							'api':'getTemplates'
-						},
-						function(tpls){
-							// console.log(tpls);
-							templates = tpls;
-							rlv();
-						}
-					);
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					_this.closeProgress(function(){
-						rlv();
-					});
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					// 一覧ページを表示する。
-					_this.loadPage('list', {}, function(){
-						rlv();
-					});
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
-					callback();
-					rlv();
-				}); })
-			;
-
-		} // init()
-
-		/**
-		 * ページを表示する
-		 */
-		this.loadPage = function(pageName, options, callback){
-			if( pageName == 'list' ){
-				pages[pageName](_this, $canvasContent, options, function(){
-					callback();
-				});
-			}else{
-				var $cont = $('<div>');
-				pages[pageName](_this, $cont, options, function(){
-					callback();
-				});
-			}
-			return;
-		}
-
-		/**
-		* canvas要素を取得する
-		*/
-		this.getElmCanvas = function(){
-			return $canvas;
-		}
-
-		/**
-		* ユーザーへのメッセージを表示する
-		*/
-		this.message = function(message, callback){
-			callback  = callback||function(){};
-			// console.info(message);
-			this.options.onMessage(message);
-			callback();
-			return this;
-		}
-
-		/**
-		 * Pickles 2 Module Editor のコンフィグ情報を取得する
-		 */
-		this.getConfig = function(callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getConfig'
-				},
-				function(conf){
-					callback(conf);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * Pickles 2 のコンフィグ情報を取得する
-		 */
-		this.getPickles2Config = function(callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getPickles2Config'
-				},
-				function(conf){
-					callback(conf);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * テンプレートを取得する
-		 */
-		this.getTemplates = function(tplName){
-			return templates[tplName];
-		}
-
-		/**
-		 * ejs テンプレートにデータをバインドする
-		 */
-		this.bindEjs = function( tpl, data, options ){
-			var ejs = require('ejs');
-			var rtn = '';
-			try {
-				var template = ejs.compile(tpl.toString(), options);
-				rtn = template(data);
-			} catch (e) {
-				var errorMessage = 'TemplateEngine "EJS" Rendering ERROR.';
-				console.log( errorMessage );
-				rtn = errorMessage;
-			}
-
-			return rtn;
-		}
-
-		/**
-		 * broccoli モジュールのパッケージ一覧を取得する
-		 */
-		this.getPackageList = function(callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getPackageList'
-				},
-				function(packageList){
-					callback(packageList);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールのコードをすべて取得する
-		 */
-		this.getModuleCode = function(moduleId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getModuleCode',
-					'moduleId': moduleId
-				},
-				function(moduleCode){
-					callback(moduleCode);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールのコードの変更をすべて保存する
-		 */
-		this.saveModuleCode = function(moduleId, data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'saveModuleCode',
-					'moduleId': moduleId,
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールカテゴリのコードをすべて取得する
-		 */
-		this.getCategoryCode = function(categoryId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getCategoryCode',
-					'categoryId': categoryId
-				},
-				function(categoryCode){
-					callback(categoryCode);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールカテゴリのコードの変更をすべて保存する
-		 */
-		this.saveCategoryCode = function(categoryId, data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'saveCategoryCode',
-					'categoryId': categoryId,
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli パッケージのコードをすべて取得する
-		 */
-		this.getPackageCode = function(packageId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'getPackageCode',
-					'packageId': packageId
-				},
-				function(packageCode){
-					callback(packageCode);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールパッケージのコードの変更をすべて保存する
-		 */
-		this.savePackageCode = function(packageId, data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'savePackageCode',
-					'packageId': packageId,
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールパッケージを新規追加
-		 */
-		this.addNewPackage = function(data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'addNewPackage',
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールパッケージを削除
-		 */
-		this.deletePackage = function(packageId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'deletePackage',
-					'packageId': packageId,
-					'data': {}
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールカテゴリを新規追加
-		 */
-		this.addNewCategory = function(packageId, data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'addNewCategory',
-					'packageId': packageId,
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールカテゴリを削除
-		 */
-		this.deleteCategory = function(categoryId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'deleteCategory',
-					'categoryId': categoryId,
-					'data': {}
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールを新規追加する
-		 */
-		this.addNewModule = function(categoryId, data, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'addNewModule',
-					'categoryId': categoryId,
-					'data': data
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli モジュールを削除する
-		 */
-		this.deleteModule = function(moduleId, callback){
-			callback = callback || function(){};
-			this.gpiBridge(
-				{
-					'api':'deleteModule',
-					'moduleId': moduleId,
-					'data': {}
-				},
-				function(result){
-					callback(result);
-				}
-			);
-			return;
-		}
-
-		/**
-		 * broccoli インスタンスを生成する
-		 */
-		this.createBroccoli = function(options, callback){
-			options = options||{};
-			callback = callback||function(){};
-			var broccoli = new Broccoli();
-			px2ce.createBroccoliInitOptions(function(broccoliInitOptions){
-				for(var key in options){
-					broccoliInitOptions[key] = options[key];
-				}
-				broccoliInitOptions.contents_area_selector = "[data-contents-area]";
-				broccoliInitOptions.contents_bowl_name_by = "data-contents-area";
-				broccoliInitOptions.gpiBridge = function(api, options, callback){
-					// GPI(General Purpose Interface) Bridge
-					// broccoliは、バックグラウンドで様々なデータ通信を行います。
-					// GPIは、これらのデータ通信を行うための汎用的なAPIです。
-					// console.log(api, options);
-					_this.gpiBridge(
-						{
-							'api': 'broccoliBridge',
-							'forBroccoli':{
-								'api': JSON.stringify(api) ,
-								'options': JSON.stringify(options)
-							}
-						},
-						function(rtn){
-							// console.log(rtn);
-							callback(rtn);
-						}
-					);
-					return;
-				}
-				// console.log(broccoliInitOptions);
-				broccoli.init(
-					broccoliInitOptions ,
-					function(){
-						// console.log(broccoli);
-						callback( broccoli );
-					}
-				);
-			});
-			return;
-		}
-
-		/**
-		 * プログレスを表示する
-		 */
-		this.progress = function( callback ){
-			callback = callback||function(){};
-			$canvas.find('.pickles2-module-editor--progress').remove();//一旦削除
-			$canvas
-				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
-					.append( $('<div class="pickles2-module-editor--progress-inner">')
-						.append( $('<div class="pickles2-module-editor--progress-inner2">')
-							.append( $('<div class="px2-loading">') )
-						)
-					)
-				)
-			;
-			var dom = $canvas.find('.px2-loading').get(0);
-			callback(dom);
-			return;
-		}
-
-		/**
-		 * プログレスを閉じる
-		 */
-		this.closeProgress = function( callback ){
-			callback = callback||function(){};
-			var $progress = $canvas.find('.pickles2-module-editor--progress');
-			if( !$progress.length ){
-				callback();
-				return;
-			}
-			$progress
-				.fadeOut(
-					'fast',
-					function(){
-						$(this).remove();
-						callback();
-					}
-				)
-			;
-			return;
-		}
-
-		/**
-		 * ファイルをダウンロードする
-		 */
-		this.download = function(content, filename){
-			var blob = new Blob([ content ], { "type" : "application/octet-stream" });
-
-			if (window.navigator.msSaveBlob) {
-				window.navigator.msSaveBlob(blob, filename);
-
-				// msSaveOrOpenBlobの場合はファイルを保存せずに開ける
-				window.navigator.msSaveOrOpenBlob(blob, filename);
-			} else {
-				var $a = $('<a>');
-				$a.attr({
-					'href': window.URL.createObjectURL(blob),
-					'download': filename
-				}).get(0).click();
-			}
-			return;
-		}
-
-		/**
-		* Open modal dialog.
-		*/
-		this.modal = function(options, callback){
-			callback = callback||function(){};
-			return px2style.modal(options, function(){
-				callback();
-			});
-		}
-
-		/**
-		* Close modal dialog.
-		*/
-		this.closeModal = function(callback){
-			callback = callback||function(){};
-			return px2style.closeModal(function(){
-				callback();
-			});
-		}
-
-		/**
-		* gpiBridgeを呼び出す
-		*/
-		this.gpiBridge = function(data, callback){
-			data.moduleId = this.moduleId;
-			return this.options.gpiBridge(data, callback);
-		}
-
-		/**
-		* 再描画
-		*/
-		this.redraw = function( callback ){
-			callback = callback || function(){};
-			callback();
-			return;
-		}
-
-		/**
-		* 編集操作を完了する
-		*/
-		this.finish = function(){
-			this.options.complete();
-		}
-	}
-})();
-
-},{"./pages/addNewCategory/index.js":101,"./pages/addNewModule/index.js":102,"./pages/addNewPackage/index.js":103,"./pages/deleteCategory/index.js":104,"./pages/deleteModule/index.js":105,"./pages/deletePackage/index.js":106,"./pages/editCategory/index.js":107,"./pages/editModule/index.js":108,"./pages/editPackage/index.js":109,"./pages/list/index.js":110,"ejs":10,"es6-promise":13,"jquery":15}],101:[function(require,module,exports){
-/**
- * pages/addNewCategory/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading addNewCategory page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getPackageCode( options.packageId, function(packageCode){
-				// console.log(packageCode);
-
-				if( !packageCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('addNewCategory'),
-					{
-						'packageId': options.packageId,
-						'packageCode': packageCode
-					}
-				);
-				$canvasContent.html('').append(html);
-
-				$canvasContent.find('[name=categoryId]').val( '' );
-				$canvasContent.find('[name=categoryName]').val( '' );
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "新規カテゴリを追加",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
-						.click(function(){
-							var data = {};
-							data.categoryId = $canvasContent.find('[name=categoryId]').val();
-							data.categoryName = $canvasContent.find('[name=categoryName]').val();
-
-							px2me.addNewCategory(options.packageId, data, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							});
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],102:[function(require,module,exports){
-/**
- * pages/addNewModule/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading addNewModule page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getCategoryCode( options.categoryId, function(categoryCode){
-				// console.log(categoryCode);
-
-				if( !categoryCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('addNewModule'),
-					{
-						'categoryId': options.categoryId,
-						'categoryCode': categoryCode
-					}
-				);
-				$canvasContent.html('').append(html);
-
-				$canvasContent.find('[name=moduleId]').val( '' );
-				$canvasContent.find('[name=moduleName]').val( '' );
-				rlv();
-			} );
-
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "新規モジュールを追加",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
-						.click(function(){
-							var data = {};
-							data.moduleId = $canvasContent.find('[name=moduleId]').val();
-							data.moduleName = $canvasContent.find('[name=moduleName]').val();
-
-							px2me.addNewModule(options.categoryId, data, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							});
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],103:[function(require,module,exports){
-/**
- * pages/addNewPackage/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-	var pluginPackages = [],
-		broccoliPackages = [];
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading addNewPackage page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// インポート元の一覧を取得 - プラグインパッケージより
-			px2me.gpiBridge(
-				{
-					'api':'getPluginPackage'
-				},
-				function(packages){
-					try {
-						pluginPackages = packages.package_list.broccoliModules;
-					} catch (e) {
-					}
-					// console.log(pluginPackages);
-					rlv();
-				}
-			);
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// インポート元の一覧を取得 - broccoliより
-			px2me.getPackageList(function(packageList){
-				try {
-					broccoliPackages = packageList;
-				} catch (e) {
-				}
-				// console.log(broccoliPackages);
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			var html = px2me.bindEjs(
-				px2me.getTemplates('addNewPackage'),
-				{
-					'pluginPackages': pluginPackages,
-					'broccoliPackages': broccoliPackages
-				}
-			);
-			$canvasContent.html('').append(html);
-
-			$canvasContent.find('[name=packageId]').val( '' );
-			$canvasContent.find('[name=packageName]').val( '' );
-			$canvasContent.find('input[type=radio][name=import_from]').on('change', function(){
-				var $checkedRadio = $canvasContent.find('input[type=radio][name=import_from]:checked');
-
-				var $inputId = $canvasContent.find('[name=packageId]');
-				var isInchangedId = $inputId.attr('placeholder') == $inputId.val();
-				$inputId.attr( {'placeholder':$checkedRadio.attr('data-package-id')} );
-				if((isInchangedId || !$inputId.val().length) && $checkedRadio.attr('data-package-id').length){
-					$inputId.val( $checkedRadio.attr('data-package-id') );
-				}
-
-				var $inputName = $canvasContent.find('[name=packageName]');
-				var isInchangedName = $inputName.attr('placeholder') == $inputName.val();
-				$inputName.attr( {'placeholder':$checkedRadio.attr('data-package-name')} );
-				if((isInchangedName || !$inputName.val().length) && $checkedRadio.attr('data-package-name').length){
-					$inputName.val( $checkedRadio.attr('data-package-name') );
-				}
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "新規パッケージを追加",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
-						.click(function(){
-							var data = {};
-							data.packageId = $canvasContent.find('[name=packageId]').val();
-							data.packageName = $canvasContent.find('[name=packageName]').val();
-							data.importFrom = $canvasContent.find('[name=import_from]:checked').val();
-							data.force = $canvasContent.find('[name=force]:checked').val();
-
-							px2me.addNewPackage(data, function(result){
-								if( !result.result ){
-									alert(result.msg);
-									return;
-								}
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							});
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],104:[function(require,module,exports){
-/**
- * pages/deleteCategory/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading deleteCategory page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getCategoryCode( options.categoryId, function(categoryCode){
-				// console.log(categoryCode);
-
-				if( !categoryCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('deleteCategory'),
-					{
-						'categoryId': options.categoryId,
-						'categoryCode': categoryCode
-					}
-				);
-				$canvasContent.html('').append(html);
-
-				$canvasContent.find('[name=infoJson]').val( categoryCode.infoJson );
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "カテゴリを削除",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--danger">')
-						.text('削除する')
-						.click(function(){
-							px2me.deleteCategory(options.categoryId, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							})
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],105:[function(require,module,exports){
-/**
- * pages/deleteModule/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-	var $deleteModuleWindow,
-		$previewWin,
-		$previewEditorWin;
-	var broccoli;
-	var currentTab;
-
-	px2me.moduleId = options.moduleId;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading deleteModule page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			console.log('module ID:', options.moduleId);
-			px2me.getModuleCode( options.moduleId, function(moduleCode){
-				// console.log(moduleCode);
-
-				if( !moduleCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('deleteModule'),
-					{
-						'moduleId': options.moduleId,
-						'moduleCode': moduleCode
-					}
-				);
-				$deleteModuleWindow = $(html);
-				$canvasContent.html('').append($deleteModuleWindow);
-
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "モジュールを削除",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--danger">')
-						.text('削除する')
-						.on('click', function(){
-							px2me.deleteModule(options.moduleId, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							});
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],106:[function(require,module,exports){
-/**
- * pages/deletePackage/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading deletePackage page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getPackageCode( options.packageId, function(packageCode){
-				// console.log(packageCode);
-
-				if( !packageCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-				var html = px2me.bindEjs(
-					px2me.getTemplates('deletePackage'),
-					{
-						'packageId': options.packageId,
-						'packageCode': packageCode
-					}
-				);
-				$canvasContent.html('').append(html);
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "パッケージを削除する",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--danger">')
-						.text('削除する')
-						.click(function(){
-							px2me.deletePackage(options.packageId, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							})
-
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],107:[function(require,module,exports){
-/**
- * pages/editCategory/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading editCategory page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getCategoryCode( options.categoryId, function(categoryCode){
-				// console.log(categoryCode);
-
-				if( !categoryCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('editCategory'),
-					{
-						'categoryId': options.categoryId,
-						'categoryCode': categoryCode
-					}
-				);
-				$canvasContent.html('').append(html);
-
-				$canvasContent.find('[name=infoJson]').val( categoryCode.infoJson );
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "カテゴリを編集",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
-						.click(function(){
-							var data = {};
-							data.infoJson = $canvasContent.find('[name=infoJson]').val();
-
-							px2me.saveCategoryCode(options.categoryId, data, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							})
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],108:[function(require,module,exports){
-/**
- * pages/editModule/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-	var $editModuleWindow,
-		$previewWin,
-		$previewEditorWin;
-	var broccoli;
-	var currentTab;
-
-	px2me.moduleId = options.moduleId;
-	var guiEngine;
-	try{
-		guiEngine = px2me.px2conf.plugins.px2dt.guiEngine;
-	}catch(e){}
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading editModule page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			console.log('module ID:', options.moduleId);
-			px2me.getModuleCode( options.moduleId, function(moduleCode){
-				// console.log(moduleCode);
-
-				if( !moduleCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('editModule'),
-					{
-						'moduleId': options.moduleId,
-						'moduleCode': moduleCode
-					}
-				);
-				$editModuleWindow = $(html);
-				$canvasContent.html('').append($editModuleWindow);
-
-				$editModuleWindow.find('[name=infoJson]').val( moduleCode.infoJson );
-				$editModuleWindow.find('[name=template]').val( moduleCode.template );
-				$editModuleWindow.find('[name=templateExt]').val( moduleCode.templateExt );
-				$editModuleWindow.find('[name=css]').val( moduleCode.css );
-				$editModuleWindow.find('[name=cssExt]').val( moduleCode.cssExt );
-				$editModuleWindow.find('[name=js]').val( moduleCode.js );
-				$editModuleWindow.find('[name=jsExt]').val( moduleCode.jsExt );
-				$editModuleWindow.find('[name=finalizeJs]').val( moduleCode.finalizeJs );
-				$editModuleWindow.find('[name=finalizePhp]').val( moduleCode.finalizePhp );
-				$editModuleWindow.find('[name=clipJson]').val( moduleCode.clipJson );
-
-				if( guiEngine == 'broccoli-html-editor-php' ){
-					$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizejs]').hide();
-				}else{
-					$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button[data-pickles2-module-editor-target=finalizephp]').hide();
-				}
-
-				$editModuleWindow.find('.pickles2-module-editor__module-edit__tab button').on('click', function(e){
-					// タブ切り替え
-					var $this = $(this);
-					var target = $this.attr('data-pickles2-module-editor-target');
-					changeTabTo(target);
-				})
-				windowResizedEvent();
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "モジュールを編集",
-				"body": $canvasContent,
-				"width": "calc(100% - 40px)",
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('保存')
-						.on('click', function(){
-							save(function(result){
-								$(window).off('resize.editModule');
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							});
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 画面の調整
-			windowResizedEvent();
-			$(window).on('resize.editModule', function(){
-				windowResizedEvent();
-			});
-
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			windowResizedEvent();
-
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-	function save(callback){
-		callback = callback || function(){};
-		var data = {};
-		data.infoJson = $canvasContent.find('[name=infoJson]').val();
-		data.template = $canvasContent.find('[name=template]').val();
-		data.templateExt = $canvasContent.find('[name=templateExt]').val();
-		data.css = $canvasContent.find('[name=css]').val();
-		data.cssExt = $canvasContent.find('[name=cssExt]').val();
-		data.js = $canvasContent.find('[name=js]').val();
-		data.jsExt = $canvasContent.find('[name=jsExt]').val();
-		data.finalizeJs = $canvasContent.find('[name=finalizeJs]').val();
-		data.finalizePhp = $canvasContent.find('[name=finalizePhp]').val();
-		data.clipJson = $canvasContent.find('[name=clipJson]').val();
-		// console.log('data =',data);
-
-		px2me.saveModuleCode(options.moduleId, data, function(result){
-			callback(result);
-		});
-		return;
-	}
-
-	/**
-	 * broccoli-html-editorをロードしてプレビュー画面を生成する
-	 */
-	function loadBroccoli(callback){
-		callback = callback || function(){};
-
-		px2me.gpiBridge(
-			{
-				'api':'download',
-				'target': 'css'
-			},
-			function(cssBin){
-				px2me.gpiBridge(
-					{
-						'api':'download',
-						'target': 'js'
-					},
-					function(jsBin){
-						var $frame = $canvasContent
-							.find('.pickles2-module-editor__module-edit__preview')
-						;
-						var $canvas = $('<div>');
-						var $palette = $('<div>');
-						$frame.html('').append($canvas).append($palette);
-						$canvas.attr({
-							"data-broccoli-preview": px2me.__dirname+'/html/preview.html'
-								+'?css='+encodeURIComponent(utils79.base64_encode(cssBin))
-								+'&js='+encodeURIComponent(utils79.base64_encode(jsBin))
-						});
-
-						px2me.createBroccoli(
-							{
-								'elmCanvas': $canvas.get(0),
-								'elmModulePalette': $palette.get(0)
-							},
-							function(b){
-								broccoli = b;
-								callback();
-							}
-						);
-					}
-				);
-			}
-		);
-
-		return;
-	} // loadBroccoli();
-
-	/**
-	 * broccoli-html-editorをアンロードする
-	 */
-	function unloadBroccoli(callback){
-		callback = callback || function(){};
-
-		var $frame = $canvasContent
-			.find('.pickles2-module-editor__module-edit__preview')
-		;
-		$frame.html('');
-
-		broccoli = undefined;
-		delete(broccoli);
-		callback();
-
-		return;
-	} // unloadBroccoli();
-
-
-	function changeTabTo(target){
-		if(target){
-			currentTab = target;
-		}
-		if(!target){
-			currentTab = 'html'; // デフォルトのタブ
-		}
-		$editModuleWindow.find('.pickles2-module-editor__module-edit__tab *').removeAttr('disabled');
-		$editModuleWindow.find('.pickles2-module-editor__module-edit__tab *[data-pickles2-module-editor-target='+currentTab+']').attr({'disabled': 'disabled'});
-
-		$editModuleWindow.find('.pickles2-module-editor__module-edit__layout__content').hide();
-		var $targetTab = $editModuleWindow.find('.pickles2-module-editor__module-edit__layout__content--'+currentTab).show();
-		$targetTab.show();
-		var height_h2 = $targetTab.find('h2').outerHeight();
-		var height_select = $targetTab.find('select').outerHeight();
-		$targetTab.find('textarea').css({
-			'height': $editModuleWindow.innerHeight() - 60 - height_h2 - height_select
-		});
-
-		new Promise(function(rlv){rlv();})
-			.then(function(){ return new Promise(function(rlv, rjt){
-				if( currentTab == 'preview' ){
-					px2me.progress( function(){
-						save(function(result){
-							loadBroccoli(function(){
-								px2me.closeProgress(function(){
-									rlv();
-								});
-							});
-						});
-					} );
-				}else{
-					unloadBroccoli(function(){
-						rlv();
-					});
-				}
-			}); })
-		;
-	}
-
-	function windowResizedEvent(){
-		console.log('--- window resized.');
-		$editModuleWindow.css({
-			'height': function(){
-				return $(window).innerHeight() - 200;
-			}
-		})
-		changeTabTo();
-		if(broccoli){
-			broccoli.redraw();
-		}
-	}
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],109:[function(require,module,exports){
-/**
- * pages/editPackage/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading editPackage page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 編集画面を描画
-			// console.log(options);
-			px2me.getPackageCode( options.packageId, function(packageCode){
-				// console.log(packageCode);
-
-				if( !packageCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
-					rjt();
-					return;
-				}
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('editPackage'),
-					{
-						'packageId': options.packageId,
-						'packageCode': packageCode
-					}
-				);
-				$canvasContent.html('').append(html);
-
-				$canvasContent.find('[name=infoJson]').val( packageCode.infoJson );
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// モーダルダイアログを開く
-			px2me.modal({
-				"title": "パッケージを編集する",
-				"body": $canvasContent,
-				"buttons": [
-					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
-						.click(function(){
-							var data = {};
-							data.infoJson = $canvasContent.find('[name=infoJson]').val();
-
-							px2me.savePackageCode(options.packageId, data, function(result){
-								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
-								});
-							})
-
-						})
-				],
-				"buttonsSecondary": [
-					$('<button class="px2-btn">')
-						.text('キャンセル')
-						.click(function(){
-							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
-							});
-						})
-				]
-			});
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-		.catch(function(){
-			px2me.closeProgress(function(){
-				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
-						callback();
-					});
-				});
-			});
-		})
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}],110:[function(require,module,exports){
-/**
- * pages/list/index.js
- */
-module.exports = function(px2me, $canvasContent, options, callback){
-	callback = callback||function(){};
-	var $ = require('jquery');
-	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
-
-	new Promise(function(rlv){rlv();})
-		.then(function(){ return new Promise(function(rlv, rjt){
-			console.log('loading list page...');
-			px2me.progress( function(){
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// 一覧を描画
-			px2me.getPackageList( function(packageList){
-				// console.log(packageList);
-
-				var html = px2me.bindEjs(
-					px2me.getTemplates('list'),
-					{
-						'packageList': packageList,
-						'px2conf': px2me.px2conf
-					}
-				);
-				$canvasContent.html('').append(html);
-				rlv();
-			} );
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			// イベントをセット
-			$canvasContent.find('button').on('click', function(e){
-				var $this = $(this);
-				var act = $this.attr('data-pickles2-module-editor--action');
-				var target = $this.attr('data-pickles2-module-editor--target');
-				// console.log(this);
-				switch(act){
-					case 'download':
-						px2me.gpiBridge(
-							{
-								'api':'download',
-								'target': target
-							},
-							function(bin){
-								px2me.download(bin, 'content.'+target);
-							}
-						);
-						break;
-					case 'addNewPackage':
-						px2me.loadPage('addNewPackage', {}, function(){});
-						break;
-					case 'editPackage':
-						px2me.loadPage('editPackage', {'packageId': target}, function(){});
-						break;
-					case 'deletePackage':
-						px2me.loadPage('deletePackage', {'packageId': target}, function(){});
-						break;
-					case 'addNewCategory':
-						px2me.loadPage('addNewCategory', {'packageId': target}, function(){});
-						break;
-					case 'editCategory':
-						px2me.loadPage('editCategory', {'categoryId': target}, function(){});
-						break;
-					case 'deleteCategory':
-						px2me.loadPage('deleteCategory', {'categoryId': target}, function(){});
-						break;
-					case 'addNewModule':
-						px2me.loadPage('addNewModule', {'categoryId': target}, function(){});
-						break;
-					case 'editModule':
-						px2me.loadPage('editModule', {'moduleId': target}, function(){});
-						break;
-					case 'deleteModule':
-						px2me.loadPage('deleteModule', {'moduleId': target}, function(){});
-						break;
-					default:
-						alert('ERROR: unknown action. - '+act);
-						break;
-				}
-				return false;
-			});
-
-			rlv();
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			px2me.closeProgress(function(){
-				rlv();
-			});
-		}); })
-		.then(function(){ return new Promise(function(rlv, rjt){
-			callback();
-			rlv();
-		}); })
-	;
-
-}
-
-},{"es6-promise":13,"jquery":15,"utils79":35}]},{},[100])
+/***/ }),
+
+/***/ "?c1fc":
+/*!********************!*\
+  !*** fs (ignored) ***!
+  \********************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "?df27":
+/*!**********************!*\
+  !*** path (ignored) ***!
+  \**********************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "?3e0e":
+/*!***********************!*\
+  !*** vertx (ignored) ***!
+  \***********************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "?df92":
+/*!************************!*\
+  !*** crypto (ignored) ***!
+  \************************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "?98d1":
+/*!********************!*\
+  !*** fs (ignored) ***!
+  \********************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "./node_modules/ejs/package.json":
+/*!***************************************!*\
+  !*** ./node_modules/ejs/package.json ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"name":"ejs","description":"Embedded JavaScript templates","keywords":["template","engine","ejs"],"version":"3.1.8","author":"Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)","license":"Apache-2.0","bin":{"ejs":"./bin/cli.js"},"main":"./lib/ejs.js","jsdelivr":"ejs.min.js","unpkg":"ejs.min.js","repository":{"type":"git","url":"git://github.com/mde/ejs.git"},"bugs":"https://github.com/mde/ejs/issues","homepage":"https://github.com/mde/ejs","dependencies":{"jake":"^10.8.5"},"devDependencies":{"browserify":"^16.5.1","eslint":"^6.8.0","git-directory-deploy":"^1.5.1","jsdoc":"^3.6.7","lru-cache":"^4.0.1","mocha":"^7.1.1","uglify-js":"^3.3.16"},"engines":{"node":">=0.10.0"},"scripts":{"test":"mocha"}}');
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/dist/pickles2-module-editor": 0,
+/******/ 			"dist/pickles2-module-editor": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkpickles2_module_editor"] = self["webpackChunkpickles2_module_editor"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["dist/pickles2-module-editor"], () => (__webpack_require__("./src/pickles2-module-editor.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["dist/pickles2-module-editor"], () => (__webpack_require__("./src/pickles2-module-editor.css.scss")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
