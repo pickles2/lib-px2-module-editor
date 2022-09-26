@@ -38,6 +38,8 @@
  * Date: 2022-08-26T17:52Z
  */
 
+/*! For license information please see px2style.js.LICENSE.txt */
+
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
