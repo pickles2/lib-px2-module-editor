@@ -94,13 +94,15 @@ module.exports = function(px2me, $canvasContent, options, callback){
 							data.force = $canvasContent.find('[name=force]:checked').val();
 
 							px2me.addNewPackage(data, function(result){
-								px2style.closeLoading();
-								modalObj.unlock();
 								if( !result.result ){
+									px2style.closeLoading();
+									modalObj.unlock();
 									alert(result.msg);
 									return;
 								}
 								px2me.loadPage('list', {}, function(){
+									px2style.closeLoading();
+									modalObj.unlock();
 									px2style.closeModal();
 								});
 							});
