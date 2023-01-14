@@ -77,13 +77,16 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
-			px2me.modal({
+			var modalObj = px2style.modal({
 				"title": "新規パッケージを追加",
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">')
 						.text('OK')
-						.click(function(){
+						.on('click', function(){
+							px2style.loading();
+							modalObj.lock();
+
 							var data = {};
 							data.packageId = $canvasContent.find('[name=packageId]').val();
 							data.packageName = $canvasContent.find('[name=packageName]').val();
@@ -91,12 +94,14 @@ module.exports = function(px2me, $canvasContent, options, callback){
 							data.force = $canvasContent.find('[name=force]:checked').val();
 
 							px2me.addNewPackage(data, function(result){
+								px2style.closeLoading();
+								modalObj.unlock();
 								if( !result.result ){
 									alert(result.msg);
 									return;
 								}
 								px2me.loadPage('list', {}, function(){
-									px2me.closeModal();
+									px2style.closeModal();
 								});
 							});
 						})
@@ -104,9 +109,9 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"buttonsSecondary": [
 					$('<button class="px2-btn">')
 						.text('キャンセル')
-						.click(function(){
+						.on('click', function(){
 							px2me.loadPage('list', {}, function(){
-								px2me.closeModal();
+								px2style.closeModal();
 							});
 						})
 				]
@@ -125,7 +130,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.catch(function(){
 			px2me.closeProgress(function(){
 				px2me.loadPage('list', {}, function(){
-					px2me.closeModal(function(){
+					px2style.closeModal(function(){
 						callback();
 					});
 				});
