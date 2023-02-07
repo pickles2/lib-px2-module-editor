@@ -27,7 +27,6 @@ class gpi{
 	 * General Purpose Interface
 	 */
 	public function gpi($data){
-		// var_dump($data);
 
 		if( !preg_match('/^[a-zA-Z0-9\_]+$/s', $data['api']) ){
 			return false;

@@ -72,10 +72,10 @@ class main {
 		$this->entryScript = $options['entryScript'];
 
 		// PHP Command setting
-		if( !$options['commands'] ?? null ){
+		if( !($options['commands'] ?? null) ){
 			$options['commands'] = array();
 		}
-		if( !$options['commands']['php'] ?? null ){
+		if( !($options['commands']['php'] ?? null) ){
 			$options['commands']['php'] = array();
 		}
 		$this->php_command = array(

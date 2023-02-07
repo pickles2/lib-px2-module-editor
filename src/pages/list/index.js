@@ -17,8 +17,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 一覧を描画
 			px2me.getPackageList( function(packageList){
-				// console.log(packageList);
-
 				var html = px2me.bindEjs(
 					px2me.getTemplates('list'),
 					{
