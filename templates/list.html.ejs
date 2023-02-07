@@ -42,7 +42,9 @@
 					<li data-pickles2-module-editor--module-id="<%= packageList[packageId].categories[categoryId].modules[moduleId].moduleId %>">
 						<div class="pickles2-module-editor__title">
 							<span class="pickles2-module-editor__title__label"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleName %></span>
+							<% if( !packageList[packageId].categories[categoryId].modules[moduleId].clip ){ %>
 							<span class="pickles2-module-editor__title__id"><%= packageList[packageId].categories[categoryId].modules[moduleId].moduleInfo.id || packageList[packageId].categories[categoryId].modules[moduleId].moduleId %></span>
+							<% } %>
 						</div>
 						<% if( packageList[packageId].isEditable ){ %>
 						<ul class="pickles2-module-editor__buttons">
