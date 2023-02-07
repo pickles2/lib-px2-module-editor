@@ -1055,7 +1055,6 @@ module.exports = function (px2me, $canvasContent, options, callback) {
     return new Promise(function (rlv, rjt) {
       // 一覧を描画
       px2me.getPackageList(function (packageList) {
-        console.log('=-=-= packageList', packageList);
         var html = px2me.bindEjs(px2me.getTemplates('list'), {
           'packageList': packageList,
           'px2conf': px2me.px2conf
