@@ -57,34 +57,33 @@ class main {
 	 * Initialize
 	 */
 	public function init($options){
-		// var_dump($options);
-		if(!$options){
+
+		if( !$options ){
 			$options = array();
 		}
-		if(!@$options['appMode']){
+		if( !$options['appMode'] ?? null ){
 			$options['appMode'] = 'web'; // web | desktop
 		}
-		if(!is_callable(@$options['log'])){
+		if( !is_callable($options['log'] ?? null) ){
 			$options['log'] = function($msg){
-				// var_dump($msg);
 			};
 		}
 
 		$this->entryScript = $options['entryScript'];
 
 		// PHP Command setting
-		if( !@$options['commands'] ){
+		if( !$options['commands'] ?? null ){
 			$options['commands'] = array();
 		}
-		if( !@$options['commands']['php'] ){
+		if( !$options['commands']['php'] ?? null ){
 			$options['commands']['php'] = array();
 		}
 		$this->php_command = array(
-			'php' => @$options['commands']['php']['bin'],
-			'php_ini' => @$options['commands']['php']['ini'],
-			'php_extension_dir' => @$options['commands']['php']['php_extension_dir'],
+			'php' => $options['commands']['php']['bin'] ?? null,
+			'php_ini' => $options['commands']['php']['ini'] ?? null,
+			'php_extension_dir' => $options['commands']['php']['php_extension_dir'] ?? null,
 		);
-		if( !strlen(''.$this->php_command['php']) ){
+		if( !strlen($this->php_command['php'] ?? '') ){
 			$this->php_command['php'] = 'php';
 		}
 
@@ -182,7 +181,7 @@ class main {
 		$rtn = $px2ce->get_client_resources($realpath_dist);
 
 		// px2ce
-		if(is_string($realpath_dist) && is_dir($realpath_dist)){
+		if( is_string($realpath_dist) && is_dir($realpath_dist) ){
 			$this->fs->copy_r(__DIR__.'/../dist/', $realpath_dist.'/px2me/');
 			array_push($rtn->js, 'px2me/pickles2-module-editor.js');
 			array_push($rtn->css, 'px2me/pickles2-module-editor.css');
@@ -312,8 +311,8 @@ class main {
 
 		$broccoli = new \broccoliHtmlEditor\broccoliHtmlEditor();
 		// var_dump($options);
-		$parsedModuleId = $broccoli->parseModuleId( @$options['moduleId'] );
-		$previewContentName = @$options['previewContentName'];
+		$parsedModuleId = $broccoli->parseModuleId( $options['moduleId'] ?? null );
+		$previewContentName = $options['previewContentName'] ?? null;
 		if(!$previewContentName){
 			$previewContentName = 'default';
 		}
@@ -335,7 +334,7 @@ class main {
 		}
 
 		// var_dump($broccoliInitOptions);
-		$this->initPreviewContent(@$options['moduleId'], $broccoliInitOptions);
+		$this->initPreviewContent($options['moduleId'] ?? null, $broccoliInitOptions);
 
 		$broccoli->init( $broccoliInitOptions );
 
@@ -406,8 +405,7 @@ class main {
 	 */
 	public function gpi($data){
 		$data = json_decode(json_encode($data), true);
-		$this->page_path = @$data['page_path'];
-		// var_dump($this->page_path);
+		$this->page_path = $data['page_path'] ?? null;
 		$gpi = new gpi( $this );
 		$rtn = $gpi->gpi( $data );
 		return $rtn;
@@ -446,28 +444,28 @@ class main {
 		array_push( $php_command, addslashes($this->php_command['php']) );
 			// ↑ Windows でこれを `escapeshellarg()` でエスケープすると、なぜかエラーに。
 
-		if( strlen(''.@$this->php_command['php_ini']) ){
+		if( strlen($this->php_command['php_ini'] ?? '') ){
 			$php_command = array_merge(
 				$php_command,
 				array(
-					'-c', escapeshellarg(@$this->php_command['php_ini']),// ← php.ini のパス
+					'-c', escapeshellarg($this->php_command['php_ini'] ?? null),// ← php.ini のパス
 				)
 			);
 		}
-		if( strlen(''.@$this->php_command['php_extension_dir']) ){
+		if( strlen($this->php_command['php_extension_dir'] ?? '') ){
 			$php_command = array_merge(
 				$php_command,
 				array(
-					'-d', escapeshellarg(@$this->php_command['php_extension_dir']),// ← php.ini definition
+					'-d', escapeshellarg($this->php_command['php_extension_dir'] ?? null),// ← php.ini definition
 				)
 			);
 		}
 		array_push($php_command, escapeshellarg( realpath($this->entryScript) ));
-		if( @$options['output'] == 'json' ){
+		if( isset($options['output']) && $options['output'] == 'json' ){
 			array_push($php_command, '-o');
 			array_push($php_command, 'json');
 		}
-		if( @strlen(''.$options['user_agent']) ){
+		if( strlen($options['user_agent'] ?? '') ){
 			array_push($php_command, '-u');
 			array_push($php_command, escapeshellarg($options['user_agent']));
 		}
@@ -499,13 +497,10 @@ class main {
 			// $this->error($io[2]); // stderr
 		}
 
-		if( @$options['output'] == 'json' ){
+		if( isset($options['output']) && $options['output'] == 'json' ){
 			$bin = json_decode($bin);
 		}
 
 		return $bin;
 	}
-
-
-
 }
