@@ -1,6 +1,5 @@
 {
     "name": "pickles2/lib-px2-module-editor",
-    "version": "0.3.2",
     "description": "Pickles 2 module editor library.",
     "keywords": ["pickles2"],
     "license": "MIT",
@@ -29,7 +28,7 @@
     ],
     "require": {
         "php": ">=7.3.0",
-        "tomk79/langbank": "~0.0",
+        "tomk79/langbank": "~1.0||~0.3",
         "pickles2/lib-px2-contents-editor": "~2.1"
     },
     "require-dev": {

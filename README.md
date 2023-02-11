@@ -149,7 +149,7 @@ $ npm run test
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.3.3 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.3.3 (2023年2月11日)
 
 - モジュールの `info.json` に `id` が明示されている場合に、一覧画面で表示されない問題を修正した。
 - クリップモジュールには モジュールID を表示しないようにした。
