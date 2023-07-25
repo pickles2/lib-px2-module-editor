@@ -1,9 +1,5 @@
 {
-  "name": "pickles2-module-editor",
-  "version": "0.3.3",
-  "description": "Pickles 2 module editor library.",
   "private": false,
-  "main": "libs/main.js",
   "scripts": {
     "start": "node ./tests/app/server/server.js;",
     "up": "node ./tests/app/server/server.js;",
