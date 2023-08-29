@@ -110,6 +110,7 @@ MIT License
 ### pickles2/lib-px2-module-editor v0.4.0 (リリース日未定)
 
 - NodeJS版の提供を廃止した。
+- 依存パッケージを更新した。
 
 ### pickles2/lib-px2-module-editor v0.3.3 (2023年2月11日)
 
