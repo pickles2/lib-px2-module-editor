@@ -7,23 +7,43 @@
 	<h2>パッケージ名</h2>
 	<input type="text" name="packageName" class="px2-input px2-input--block" />
 
-	<h2>インポート</h2>
-	<ul>
-		<li><label><input type="radio" name="import_from" value="" data-package-id="" data-package-name="" checked="checked" /> ゼロから作る</label></li>
-	</ul>
-
-	<h3>プラグインパッケージからインポート</h3>
-	<ul>
-	<% for( var idx in pluginPackages ){ %>
-		<li><label><input type="radio" name="import_from" value="modulePlugin:<%= idx %>" data-package-id="<%= pluginPackages[idx].id %>" data-package-name="<%= pluginPackages[idx].name %>" /> <%= pluginPackages[idx].name %></label></li>
-	<% } %>
-	</ul>
-
-	<h3>既存のパッケージからインポート</h3>
-	<ul>
-	<% for( var idx in broccoliPackages ){ %>
-		<li><label><input type="radio" name="import_from" value="moduleCollection:<%= idx %>" data-package-id="<%= idx %>" data-package-name="<%= broccoliPackages[idx].packageName %>" /> <%= broccoliPackages[idx].packageName %></label></li>
-	<% } %>
-	</ul>
+	<div class="px2-tabs pickles2-module-editor-new-package-import">
+		<div class="px2-tabs__tabs">
+			<ul>
+				<li><a href="javascript:;">インポート</a></li>
+				<li><a href="javascript:;">プラグインパッケージ</a></li>
+				<li><a href="javascript:;">既存のパッケージ</a></li>
+			</ul>
+		</div>
+		<div class="px2-tabs__contents">
+			<div class="px2-tabs__content">
+				<ul class="pickles2-module-editor-radio-list">
+					<li><label><input type="radio" name="import_from" value="" data-package-id="" data-package-name="" checked="checked" /> ゼロから作る</label></li>
+				</ul>
+			</div>
+			<div class="px2-tabs__content">
+				<% if (pluginPackages) { %>
+					<ul class="pickles2-module-editor-radio-list">
+					<% for( var idx in pluginPackages ){ %>
+						<li><label><input type="radio" name="import_from" value="modulePlugin:<%= idx %>" data-package-id="<%= pluginPackages[idx].id %>" data-package-name="<%= pluginPackages[idx].name %>" /> <%= pluginPackages[idx].name %></label></li>
+					<% } %>
+					</ul>
+				<% }else{ %>
+					<p>プラグインパッケージが見つかりません。</p>
+				<% } %>
+			</div>
+			<div class="px2-tabs__content">
+				<% if (broccoliPackages) { %>
+					<ul class="pickles2-module-editor-radio-list">
+					<% for( var idx in broccoliPackages ){ %>
+						<li><label><input type="radio" name="import_from" value="moduleCollection:<%= idx %>" data-package-id="<%= idx %>" data-package-name="<%= broccoliPackages[idx].packageName %>" /> <%= broccoliPackages[idx].packageName %></label></li>
+					<% } %>
+					</ul>
+				<% } else { %>
+					<p>既存のパッケージが登録されていません。</p>
+				<% } %>
+			</div>
+		</div>
+	</div>
 
 </form>

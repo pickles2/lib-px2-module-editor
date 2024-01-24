@@ -32,7 +32,7 @@ return call_user_func( function(){
 	$conf->output_eol_coding = 'lf'; // 出力改行コード名 (cr|lf|crlf)
 	$conf->session_name = 'PXSID'; // セッション名
 	$conf->session_expire = 1800; // セッションの有効期間
-	$conf->allow_pxcommands = 0; // PX Commands のウェブインターフェイスからの実行を許可
+	$conf->allow_pxcommands = 1; // PX Commands のウェブインターフェイスからの実行を許可
 	$conf->default_timezone = 'Asia/Tokyo';
 
 
@@ -88,6 +88,16 @@ return call_user_func( function(){
 	// funcs: Before sitemap
 	// サイトマップ読み込みの前に実行するプラグインを設定します。
 	$conf->funcs->before_sitemap = [
+		// px2-error-reporter
+		\tomk79\pickles2\px2ErrorReporter\register::register(array(
+			"realpath_log_dir" => __DIR__.'/_sys/',
+		)),
+
+		// px2-clover
+		\tomk79\pickles2\px2clover\register::clover(array(
+			"protect_preview" => false, // プレビューに認証を要求するか？
+		)),
+
 		// PX=clearcache
 		'picklesFramework2\commands\clearcache::register' ,
 
@@ -99,6 +109,9 @@ return call_user_func( function(){
 
 		// sitemapExcel
 		'tomk79\pickles2\sitemap_excel\pickles_sitemap_excel::exec' ,
+
+		// px2-serve
+		\tomk79\pickles2\px2serve\serve::register(),
 	];
 
 	// funcs: Before content
