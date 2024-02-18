@@ -107,7 +107,7 @@ MIT License
 
 ## 更新履歴 - Change log
 
-### pickles2/lib-px2-module-editor v0.4.1 (リリース日未定)
+### pickles2/lib-px2-module-editor v0.4.1 (2024年2月18日)
 
 - 新規パッケージ作成のUI改善。
 
