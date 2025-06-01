@@ -11,10 +11,10 @@
     ],
     "scripts":{
 		"start": [
-			"@php ./tests/htdocs/.px_execute.php \"/?PX=serve\""
+			"@php ./tests/htdocs/.px_execute.php \"/?PX=serve&S=localhost:8088\""
 		],
         "preview": [
-            "open http://127.0.0.1:8088/tests/app/client_php/"
+            "open http://localhost:8088/"
         ],
         "test": [
             "php ./vendor/phpunit/phpunit/phpunit"

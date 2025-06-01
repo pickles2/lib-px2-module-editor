@@ -1,6 +1,5 @@
 console.log('project custom field 2 - backend.js');
 module.exports = function(broccoli){
-	var php = require('phpjs');
 	var utils79 = require('utils79');
 
 	/**
