@@ -77,11 +77,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
 			var modalObj = px2style.modal({
-				"title": "新規パッケージを追加",
+				"title": px2me.lb().get('ui_label.modal_title.add_a_new_package'),
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">')
-						.text('OK')
+						.text(px2me.lb().get('ui_label.ok'))
 						.on('click', function(){
 							px2style.loading();
 							modalObj.lock();
@@ -109,7 +109,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				],
 				"buttonsSecondary": [
 					$('<button class="px2-btn">')
-						.text('キャンセル')
+						.text(px2me.lb().get('ui_label.cancel'))
 						.on('click', function(){
 							px2me.loadPage('list', {}, function(){
 								px2style.closeModal();

@@ -3,3 +3,17 @@ ui_label.ok,OK,OK,OK,OK
 ui_label.cancel,Cancel,キャンセル,取消,取消
 ui_label.close,Close,閉じる,关闭,關閉
 ui_label.done,Done,完了,,
+ui_label.package_id,Package ID,パッケージID,,
+ui_label.package_name,Package name,パッケージ名,,
+ui_label.category_id,Category ID,カテゴリーID,,
+ui_label.category_name,Category name,カテゴリー名,,
+ui_label.module_id,Module ID,モジュールID,,
+ui_label.module_name,Module name,モジュール名,,
+ui_label.modal_title.add_a_new_package,Add a new package,新規パッケージを追加,,
+ui_label.import,Import,インポート,,
+ui_label.plugin_packages,Plugin packages,プラグインパッケージ,,
+ui_label.existing_packages,Existing packages,既存のパッケージ,,
+ui_label.overwrite_if_already_exists,Overwrite if already exists,すでに存在する場合に上書きする,,
+ui_label.build_from_scratch,Build from scratch,ゼロから作る,,
+ui_message.the_plugin_package_cannot_be_found,The plugin package cannot be found.,プラグインパッケージが見つかりません。,,
+ui_message.there_are_no_existing_packages_registered,There are no existing packages registered.,既存のパッケージが登録されていません。,,

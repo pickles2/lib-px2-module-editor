@@ -214,6 +214,10 @@
 		this.bindEjs = function( tpl, data, options ){
 			var ejs = require('ejs');
 			var rtn = '';
+			data = {
+				...data,
+				lb: lb,
+			};
 			try {
 				var template = ejs.compile(tpl.toString(), options);
 				rtn = template(data);

@@ -3,14 +3,14 @@
 	<div class="px2-form-input-list">
 		<ul class="px2-form-input-list__ul">
 			<li class="px2-form-input-list__li" data-name="input-package-id">
-				<div class="px2-form-input-list__label"><label for="input-package-id">パッケージID</label></div>
+				<div class="px2-form-input-list__label"><label for="input-package-id"><%= lb.get("ui_label.package_id") %></label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" name="packageId" class="px2-input px2-input--block" id="input-package-id" />
-					<div><label><input type="checkbox" name="force" value="1" /> すでに存在する場合に上書きする</label></div>
+					<div><label><input type="checkbox" name="force" value="1" /> <%= lb.get("ui_label.overwrite_if_already_exists") %></label></div>
 				</div>
 			</li>
 			<li class="px2-form-input-list__li" data-name="input-package-name">
-				<div class="px2-form-input-list__label"><label for="input-package-name">パッケージ名</label></div>
+				<div class="px2-form-input-list__label"><label for="input-package-name"><%= lb.get("ui_label.package_name") %></label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" name="packageName" class="px2-input px2-input--block" id="input-package-name" />
 				</div>
@@ -21,15 +21,15 @@
 	<div class="px2-tabs pickles2-module-editor-new-package-import">
 		<div class="px2-tabs__tabs">
 			<ul>
-				<li><a href="javascript:;">インポート</a></li>
-				<li><a href="javascript:;">プラグインパッケージ</a></li>
-				<li><a href="javascript:;">既存のパッケージ</a></li>
+				<li><a href="javascript:;"><%= lb.get("ui_label.import") %></a></li>
+				<li><a href="javascript:;"><%= lb.get("ui_label.plugin_packages") %></a></li>
+				<li><a href="javascript:;"><%= lb.get("ui_label.existing_packages") %></a></li>
 			</ul>
 		</div>
 		<div class="px2-tabs__contents">
 			<div class="px2-tabs__content">
 				<ul class="pickles2-module-editor-radio-list">
-					<li><label><input type="radio" name="import_from" value="" data-package-id="" data-package-name="" checked="checked" /> ゼロから作る</label></li>
+					<li><label><input type="radio" name="import_from" value="" data-package-id="" data-package-name="" checked="checked" /> <%= lb.get("ui_label.build_from_scratch") %></label></li>
 				</ul>
 			</div>
 			<div class="px2-tabs__content">
@@ -40,7 +40,7 @@
 					<% } %>
 					</ul>
 				<% }else{ %>
-					<p>プラグインパッケージが見つかりません。</p>
+					<p><%= lb.get("ui_message.the_plugin_package_cannot_be_found") %></p>
 				<% } %>
 			</div>
 			<div class="px2-tabs__content">
@@ -51,7 +51,7 @@
 					<% } %>
 					</ul>
 				<% } else { %>
-					<p>既存のパッケージが登録されていません。</p>
+					<p><%= lb.get("ui_message.there_are_no_existing_packages_registered") %></p>
 				<% } %>
 			</div>
 		</div>
