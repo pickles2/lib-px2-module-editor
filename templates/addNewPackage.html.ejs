@@ -1,11 +1,22 @@
 <form action="javascript:;" method="post">
 
-	<h2>パッケージID</h2>
-	<input type="text" name="packageId" class="px2-input px2-input--block" />
-	<div><label><input type="checkbox" name="force" value="1" /> すでに存在する場合に上書きする</label></div>
-
-	<h2>パッケージ名</h2>
-	<input type="text" name="packageName" class="px2-input px2-input--block" />
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li" data-name="input-package-id">
+				<div class="px2-form-input-list__label"><label for="input-package-id">パッケージID</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" name="packageId" class="px2-input px2-input--block" id="input-package-id" />
+					<div><label><input type="checkbox" name="force" value="1" /> すでに存在する場合に上書きする</label></div>
+				</div>
+			</li>
+			<li class="px2-form-input-list__li" data-name="input-package-name">
+				<div class="px2-form-input-list__label"><label for="input-package-name">パッケージ名</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" name="packageName" class="px2-input px2-input--block" id="input-package-name" />
+				</div>
+			</li>
+		</ul>
+	</div>
 
 	<div class="px2-tabs pickles2-module-editor-new-package-import">
 		<div class="px2-tabs__tabs">

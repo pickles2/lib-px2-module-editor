@@ -14,10 +14,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
-			// console.log(options);
 			px2me.getPackageCode( options.packageId, function(packageCode){
-				// console.log(packageCode);
-
 				if( !packageCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');
 					rjt();
@@ -45,7 +42,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"buttons": [
 					$('<button class="px2-btn px2-btn--primary">')
 						.text('OK')
-						.click(function(){
+						.on('click', function(){
 							var data = {};
 							data.infoJson = $canvasContent.find('[name=infoJson]').val();
 
@@ -60,7 +57,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				"buttonsSecondary": [
 					$('<button class="px2-btn">')
 						.text('キャンセル')
-						.click(function(){
+						.on('click', function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();
 							});
