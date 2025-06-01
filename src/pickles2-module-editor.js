@@ -15,8 +15,10 @@
 	})().replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 
 	require('px2style/dist/px2style.js');
-	const $ = require('jquery');
 	const px2style = window.px2style;
+	const $ = require('jquery');
+	const LangBank = require('langbank');
+	let lb;
 
 	window.Pickles2ModuleEditor = function(){
 		var $canvas,
@@ -74,9 +76,14 @@
 					_this.getConfig( function(conf){
 						px2meConf = conf;
 						_this.px2meConf = px2meConf;
-						// console.log(px2meConf);
 						rlv();
 					} );
+				}); })
+				.then(function(){ return new Promise(function(rlv, rjt){
+					lb = new LangBank(_this.px2meConf.languageCsv, ()=>{
+						lb.setLang( _this.options.lang );
+						rlv();
+					});
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getPickles2Config( function(conf){
@@ -119,6 +126,13 @@
 				}); })
 			;
 
+		}
+
+		/**
+		 * langbankを取得する
+		 */
+		this.lb = function(){
+			return lb;
 		}
 
 		/**

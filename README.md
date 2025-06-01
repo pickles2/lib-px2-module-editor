@@ -111,6 +111,7 @@ MIT License
 
 - モジュール編集機能の一部を分離した。
 - Kaleflowerによるモジュール編集に対応した。
+- 多言語対応に関する更新。
 
 ### pickles2/lib-px2-module-editor v0.4.1 (2024年2月18日)
 
