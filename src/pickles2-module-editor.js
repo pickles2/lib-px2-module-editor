@@ -32,7 +32,6 @@
 			templates;
 		var pages = {
 			'list': require('./pages/list/index.js'),
-			'editModule': require('./pages/editModule/index.js'),
 			'editCategory': require('./pages/editCategory/index.js'),
 			'editPackage': require('./pages/editPackage/index.js'),
 			'addNewPackage': require('./pages/addNewPackage/index.js'),
@@ -42,11 +41,10 @@
 			'deleteCategory': require('./pages/deleteCategory/index.js'),
 			'deleteModule': require('./pages/deleteModule/index.js')
 		};
-		var px2ce;
 
 		/**
-		* initialize
-		*/
+		 * initialize
+		 */
 		this.init = function(options, callback){
 			console.info('initialize pickles2-module-editor...');
 			callback = callback || function(){};
@@ -73,51 +71,6 @@
 					} );
 				}); })
 				.then(function(){ return new Promise(function(rlv, rjt){
-					px2ce = new window.Pickles2ContentsEditor();
-					px2ce.init(
-						{
-							'page_path': '/px2me-dummy.html' , // <- 編集対象ページのパス
-							'elmCanvas': document.createElement('div'), // <- 編集画面を描画するための器となる要素
-							'lang': _this.options.lang, // language
-							'preview':{ // プレビュー用サーバーの情報を設定します。
-								'origin': window.location.origin
-							},
-							'customFields': {},
-							'gpiBridge': function(input, callback){
-								// GPI(General Purpose Interface) Bridge
-								// broccoliは、バックグラウンドで様々なデータ通信を行います。
-								// GPIは、これらのデータ通信を行うための汎用的なAPIです。
-								_this.gpiBridge(
-									{
-										'api':'px2ceBridge',
-										'forPx2CE': input
-									},
-									function(result){
-										callback(result);
-									}
-								);
-								return;
-							},
-							'complete': function(){
-								alert('完了しました。');
-							},
-							'onClickContentsLink': function( uri, data ){
-								alert('編集: ' + uri);
-							},
-							'onMessage': function( message ){
-								// ユーザーへ知らせるメッセージを表示する
-								console.info('message: '+message);
-							}
-						},
-						function(){
-							// スタンバイ完了したら呼び出されるコールバックメソッドです。
-							console.info('pickles2-contents-editor standby!!');
-							rlv();
-						}
-					);
-
-				}); })
-				.then(function(){ return new Promise(function(rlv, rjt){
 					_this.getConfig( function(conf){
 						px2meConf = conf;
 						_this.px2meConf = px2meConf;
@@ -134,8 +87,6 @@
 						_this.px2conf.plugins = _this.px2conf.plugins || {};
 						_this.px2conf.plugins.px2dt = _this.px2conf.plugins.px2dt || {};
 						_this.px2conf.plugins.px2dt.paths_module_template = _this.px2conf.plugins.px2dt.paths_module_template || {};
-
-						// console.log(px2conf);
 						rlv();
 					} );
 				}); })
@@ -188,18 +139,17 @@
 		}
 
 		/**
-		* canvas要素を取得する
-		*/
+		 * canvas要素を取得する
+		 */
 		this.getElmCanvas = function(){
 			return $canvas;
 		}
 
 		/**
-		* ユーザーへのメッセージを表示する
-		*/
+		 * ユーザーへのメッセージを表示する
+		 */
 		this.message = function(message, callback){
 			callback  = callback||function(){};
-			// console.info(message);
 			this.options.onMessage(message);
 			callback();
 			return this;
@@ -491,49 +441,6 @@
 		}
 
 		/**
-		 * broccoli インスタンスを生成する
-		 */
-		this.createBroccoli = function(options, callback){
-			options = options||{};
-			callback = callback||function(){};
-			var broccoli = new Broccoli();
-			px2ce.createBroccoliInitOptions(function(broccoliInitOptions){
-				for(var key in options){
-					broccoliInitOptions[key] = options[key];
-				}
-				broccoliInitOptions.contents_area_selector = "[data-contents-area]";
-				broccoliInitOptions.contents_bowl_name_by = "data-contents-area";
-				broccoliInitOptions.gpiBridge = function(api, options, callback){
-					// GPI(General Purpose Interface) Bridge
-					// broccoliは、バックグラウンドで様々なデータ通信を行います。
-					// GPIは、これらのデータ通信を行うための汎用的なAPIです。
-					// console.log(api, options);
-					_this.gpiBridge(
-						{
-							'api': 'broccoliBridge',
-							'forBroccoli':{
-								'api': JSON.stringify(api) ,
-								'options': JSON.stringify(options)
-							}
-						},
-						function(rtn){
-							// console.log(rtn);
-							callback(rtn);
-						}
-					);
-					return;
-				}
-				broccoli.init(
-					broccoliInitOptions ,
-					function(){
-						callback( broccoli );
-					}
-				);
-			});
-			return;
-		}
-
-		/**
 		 * モジュールの編集ツールを開く
 		 */
 		this.openModuleEditor = function(moduleId){
@@ -545,18 +452,7 @@
 		 */
 		this.progress = function( callback ){
 			callback = callback||function(){};
-			$canvas.find('.pickles2-module-editor--progress').remove(); // 一旦削除
-			$canvas
-				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
-					.append( $('<div class="pickles2-module-editor--progress-inner">')
-						.append( $('<div class="pickles2-module-editor--progress-inner2">')
-							.append( $('<div class="px2-loading">') )
-						)
-					)
-				)
-			;
-			var dom = $canvas.find('.px2-loading').get(0);
-			callback(dom);
+			px2style.loading({}, callback);
 			return;
 		}
 
@@ -565,20 +461,7 @@
 		 */
 		this.closeProgress = function( callback ){
 			callback = callback||function(){};
-			var $progress = $canvas.find('.pickles2-module-editor--progress');
-			if( !$progress.length ){
-				callback();
-				return;
-			}
-			$progress
-				.fadeOut(
-					'fast',
-					function(){
-						$(this).remove();
-						callback();
-					}
-				)
-			;
+			px2style.closeLoading(callback);
 			return;
 		}
 

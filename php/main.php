@@ -248,17 +248,17 @@ class main {
 		$pjInfo->realpath_homedir = null;
 		$pjInfo->packages = null;
 
-		$page_info = $this->page_path;
-		if(!$page_info){
-			$page_info = '/px2me-dummy.html';
+		$page_path = $this->page_path;
+		if(!$page_path){
+			$page_path = '/px2me-dummy.html';
 		}
 		$px2query_options = array(
 			"output" => "json",
 		);
 
-		$allData = $this->px2query($page_info.'?PX=px2dthelper.get.all', $px2query_options);
+		$allData = $this->px2query($page_path.'?PX=px2dthelper.get.all', $px2query_options);
 
-		if( @is_object($allData) && @is_object($allData->config) ){
+		if( is_object($allData ?? null) && is_object($allData->config ?? null) ){
 			$pjInfo->conf = $allData->config;
 			$pjInfo->pageInfo = $allData->page_info;
 			$pjInfo->contRoot = $allData->path_controot;
@@ -272,17 +272,17 @@ class main {
 			return $pjInfo;
 		}
 
-		$pjInfo->conf = $this->px2query($page_info.'?PX=api.get.config', $px2query_options);
+		$pjInfo->conf = $this->px2query($page_path.'?PX=api.get.config', $px2query_options);
 
-		$pjInfo->pageInfo = $this->px2query($page_info.'?PX=api.get.page_info', $px2query_options);
+		$pjInfo->pageInfo = $this->px2query($page_path.'?PX=api.get.page_info', $px2query_options);
 
-		$pjInfo->documentRoot = $this->px2query($page_info.'?PX=api.get.realpath_docroot', $px2query_options);
+		$pjInfo->documentRoot = $this->px2query($page_path.'?PX=api.get.realpath_docroot', $px2query_options);
 
-		$realpathDataDir = $this->px2query($page_info.'?PX=api.get.realpath_files', $px2query_options);
+		$realpathDataDir = $this->px2query($page_path.'?PX=api.get.realpath_files', $px2query_options);
 		$realpathDataDir = $this->fs->get_realpath( './guieditor.ignore/', $realpathDataDir );
 		$pjInfo->realpathDataDir = $realpathDataDir;
 
-		$pathResourceDir = $this->px2query($page_info.'?PX=api.get.path_files', $px2query_options);
+		$pathResourceDir = $this->px2query($page_path.'?PX=api.get.path_files', $px2query_options);
 
 		$pathResourceDir = $this->fs->get_realpath('resources/', $pathResourceDir);
 		$pathResourceDir = $this->fs->normalize_path($pathResourceDir);
@@ -307,16 +307,14 @@ class main {
 		$px2ce = $this->createPickles2ContentsEditor();
 
 		$broccoliInitOptions = $px2ce->createBroccoliInitOptions();
-		// var_dump($broccoliInitOptions);
 
 		$broccoli = new \broccoliHtmlEditor\broccoliHtmlEditor();
-		// var_dump($options);
 		$parsedModuleId = $broccoli->parseModuleId( $options['moduleId'] ?? null );
 		$previewContentName = $options['previewContentName'] ?? null;
 		if(!$previewContentName){
 			$previewContentName = 'default';
 		}
-		// var_dump($parsedModuleId);
+
 		if( $parsedModuleId !== false ){
 			$broccoliInitOptions['documentRoot'] = $this->fs->get_realpath($broccoliInitOptions['paths_module_template'][$parsedModuleId['package']].'/'.$parsedModuleId['category'].'/'.$parsedModuleId['module'].'/coding-example/');
 			$broccoliInitOptions['pathHtml'] = $this->fs->get_realpath('/'.$previewContentName.'.html');
@@ -333,7 +331,6 @@ class main {
 			$broccoliInitOptions['realpathDataDir'] = $broccoliInitOptions['documentRoot'].$previewContentName.'_files/guieditor.ignore/';
 		}
 
-		// var_dump($broccoliInitOptions);
 		$this->initPreviewContent($options['moduleId'] ?? null, $broccoliInitOptions);
 
 		$broccoli->init( $broccoliInitOptions );

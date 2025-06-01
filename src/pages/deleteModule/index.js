@@ -5,11 +5,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	callback = callback||function(){};
 	var $ = require('jquery');
 	var utils79 = require('utils79');
-	var $deleteModuleWindow,
-		$previewWin,
-		$previewEditorWin;
-	var broccoli;
-	var currentTab;
+	var $deleteModuleWindow;
 
 	px2me.moduleId = options.moduleId;
 
@@ -22,10 +18,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		}); })
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
-			// console.log(options);
-			console.log('module ID:', options.moduleId);
 			px2me.getModuleCode( options.moduleId, function(moduleCode){
-				// console.log(moduleCode);
 
 				if( !moduleCode.editable ){
 					alert('このモジュールは編集許可されていないパスにあります。');

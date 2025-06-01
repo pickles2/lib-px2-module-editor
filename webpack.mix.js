@@ -49,5 +49,4 @@ mix
 	// Pickles 2 Module Editor
 	.js('src/pickles2-module-editor.js', 'dist/pickles2-module-editor.js')
 	.sass('src/pickles2-module-editor.css.scss', 'dist/pickles2-module-editor.css')
-	.copy('src/html/preview.html', 'dist/html/preview.html')
 ;
