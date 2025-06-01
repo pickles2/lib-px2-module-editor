@@ -5,7 +5,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	callback = callback||function(){};
 	var $ = require('jquery');
 	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
 
 	new Promise(function(rlv){rlv();})
 		.then(function(){ return new Promise(function(rlv, rjt){
@@ -69,7 +68,8 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						px2me.loadPage('addNewModule', {'categoryId': target}, function(){});
 						break;
 					case 'editModule':
-						px2me.loadPage('editModule', {'moduleId': target}, function(){});
+						// 外部のモジュールエディタを開く
+						px2me.openModuleEditor(target);
 						break;
 					case 'deleteModule':
 						px2me.loadPage('deleteModule', {'moduleId': target}, function(){});

@@ -5,7 +5,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 	callback = callback||function(){};
 	var $ = require('jquery');
 	var utils79 = require('utils79');
-	var Promise = require('es6-promise').Promise;
 	var $deleteModuleWindow,
 		$previewWin,
 		$previewEditorWin;

@@ -107,6 +107,11 @@ MIT License
 
 ## 更新履歴 - Change log
 
+### pickles2/lib-px2-module-editor v0.5.0 (リリース日未定)
+
+- モジュール編集機能の一部を分離した。
+- Kaleflowerによるモジュール編集に対応した。
+
 ### pickles2/lib-px2-module-editor v0.4.1 (2024年2月18日)
 
 - 新規パッケージ作成のUI改善。

@@ -14,11 +14,11 @@
 		}
 	})().replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 
+	require('px2style/dist/px2style.js');
+	const $ = require('jquery');
+	const px2style = window.px2style;
+
 	window.Pickles2ModuleEditor = function(){
-		var $ = require('jquery');
-		require('px2style/dist/px2style.js');
-		var px2style = window.px2style;
-		var Promise = require('es6-promise').Promise;
 		var $canvas,
 			$canvasContent;
 
@@ -50,11 +50,11 @@
 		this.init = function(options, callback){
 			console.info('initialize pickles2-module-editor...');
 			callback = callback || function(){};
-			// console.log(options);
 
 			this.options = options;
 			this.options.gpiBridge = this.options.gpiBridge || function(){ alert('gpiBridge required.'); };
 			this.options.complete = this.options.complete || function(){ alert('finished.'); };
+			this.options.moduleEditor = this.options.moduleEditor || function(moduleId){ alert('Edit module: '+moduleId); };
 			this.options.onMessage = this.options.onMessage || function(message){ alert('onMessage: '+message); };
 			this.options.preview = this.options.preview || {};
 			this.options.lang = this.options.lang || 'en';
@@ -143,10 +143,9 @@
 					// テンプレートをロードする
 					_this.gpiBridge(
 						{
-							'api':'getTemplates'
+							'api':'getTemplates',
 						},
 						function(tpls){
-							// console.log(tpls);
 							templates = tpls;
 							rlv();
 						}
@@ -169,7 +168,7 @@
 				}); })
 			;
 
-		} // init()
+		}
 
 		/**
 		 * ページを表示する
@@ -524,11 +523,9 @@
 					);
 					return;
 				}
-				// console.log(broccoliInitOptions);
 				broccoli.init(
 					broccoliInitOptions ,
 					function(){
-						// console.log(broccoli);
 						callback( broccoli );
 					}
 				);
@@ -537,11 +534,18 @@
 		}
 
 		/**
+		 * モジュールの編集ツールを開く
+		 */
+		this.openModuleEditor = function(moduleId){
+			return this.options.moduleEditor(moduleId);
+		}
+
+		/**
 		 * プログレスを表示する
 		 */
 		this.progress = function( callback ){
 			callback = callback||function(){};
-			$canvas.find('.pickles2-module-editor--progress').remove();//一旦削除
+			$canvas.find('.pickles2-module-editor--progress').remove(); // 一旦削除
 			$canvas
 				.append( $('<div class="pickles2-module-editor pickles2-module-editor--progress">')
 					.append( $('<div class="pickles2-module-editor--progress-inner">')
