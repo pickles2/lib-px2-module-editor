@@ -34,7 +34,24 @@ return function($px2me, $data){
 	$infoJson['name'] = $data['data']['moduleName'];
 	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 
-	$px2me->fs()->save_file($realpath.'/template.html', '');
+	switch($data['data']['moduleName']){
+		case 'html':
+			$px2me->fs()->save_file($realpath.'/template.html', '');
+			break;
+		case 'twig':
+			$px2me->fs()->save_file($realpath.'/template.html.twig', '');
+			break;
+		case 'clip':
+			$px2me->fs()->save_file($realpath.'/clip.json', '{}');
+			break;
+		case 'kflow':
+		default:
+			$px2me->fs()->mkdir($realpath.'/src/');
+			$px2me->fs()->save_file($realpath.'/src/template.kflow', '<kflow><contents><content name="main"></content></contents></kflow>');
+			$px2me->fs()->save_file($realpath.'/template.html.twig', '');
+			break;
+	}
+
 	$px2me->fs()->save_file($realpath.'/module.css.scss', '');
 	$px2me->fs()->save_file($realpath.'/module.js', '');
 

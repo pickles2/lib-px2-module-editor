@@ -1,9 +1,30 @@
 <form action="javascript:;" method="post">
-
-    <h2>モジュールID</h2>
-    <input type="text" name="moduleId" class="px2-input px2-input--block" />
-
-    <h2>モジュール名</h2>
-    <input type="text" name="moduleName" class="px2-input px2-input--block" />
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li" data-name="input-module-id">
+				<div class="px2-form-input-list__label"><label for="input-module-id"><%= lb.get('ui_label.module_id') %></label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" name="moduleId" class="px2-input px2-input--block" id="input-module-id" />
+				</div>
+			</li>
+			<li class="px2-form-input-list__li" data-name="input-module-name">
+				<div class="px2-form-input-list__label"><label for="input-module-name"><%= lb.get('ui_label.module_name') %></label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" name="moduleName" class="px2-input px2-input--block" id="input-module-name" />
+				</div>
+			</li>
+			<li class="px2-form-input-list__li" data-name="input-module-type">
+				<div class="px2-form-input-list__label"><label for="input-module-type"><%= lb.get('ui_label.module_type') %></label></div>
+				<div class="px2-form-input-list__input">
+					<ul class="px2-vertical-list">
+						<li><label><input type="radio" name="moduleType" value="kflow" class="px2-input" checked /> Kaleflower</label></li>
+						<li><label><input type="radio" name="moduleType" value="twig" class="px2-input" /> Twig</label></li>
+						<li><label><input type="radio" name="moduleType" value="html" class="px2-input" /> Legacy HTML</label></li>
+						<li><label><input type="radio" name="moduleType" value="clip" class="px2-input" /> Clip module</label></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
 
 </form>
