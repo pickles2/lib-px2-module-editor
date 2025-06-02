@@ -21,7 +21,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 			px2me.getModuleCode( options.moduleId, function(moduleCode){
 
 				if( !moduleCode.editable ){
-					alert('このモジュールは編集許可されていないパスにあります。');
+					alert(px2me.lb().get('ui_message.this_module_is_in_a_path_that_does_not_allow_editing'));
 					rjt();
 					return;
 				}
@@ -42,11 +42,11 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// モーダルダイアログを開く
 			px2me.modal({
-				"title": "モジュールを削除",
+				"title": px2me.lb().get('ui_label.modal_title.delete_module'),
 				"body": $canvasContent,
 				"buttons": [
 					$('<button class="px2-btn px2-btn--danger">')
-						.text('削除する')
+						.text(px2me.lb().get('ui_label.delete'))
 						.on('click', function(){
 							px2me.deleteModule(options.moduleId, function(result){
 								px2me.loadPage('list', {}, function(){
@@ -57,7 +57,7 @@ module.exports = function(px2me, $canvasContent, options, callback){
 				],
 				"buttonsSecondary": [
 					$('<button class="px2-btn">')
-						.text('キャンセル')
+						.text(px2me.lb().get('ui_label.cancel'))
 						.click(function(){
 							px2me.loadPage('list', {}, function(){
 								px2me.closeModal();

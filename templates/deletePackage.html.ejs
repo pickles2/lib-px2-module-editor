@@ -2,8 +2,12 @@
     パッケージを削除します。よろしいですか？<br />
 </p>
 <form action="javascript:;" method="post">
-
-    <h2>パッケージID</h2>
-    <p><%= packageId %></p>
-
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li" data-name="input-package-id">
+				<div class="px2-form-input-list__label"><label for="input-package-id"><%= lb.get('ui_label.package_id') %></label></div>
+				<div class="px2-form-input-list__input"><%= packageId %></div>
+			</li>
+		</ul>
+	</div>
 </form>
