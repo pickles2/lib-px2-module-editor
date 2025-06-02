@@ -26,7 +26,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 						pluginPackages = packages.package_list.broccoliModules;
 					} catch (e) {
 					}
-					// console.log(pluginPackages);
 					rlv();
 				}
 			);
@@ -38,7 +37,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 					broccoliPackages = packageList;
 				} catch (e) {
 				}
-				// console.log(broccoliPackages);
 				rlv();
 			});
 		}); })

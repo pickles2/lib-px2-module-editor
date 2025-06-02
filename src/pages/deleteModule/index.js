@@ -19,7 +19,6 @@ module.exports = function(px2me, $canvasContent, options, callback){
 		.then(function(){ return new Promise(function(rlv, rjt){
 			// 編集画面を描画
 			px2me.getModuleCode( options.moduleId, function(moduleCode){
-
 				if( !moduleCode.editable ){
 					alert(px2me.lb().get('ui_message.this_module_is_in_a_path_that_does_not_allow_editing'));
 					rjt();
