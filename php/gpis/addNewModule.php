@@ -32,22 +32,50 @@ return function($px2me, $data){
 
 	$infoJson = array();
 	$infoJson['name'] = $data['data']['moduleName'];
-	$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+	$infoJsonInterfaceTemplate = array(
+		"fields" => array(
+			"mainText" => array(
+				"fieldType" => "input",
+				"type" => "multitext",
+				"label" => "テキスト",
+			),
+		),
+	);
 
 	switch($data['data']['moduleName']){
 		case 'html':
-			$px2me->fs()->save_file($realpath.'/template.html', '');
+			$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+			$px2me->fs()->save_file($realpath.'/template.html', '<div></div>');
 			break;
 		case 'twig':
-			$px2me->fs()->save_file($realpath.'/template.html.twig', '');
+			$infoJson['interface'] = $infoJsonInterfaceTemplate;
+			$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+			$px2me->fs()->save_file($realpath.'/template.html.twig', '<div>{{ mainText }}</div>');
 			break;
 		case 'clip':
+			$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
 			$px2me->fs()->save_file($realpath.'/clip.json', '{}');
 			break;
 		case 'kflow':
 		default:
+			$infoJson['interface'] = $infoJsonInterfaceTemplate;
+			$px2me->fs()->save_file($realpath.'/info.json', json_encode($infoJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+
+			$blockName = preg_replace('/[^a-zA-Z0-9]+/', '-', $data['categoryId']);
+			$kflowSrc = '';
+			ob_start(); ?>
+<kflow>
+	<configs>
+		<config name="module-name" value="<?= htmlspecialchars($blockName) ?>" />
+	</configs>
+	<contents>
+		<content name="main"><div>{{ mainText }}</div></content>
+	</contents>
+</kflow>
+<?php
+			$kflowSrc .= ob_get_clean();
 			$px2me->fs()->mkdir($realpath.'/src/');
-			$px2me->fs()->save_file($realpath.'/src/template.kflow', '<kflow><contents><content name="main"></content></contents></kflow>');
+			$px2me->fs()->save_file($realpath.'/src/template.kflow', $kflowSrc);
 			$px2me->fs()->save_file($realpath.'/template.html.twig', '');
 			break;
 	}
@@ -56,4 +84,5 @@ return function($px2me, $data){
 	$px2me->fs()->save_file($realpath.'/module.js', '');
 
 	callback(true);
-	return;};
+	return;
+};
