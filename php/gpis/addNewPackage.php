@@ -6,8 +6,6 @@ return function($px2me, $data){
 
 	$broccoli = $px2me->createBroccoli(array());
 
-	// var_dump($broccoli);
-
 	$realpath = $px2me->fs()->get_realpath($px2me->get_px2conf()->plugins->px2dt->path_module_templates_dir.'/', dirname($px2me->entry_script()));
 	if( !is_dir($realpath) ){
 		return array(
@@ -79,6 +77,6 @@ return function($px2me, $data){
 
 	return array(
 		'result' => true,
-		'msg' => 'OK',
+		'message' => 'OK',
 	);
 };

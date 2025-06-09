@@ -9,24 +9,39 @@ return function($px2me, $data){
 	// console.log(broccoli);
 	$parsedModId = $broccoli->parseModuleId($data['categoryId'].'/dmy');
 	if( $parsedModId === false ){
-		return false;
+		return array(
+			'result' => false,
+			'message' => 'Invalid category ID format.',
+		);
 	}
 	if( !$parsedModId['category'] ){
-		return false;
+		return array(
+			'result' => false,
+			'message' => 'Category ID is required.',
+		);
 	}
 	$realpath = $broccoli->paths_module_template[$parsedModId['package']].'/'.$parsedModId['category'].'/';
 	if( !is_dir($realpath) ){
-		return false;
+		return array(
+			'result' => false,
+			'message' => 'Template directory does not exist.',
+		);
 	}
 	if( !$px2me->isEditablePath( $realpath ) ){
 		// 編集可能なパスかどうか評価
 		// 駄目なら上書いてはいけない。
-		return false;
+		return array(
+			'result' => false,
+			'message' => 'This path is not editable.',
+		);
 	}
 	$realpath = $realpath.'/'.$data['data']['moduleId'];
 	if( is_dir($realpath) ){
 		// 既に存在する
-		return false;
+		return array(
+			'result' => false,
+			'message' => 'Already exists.',
+		);
 	}
 	$px2me->fs()->mkdir_r($realpath);
 
@@ -83,6 +98,8 @@ return function($px2me, $data){
 	$px2me->fs()->save_file($realpath.'/module.css.scss', '');
 	$px2me->fs()->save_file($realpath.'/module.js', '');
 
-	callback(true);
-	return;
+	return array(
+		'result' => true,
+		'message' => 'OK',
+	);
 };
