@@ -52,7 +52,7 @@ return function($px2me, $data){
 			"mainText" => array(
 				"fieldType" => "input",
 				"type" => "multitext",
-				"label" => "テキスト",
+				"label" => "Text",
 			),
 		),
 	);
@@ -84,7 +84,7 @@ return function($px2me, $data){
 		<config name="module-name" value="<?= htmlspecialchars($blockName) ?>" />
 	</configs>
 	<contents>
-		<content name="main"><div>{{ mainText }}</div></content>
+		<content name="main"><div><bind field="mainText" /></div></content>
 	</contents>
 </kflow>
 <?php
