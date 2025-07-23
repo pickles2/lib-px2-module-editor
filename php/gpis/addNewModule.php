@@ -84,7 +84,7 @@ return function($px2me, $data){
 		<config name="module-name" value="<?= htmlspecialchars($blockName) ?>" />
 	</configs>
 	<contents>
-		<content name="main"><div><bind field="mainText" /></div></content>
+		<content name="main"><div><mod-bind field="mainText" /></div></content>
 	</contents>
 </kflow>
 <?php
